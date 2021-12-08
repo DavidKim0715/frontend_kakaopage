@@ -20,7 +20,7 @@ yarn-error.log*
 
 # 특정 폴더안의 파일 전부 제외
 node_modules
-/dist
+dist
 
 # 해당 확장자 파일 전체 제외
 
