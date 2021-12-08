@@ -1,0 +1,19 @@
+{
+  "name": "frontend_kakaopage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidKim0715/frontend_kakaopage.git"
+  },
+  "author": "DavidKim0715",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DavidKim0715/frontend_kakaopage/issues"
+  },
+  "homepage": "https://github.com/DavidKim0715/frontend_kakaopage#readme"
+}
