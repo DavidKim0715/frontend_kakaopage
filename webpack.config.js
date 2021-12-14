@@ -1,47 +1,49 @@
 const path = require('path')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HTMLWebpackPlugin = require('Html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const HTMLWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const ESLintPlugin = require('eslint-webpack-plugin');
+const EsLintWebpackPlugin = require('eslint-webpack-plugin')
 
 module.exports = {
     entry: './src/index.ts',
-    mode : 'development',
-    devtool: 'source-map',
+    mode: 'development',
     output: {
-        asyncChunks:true, //요청시 로드되는 비동기 청크
-        filename: process.env.NODE_ENV === 'production'?
-            '[name].[contenthash].js'
-            : '[name].bundle.js',
+        asyncChunks: true, //요청시 로드되는 비동기 청크
+        filename:
+            process.env.NODE_ENV === 'production'
+                ? '[name].[contenthash].js'
+                : '[name].bundle.js',
         chunkFilename: '[name].[contenthash:8].js',
         path: path.resolve(__dirname, 'dist'),
-        clean: true,  // 내보내기 전에 output 디렉토리를 정리합니다.
+        clean: true, // 내보내기 전에 output 디렉토리를 정리합니다.
     },
-    target: 'web',
+    resolve: {
+        modules: ['node_modules'],
+        extensions: ['.ts', '.js', '.jsx', '.tsx'],
+        fallback: {
+            path: false,
+        }
+    },
     optimization: {
-        usedExports: true
-    },
-    stats: {
-        children: true,
+        minimize: false,
+        splitChunks: {
+            chunks: 'all',
+            name: false,
+        },
+        runtimeChunk: {
+            //런타임 코드를 별도의 청크로 분할
+            name: (entrypoint) => `runtime-${entrypoint.name}`,
+        },
     },
     devServer: {
         port: 8080,
-        open : true,
+        open: true,
         compress: true,
         client: {
             overlay: true,
             progress: true,
         },
-        // proxy: {
-        //     context: () => true,
-        //     '/api/*' : {
-        //         target: 'http://localhost:8080',
-        //         changeOrigin : true
-        //     }
-        // }
     },
-    stats:{
+    stats: {
         preset: 'minimal',
         builtAt: true,
         children: true,
@@ -49,133 +51,95 @@ module.exports = {
         hash: true,
         modules: true,
         version: true,
-        warningsFilter: [/exceed/, /performance/]
+        warningsFilter: [/exceed/, /performance/],
     },
     module: {
         rules: [
-            //html
-            {
-                test: /\.html$/i,
-                loader: "html-loader",
-                options: { minimize : true}
-            },
             //js, ts
             {
                 test: /\.(js|jsx|ts|tsx)$/i,
                 exclude: /node_modules/,
                 use: [
                     {
-                        loader: "babel-loader",
+                        loader: 'babel-loader',
                         options: {
-                            presets: ['@babel/preset-env']
-                        }
+                            presets: ['@babel/preset-env'],
+                        },
                     },
                     {
-                        loader :'ts-loader',
+                        loader: 'ts-loader',
                         options: {
-                            transpileOnly : true
-                        }
-                    }
-                ]
+                            transpileOnly: true,
+                        },
+                    },
+                ],
             },
-            //url
+            //html
             {
-                test: /\.(bmp|gif|png|jpe?g|svg)$/i,
-                loader: "url-loader",
-                options: {
-                    outputPath : 'static/media',
-                    name : '[name].[contenthash:8]?.[ext]',
-                    limit : 10000
-                }
-            },
-            //file
-            {
-                test: /\.(bmp|gif|png|jpe?g|svg)$/i,
-                loader: 'file-loader',
-                options: {
-                    outputPath: 'static/media',
-                    name: '[name].[contenthash:8].[ext]',
-                },
+                test: /\.html$/i,
+                loader: 'html-loader',
+                options: { minimize: true },
             },
             //css
             {
                 test: /\.(scss|css)$/i,
                 use: [
-                    process.env.NODE_ENV !== 'production' ?
-                        'style-loader'
-                        : MiniCssExtractPlugin.loader,
+                    'style-loader',
                     'css-loader',
-                    {
-                        loader: "sass-loader",
-                        options: {
-                            sourceMap : true
-                        }
-                    }
-
-                ],
+                    { loader: 'sass-loader', options: { sourceMap: true } }
+                ]
             },
-
+            //url
+            {
+                test: /\.(bmp|gif|png|jpe?g|svg)$/i,
+                loader: 'url-loader',
+                options: {
+                    outputPath: 'static/media',
+                    name: '[name].[contenthash:8]?.[ext]',
+                    limit: 10000,
+                    fallback: require.resolve('file-loader')
+                },
+            },
+            // use style-loader for browsers target and file-loader for node target 
             //font
             {
-                test:/\.(woff|woff2|eot|ttf|otf)$/i,
-                type: "assets/resource"
+                test: /\.(woff|woff2|eot|ttf|otf)$/i,
+                type: 'assets/resource',
+            },
+            //xml
+            {
+                test: /\.xml$/i,
+                use: ['xml-loader'],
             },
             //csv
             {
                 test: /\.(csv|tsv)$/i,
-                use:['csv-loader']
+                use: ['csv-loader'],
             },
-            //xml
-            {
-                test:/\.xml$/i,
-                use:['xml-loader']
-            }
         ]
-    },
-    resolve: {
-        modules: ['node_modules'],
-        extensions: ['.ts','.js', '.jsx', '.tsx'],
-        fallback: {
-            path : false
-        }
-    },
-    optimization :{
-        minimize: false,
-        splitChunks: {
-            chunks: "all",
-            name : false
-        },
-        runtimeChunk: { //런타임 코드를 별도의 청크로 분할
-            name : (entrypoint) => `runtime-${entrypoint.name}`
-        }
     },
     plugins: [
         new HTMLWebpackPlugin({
-            template : './src/index.html',
-            filename : 'index.html',
+            template: './src/index.html',
+            filename: 'index.html',
             minify: {
                 removeComments: true,
                 collapseWhitespace: true,
-                removeAttributeQuotes: true
+                removeAttributeQuotes: true,
             },
         }),
-        new MiniCssExtractPlugin({
-            linkType: false,
-            filename: 'static/css/[name].[contenthash:8]css',
-            chunkFilename:'static/css/[name].[contenthash:8].chunk.css'
+        new EsLintWebpackPlugin({
+            extensions: ['.ts', '.js'],
+            exclude: 'node_modules',
         }),
         new CopyWebpackPlugin({
-            patterns : [
+            patterns: [
                 {
-                    from : `${__dirname}/src/assets`,
-                    to : 'assets',
-                    noErrorOnMissing : true
-                }
-            ]
+                    from: `${__dirname}/src/assets`,
+                    to: 'assets',
+                    noErrorOnMissing: true,
+                },
+            ],
         }),
-        new ESLintPlugin({
-            extensions: ['.ts','.js'],
-            exclude : 'node_modules'
-        })
     ]
 }
