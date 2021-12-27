@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import "src/static/scss/abstracts/variables", "src/static/scss/abstracts/functions", "src/static/scss/abstracts/mixins";
 
 @import "src/static/scss/vendors/jquery-ui";
@@ -13,6 +14,23 @@
 @import "src/static/scss/pages/home", "src/static/scss/pages/contact";
 
 @import "src/static/scss/themes/theme", "src/static/scss/themes/admin";
+=======
+@import "abstracts/variables", "abstracts/functions", "abstracts/mixins";
+
+@import "vendors/jquery-ui";
+
+@import "base/reset", "base/typography";
+
+@import "layout/navigation", "layout/grid", "layout/header", "layout/footer",
+"layout/sidebar", "layout/form";
+
+@import "components/buttons", "components/carousels", "components/covers",
+"components/dropdown", "components/inputs";
+
+@import "pages/home", "pages/contact";
+
+@import "themes/theme", "themes/admin";
+>>>>>>> 3e4e5795642facfba9d2c01d3438d9d26d7bca85
 
 //ul 태그 불릿 제거
 ul {
