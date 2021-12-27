@@ -134,7 +134,7 @@ module.exports = {
     },
     resolve: {
         modules: ['node_modules'],
-        extensions: ['.ts','.js', '.jsx', '.tsx'],
+        extensions: ['.ts','.js', '.json', '.jsx', '.tsx'],
         fallback: {
             path : false
         }
