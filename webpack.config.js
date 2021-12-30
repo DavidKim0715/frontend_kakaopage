@@ -6,7 +6,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const EsLintWebpackPlugin = require('eslint-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const ExtendDefaultPlugins = require('extend')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 //이미지 파일 크기 최적화
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
@@ -23,23 +22,6 @@ module.exports = (_env, argv) => {
             fallback: {
                 path: false,
             }
-<<<<<<< HEAD
-        ]
-    },
-    resolve: {
-        modules: ['node_modules'],
-        extensions: ['.ts','.js', '.json', '.jsx', '.tsx'],
-        fallback: {
-            path : false
-        }
-    },
-    optimization :{
-        minimize: false,
-        splitChunks: {
-            chunks: "all",
-            name : false
-=======
->>>>>>> 3e4e5795642facfba9d2c01d3438d9d26d7bca85
         },
         output: {
             asyncChunks: true, //요청시 로드되는 비동기 청크
@@ -211,7 +193,6 @@ module.exports = (_env, argv) => {
     }
     if (isDev) {
         config.plugins = [
-            new webpack.HotModuleReplacementPlugin(),
             new HTMLWebpackPlugin({
                 title: 'Development',
                 showErrors: true // 에러 발생시 메세지가 브라우저 화면에 노출
@@ -236,23 +217,3 @@ module.exports = (_env, argv) => {
     }
     return config
 }
-
-// module.exports = {
-//     // entry: './src/index.ts', //webpack 5 기본값 제거
-//     mode: 'development',
-//     devtool: 'source-map',
-//     output: {
-//         asyncChunks: true, //요청시 로드되는 비동기 청크
-//         filename:
-//             process.env.NODE_ENV === 'production'
-//                 ? '[name].[contenthash].js'
-//                 : '[name].bundle.js',
-//         chunkFilename: '[name].[contenthash:8].js',
-//         // path: path.resolve(__dirname, 'dist'), //webpack5 기본값 제거
-//         clean: true, // 내보내기 전에 output 디렉토리를 정리합니다.
-//     },
-
-
-
-
-

@@ -10,10 +10,12 @@
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "ecmaVersion": 13
+        "ecmaVersion": 2021
     },
     "plugins": [
         "@typescript-eslint"
     ],
-    "rules": {}
+    "rules": {
+        "endOfLine": "auto"
+    }
 }

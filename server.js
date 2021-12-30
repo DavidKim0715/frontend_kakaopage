@@ -1,10 +1,12 @@
-// const express = require('express')
-// const path = require('path')
+const express = require('express')
+const path = require('path')
 
-// const app = express()
+const app = express()
 
-// app.get('/*', (req, res) => {
-//     res.sendFile(path.resolve('frontend', 'index.html'))
-// })
+app.use("/static", express.static(path.resolve(__dirname, "frontend", "static")))
 
-// app.listen(process.env.PORT || 8080, () => console.log('server is running....'))
+app.get('/*', (req, res) => {
+    res.sendFile(path.resolve('src', 'index.html'))
+})
+
+app.listen(process.env.PORT || 8080, () => console.log('server is running....'))
