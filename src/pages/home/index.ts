@@ -1,11 +1,7 @@
-export default class Home{
-    constructor() {
-       document.title = 'Home'
-    }
-
-    renderUI(){
-        return `
-            <h2>Homepage</h2>
-        `
-    }
+const Home = () => {
+    const template = `
+    <section>
+    <section/>`
+    return template
 }
+export default Home

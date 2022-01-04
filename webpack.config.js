@@ -9,7 +9,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 //이미지 파일 크기 최적화
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
-
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
 module.exports = (_env, argv) => {
     const isProd = argv.mode === "production"
     const isDev = !isProd
@@ -31,7 +31,7 @@ module.exports = (_env, argv) => {
                     : '[name].bundle.js',
             chunkFilename: '[name].[contenthash:8].js',
             clean: true, // 내보내기 전에 output 디렉토리를 정리합니다.
-            // path: path.resolve(__dirname, 'dist'), //webpack5 기본값 제거
+            path: path.resolve(__dirname, 'dist'), //webpack5 기본값 제거 필요
         },
         stats: {
             preset: 'minimal',
@@ -68,8 +68,13 @@ module.exports = (_env, argv) => {
                 // }),
             ],
             splitChunks: {
-                chunks: 'all',
-                name: false,
+                cacheGroups: {
+                    vendor: {
+                      chunks: 'initial',
+                      name: 'vendor',
+                      enforce: true,
+                    },
+                  },
             },
             runtimeChunk: {
                 //런타임 코드를 별도의 청크로 분할
@@ -188,7 +193,12 @@ module.exports = (_env, argv) => {
                 linkType: false,
                 filename: '[name].[contenthash].css',
                 chunkFilename: '[id].[contenthash].css',
-            })
+            }),
+            //런타임마다 생성되는 chuck hash 번들 경로
+            new WebpackManifestPlugin({
+                // fileName: './manifest.json' // default
+                publicPath: '/dist/',
+              }),
         ]
     }
     if (isDev) {
@@ -217,3 +227,4 @@ module.exports = (_env, argv) => {
     }
     return config
 }
+

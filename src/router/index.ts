@@ -1,21 +1,75 @@
-import routes from '../router/routes'
+// window.onload = () => {
+//     const main = document.querySelector("main")
 
-const navigateTo = (url : string) => {
-    history.pushState(null, '', url)
-    router()
-}
+//     //* 경로에 맞는 콘텐츠 렌더
+//     const renderContents = () => {
+//         const { pathname } = window.location
+//         switch (pathname) {
+//             case "/some":
+//                 main.innerHTML =
+//                     "<div><button type='button'>move to /some</button></div>"
 
-const router = async () => {
+//                 const button = document.querySelector("button")
+//                 button.addEventListener("click", () => {
+//                     const targetUrl = "/some"
+//                     const { pathname, search } = window.location
 
-}
+//                     //* 같은 URL 은 스택에 추가하지 않는다
+//                     if (targetUrl === `${pathname}${search}`) {
+//                         return
+//                     }
 
-window.addEventListener("popstate", router)
-//onload <- DOM 생성 이후 실행
-//DOMContentLoaded <- onload보다 빠르게 실행됨(HTML - SCRIPT 사이)
-document.addEventListener("DOMContentLoaded", () => {
-    document.body.addEventListener("click", e => {
+//                     const locationChangeEvent = new CustomEvent(
+//                         "locationchange",
+//                         {
+//                             composed: true,
+//                             detail: { href: targetUrl },
+//                         }
+//                     )
 
-    })
+//                     //* 주소변경 이벤트 Dispatch
+//                     window.dispatchEvent(locationChangeEvent)
+//                 })
+//                 break
+//             default:
+//                 main.innerHTML = "<div>404</div>"
+//         }
+//     }
 
-    router()
-})
+//     const handleLocationChange = (e) => {
+//         const { href } = e.detail
+
+//         //* 주소변경
+//         window.history.pushState(undefined, "타이틀", href)
+//         //* 콘텐츠 렌더링
+//         renderContents()
+//     }
+
+//     //* locationchange 이벤트리스너
+//     window.addEventListener("locationchange", handleLocationChange)
+
+//     main.innerHTML = "<div><button type='button'>move to /some</button></div>"
+
+//     const button = document.querySelector("button")
+//     button.addEventListener("click", () => {
+//         const targetUrl = "/some?foo=bar"
+//         const { pathname, search } = window.location
+
+//         //* 같은 URL 은 스택에 추가하지 않는다
+//         if (targetUrl === `${pathname}${search}`) {
+//             return
+//         }
+
+//         const locationChangeEvent = new CustomEvent("locationchange", {
+//             composed: true,
+//             detail: { href: targetUrl },
+//         })
+
+//         //* 주소변경 이벤트 Dispatch
+//         window.dispatchEvent(locationChangeEvent)
+//     })
+
+//     window.addEventListener("popstate", () => {
+//         renderContents()
+//     })
+// }

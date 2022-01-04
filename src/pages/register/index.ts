@@ -1,11 +1,7 @@
-export default class Register{
-    constructor() {
-        document.title = 'Registration'
-    }
-
-    renderUI(){
-        return `
-            <h2>Registration</h2>
-        `
-    }
+const SignUp = () => {
+    const template = `
+    <section>
+    <section/>`
+    return template
 }
+export default SignUp

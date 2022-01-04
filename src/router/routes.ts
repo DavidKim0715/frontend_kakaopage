@@ -12,7 +12,7 @@ const routes = [
     {
         path : '/',
         name : 'Home',
-        view : Home
+        view :  Home
     },
     {
         path : '/signup',
