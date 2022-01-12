@@ -194,9 +194,9 @@ module.exports = (_env, argv) => {
                 filename: '[name].[contenthash].css',
                 chunkFilename: '[id].[contenthash].css',
             }),
-            //런타임마다 생성되는 chuck hash 번들 경로
+            // //런타임마다 생성되는 chuck hash 번들 경로
             new WebpackManifestPlugin({
-                // fileName: './manifest.json' // default
+                // fileName: './manifest.json', // default
                 publicPath: '/dist/',
               }),
         ]
@@ -204,13 +204,14 @@ module.exports = (_env, argv) => {
     if (isDev) {
         config.plugins = [
             new HTMLWebpackPlugin({
-                title: 'Development',
+                title: 'vanilla ts',
                 showErrors: true // 에러 발생시 메세지가 브라우저 화면에 노출
             })
         ];
         config.devtool = 'inline-source-map'
         config.devServer = {
             hot: true, // 서버에서 HMR을 켠다.
+            static: './dist',
             port: 8080,
             client: {
                 overlay: true,

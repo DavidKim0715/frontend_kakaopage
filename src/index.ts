@@ -2,5 +2,3 @@
 // import routes from "./router/routes"
 
 export const app = document.getElementById('app')
-app?.append('Hello');
-
