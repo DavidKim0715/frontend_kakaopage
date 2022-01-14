@@ -157,6 +157,7 @@ module.exports = (_env, argv) => {
             new HTMLWebpackPlugin({
                 template: './src/index.html',
                 filename: 'index.html',
+                inject : 'body',
                 minify: {
                     removeComments: true,
                     collapseWhitespace: true,
@@ -204,7 +205,9 @@ module.exports = (_env, argv) => {
     if (isDev) {
         config.plugins = [
             new HTMLWebpackPlugin({
-                title: 'vanilla ts',
+                template: './src/index.html',
+                filename: 'index.html',
+                inject : 'body',
                 showErrors: true // 에러 발생시 메세지가 브라우저 화면에 노출
             })
         ];
