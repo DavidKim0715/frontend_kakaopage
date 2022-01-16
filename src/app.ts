@@ -1,21 +1,34 @@
-const renderElement = (node : string) => {
-    const el = document.createElement(node)
+class MyElement extends HTMLElement {
+    constructor() {
+      super();
+      // element created
+    }
   
-    // 하위 element를 render한 후 하위에 추가해 준다.
-    // 재귀 함수를 호출하도록 하여 마지막 노드까지 랜더링
-    node.children.map(renderElement).forEach((element) => {
-      el.appendChild(element);
-    });
+    connectedCallback() {
+      // browser calls this method when the element is added to the document
+      // (can be called many times if an element is repeatedly added/removed)
+    }
   
-    // 생성된 Element를 반환.
-    return el;
+    disconnectedCallback() {
+      // browser calls this method when the element is removed from the document
+      // (can be called many times if an element is repeatedly added/removed)
+    }
+  
+    static get observedAttributes() {
+      return [/* array of attribute names to monitor for changes */];
+    }
+  
+    attributeChangedCallback(name, oldValue, newValue) {
+      // called when one of attributes listed above is modified
+    }
+  
+    adoptedCallback() {
+      // called when the element is moved to a new document
+      // (happens in document.adoptNode, very rarely used)
+    }
+  
+    // there can be other element methods and properties
   }
-  
-const render = (newVdom, container) => {
-    // vdom vs newVdom : diff algorithm
-    // 실제로 React는 해당 포인트에서
-    // 기존의 old Virtual DOM과 new Virtual DOM의 차이점을
-    // 찾아서 변경된 부분만 실제 Real DOM에서 새롭게 rendering 한다.
-  
-    container.appendChild(renderElement(newVdom));
-  }
+
+  // let the browser know that <my-element> is served by our new class
+customElements.define("my-element", MyElement);
