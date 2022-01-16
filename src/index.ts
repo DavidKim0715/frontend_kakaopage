@@ -1,4 +1,5 @@
-// import { router } from "./router"
-// import routes from "./router/routes"
+import { PageHeader } from "./components/core/layout/PageHeader"
 
-export const app = document.getElementById('app')
+const app = document.getElementById('app')
+const header = new PageHeader
+console.log(header)
