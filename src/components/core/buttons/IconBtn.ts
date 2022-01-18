@@ -1,4 +1,4 @@
-export class PageFooter extends HTMLElement {
+export class PageHeader extends HTMLElement {
   /*
   * constructor
   */
@@ -17,14 +17,13 @@ export class PageFooter extends HTMLElement {
   * Methods
   */
   render(){
-    this.shadow = this.attachShadow({ mode: "open" }) // DOM scope 생성
-    this.shadow.innerHTML=`
-    <footer>
-      <span>
-        footer
-      </span>
-    </footer>
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.innerHTML=`
+    <svg/>
     `
+    const shadowRoot = this.attachShadow({ mode: "open" }) // DOM scope 생성
+    shadowRoot.appendChild(button)
   }
   /*
   * life cycle

@@ -1,20 +1,9 @@
-const template = document.createElement('template') 
-template.innerHTML=`
-<header class=''>
-  <h1>
-    dddd
-  </h1>
-</header>
-`
 export class PageHeader extends HTMLElement {
   /*
   * constructor
   */
   constructor() { 
     super() // 초기화
-    this.attachShadow({mode: 'open'})// DOM scope 생성
-    // this.render()
-    this.shadowRoot?.appendChild(template.content.cloneNode(true))
   }
   /*
   * variables
@@ -27,16 +16,21 @@ export class PageHeader extends HTMLElement {
  /*
   * Methods
   */
-  // render(){
-  //   template.innerHTML = `
-   
-  //   `
-  // }
+  render(){
+    this.shadow = this.attachShadow({ mode: "open" }) // DOM scope 생성
+    this.shadow.innerHTML=`
+    <header>
+      <h1>
+        ddd
+      </h1>
+    </header>
+    `
+  }
   /*
   * life cycle
   */
   connectedCallback() { // onload = created => event
-
+    this.render()
     // this.shadowRoot.querySelector('#toggle-info').
     // addEventListener('click',()=>this.toggleInfo())
     console.log('2::: connectedCallback')
@@ -56,4 +50,3 @@ export class PageHeader extends HTMLElement {
     // 거의 쓸 일 x
   }
  }
-window.customElements.define('page-header', PageHeader)

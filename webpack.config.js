@@ -92,6 +92,9 @@ module.exports = (_env, argv) => {
                             loader: 'babel-loader',
                             options: {
                                 presets: ['@babel/preset-env'],
+                                plugins :[
+                                    "transform-custom-element-classes",
+                                ]
                             },
                         },
                         {
@@ -171,8 +174,7 @@ module.exports = (_env, argv) => {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: `${__dirname}/src/assets`,
-                        to: 'assets',
+                        from: `static`,
                         noErrorOnMissing: true,
                     },
                 ],
