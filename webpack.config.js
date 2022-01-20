@@ -124,7 +124,14 @@ module.exports = (_env, argv) => {
                                 sourceMap: true
                             }
                         },
-                        { loader: 'sass-loader', options: { sourceMap: true } }
+                        { loader: 'sass-loader', 
+                            options: { 
+                                sourceMap: true,
+                                sassOptions:{
+                                    includePaths: [path.resolve(__dirname, 'node_modules')]
+                                }
+                            } 
+                        }
                     ]
                 },
                 //url

@@ -19,9 +19,12 @@ export class PageFooter extends HTMLElement {
   render(){
     this.shadow = this.attachShadow({ mode: "open" }) // DOM scope 생성
     this.shadow.innerHTML=`
-    <footer>
-      <footer-link/>    
-    </footer>
+    <nav>
+        <a>고객센터</a>
+        <a>신고하기</a>
+        <a>홈페이지</a>
+        <a>페이스북</a>
+    </nav>
     `
   }
   /*

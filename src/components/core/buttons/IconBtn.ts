@@ -19,8 +19,10 @@ export class PageHeader extends HTMLElement {
   render(){
     const button = document.createElement('button')
     button.type = 'button'
+    button.classList.add('')
     button.innerHTML=`
-    <svg/>
+    <i>
+    </i>
     `
     const shadowRoot = this.attachShadow({ mode: "open" }) // DOM scope 생성
     shadowRoot.appendChild(button)
@@ -31,7 +33,7 @@ export class PageHeader extends HTMLElement {
   connectedCallback() { // onload = created => event
     this.render()
     // this.shadowRoot.querySelector('#toggle-info').
-    // addEventListener('click',()=>this.toggleInfo())
+    addEventListener('click',()=>this.t)
     console.log('2::: connectedCallback')
 
   }

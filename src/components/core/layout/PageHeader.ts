@@ -1,3 +1,4 @@
+// import './static/scss/_main.scss';
 export class PageHeader extends HTMLElement {
   /*
   * constructor
@@ -20,9 +21,7 @@ export class PageHeader extends HTMLElement {
     this.shadow = this.attachShadow({ mode: "open" }) // DOM scope 생성
     this.shadow.innerHTML=`
     <header>
-      <h1>
-        ddd
-      </h1>
+      <img src="/static/media/logo.png" alt="logo" />
     </header>
     `
   }
@@ -31,14 +30,10 @@ export class PageHeader extends HTMLElement {
   */
   connectedCallback() { // onload = created => event
     this.render()
-    // this.shadowRoot.querySelector('#toggle-info').
-    // addEventListener('click',()=>this.toggleInfo())
     console.log('2::: connectedCallback')
 
   }
   disconnectedCallback() { // unmounted => remove binding
-     // this.shadowRoot.querySelector('#toggle-info').
-    // removeEventListener('click',()=>this.toggleInfo())
     console.log('3::: disconnectedCallback')
   }
   attributeChangedCallback(name, oldValue, newValue) { //// called when one of attributes listed above is modified
