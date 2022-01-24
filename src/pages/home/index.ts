@@ -12,6 +12,7 @@ export class HomePage extends HTMLElement {
   static get observedAttributes() { 
     return [] 
   }
+
  /*
   * Methods
   */
@@ -19,7 +20,10 @@ export class HomePage extends HTMLElement {
     this.shadow = this.attachShadow({ mode: "open" }) // DOM scope 생성
     this.shadow.innerHTML=`
     <section>
-        aaaaaaaaaaaaa
+      <banner-btn></banner-btn>
+      <account-container></account-container>
+      <main-btn-container></main-btn-container>
+      <card-slider></card-slider>
     </section>
     `
   }

@@ -20,10 +20,10 @@ export class FooterLink extends HTMLElement {
     this.shadow = this.attachShadow({ mode: "open" }) // DOM scope 생성
     this.shadow.innerHTML=`
     <nav>
-        <a>고객센터</a>
-        <a>신고하기</a>
-        <a>홈페이지</a>
-        <a>페이스북</a>
+        <a href="">고객센터</a>
+        <a href="">신고하기</a>
+        <a href="">홈페이지</a>
+        <a href="">페이스북</a>
     </nav>
     `
   }

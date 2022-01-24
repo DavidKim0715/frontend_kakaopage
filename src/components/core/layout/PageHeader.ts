@@ -25,13 +25,15 @@ export class PageHeader extends HTMLElement {
     </header>
     `
   }
+  // onCardClick(){
+
+  // }
   /*
   * life cycle
   */
   connectedCallback() { // onload = created => event
     this.render()
     console.log('2::: connectedCallback')
-
   }
   disconnectedCallback() { // unmounted => remove binding
     console.log('3::: disconnectedCallback')

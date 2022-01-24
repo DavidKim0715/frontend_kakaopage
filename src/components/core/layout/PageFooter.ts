@@ -20,7 +20,8 @@ export class PageFooter extends HTMLElement {
     this.shadow = this.attachShadow({ mode: "open" }) // DOM scope 생성
     this.shadow.innerHTML=`
     <footer>
-      <footer-link/>    
+      <footer-link></footer-link>
+      <footer-table></footer-table>
     </footer>
     `
   }

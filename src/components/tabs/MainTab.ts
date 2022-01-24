@@ -17,12 +17,24 @@ export class MainTab extends HTMLElement {
         element.onContentSlotChange = element.onContentSlotChange.bind(element)
         element.onTabSlotChange = element.onTabSlotChange.bind(element)
     }
+    set selectedIndex(value) {
+        this.#selectedIndex = value
+    }
+    get selectedIndex() {
+        return this.#selectedIndex
+    }
     connectedCallback():void{
         this.render()
         this.cacheDom()
         this.attachEvents()
         this.dom.tabs[this.#selectedIndex]?.classList.add("selected")
         this.dom.contents[this.#selectedIndex]?.classList.add("selected")
+    }
+    disconnectedCallback() { 
+        this.dom.tabSlot.removeEventListener("click", this.onTabClick)
+        this.dom.tabSlot.removeEventListener("slotchange", this.onTabSlotChange)
+        this.dom.contentSlot.removeEventListener("slotchange", this.onContentSlotChange)
+        console.log('event is removed')
     }
     render() {
         this.shadow = this.attachShadow({ mode: "open" })
@@ -94,11 +106,5 @@ export class MainTab extends HTMLElement {
         if (oldValue !== newValue && name === "selected-index") {
             this.selectedIndex = newValue;
         }
-    }
-    set selectedIndex(value) {
-        this.#selectedIndex = value
-    }
-    get selectedIndex() {
-        return this.#selectedIndex
     }
 }

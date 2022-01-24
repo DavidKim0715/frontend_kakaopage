@@ -1,4 +1,4 @@
-export class TextBtn extends HTMLElement {
+export class BannerBtn extends HTMLElement {
   /*
   * constructor
   */
@@ -12,7 +12,7 @@ export class TextBtn extends HTMLElement {
   */
 
   static get observedAttributes() { 
-    return ['label'] 
+    return [] 
   }
  /*
   * Methods
@@ -23,27 +23,19 @@ export class TextBtn extends HTMLElement {
     render(){
         this.shadow = this.attachShadow({ mode: "open" }) // DOM scope 생성
         this.shadow.innerHTML=`
-        <button
-          class="text-btn"
-          type='button'
-        >
+        <button>
+          banner button
         </button>
         `
   }
   /*
   * life cycle
   */
-  // get getLabel():string{
-  //   return this.label
-  // }
-  // set setLabel(){
-  //   // const span = document.querySelector('span')
-  //   // conosle.log(span)
-  //   // this.label=span.getAttribute('label')
-  // }
   connectedCallback() { 
     this.render()
+
     console.log('2::: connectedCallback')
+
   }
   disconnectedCallback() { 
     console.log('3::: disconnectedCallback')

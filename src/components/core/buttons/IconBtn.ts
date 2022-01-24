@@ -1,45 +1,45 @@
-export class PageHeader extends HTMLElement {
+export class IconBtn extends HTMLElement {
   /*
   * constructor
   */
+  label  = ''
   constructor() { 
     super() // 초기화
+    this.bind(this)
   }
   /*
   * variables
   */
 
-  //return attributes in setup method
-  static get observedAttributes() { // browser calls this method when the element is removed from the document
+  static get observedAttributes() { 
     return [] 
   }
  /*
   * Methods
   */
-  render(){
-    const button = document.createElement('button')
-    button.type = 'button'
-    button.classList.add('')
-    button.innerHTML=`
-    <i>
-    </i>
-    `
-    const shadowRoot = this.attachShadow({ mode: "open" }) // DOM scope 생성
-    shadowRoot.appendChild(button)
+    bind(element) {
+        element.render = element.render.bind(element)
+    }
+    render(){
+        this.shadow = this.attachShadow({ mode: "open" }) // DOM scope 생성
+        this.shadow.innerHTML=`
+        <button>
+          <i>
+            icon
+          </i>
+        </button>
+        `
   }
   /*
   * life cycle
   */
-  connectedCallback() { // onload = created => event
+  connectedCallback() { 
     this.render()
-    // this.shadowRoot.querySelector('#toggle-info').
-    addEventListener('click',()=>this.t)
+
     console.log('2::: connectedCallback')
 
   }
-  disconnectedCallback() { // unmounted => remove binding
-     // this.shadowRoot.querySelector('#toggle-info').
-    // removeEventListener('click',()=>this.toggleInfo())
+  disconnectedCallback() { 
     console.log('3::: disconnectedCallback')
   }
   attributeChangedCallback(name, oldValue, newValue) { //// called when one of attributes listed above is modified
