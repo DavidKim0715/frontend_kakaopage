@@ -7,27 +7,122 @@ template.innerHTML = `
     `;
 
 export class QuickMenuPage extends HTMLElement {
+  contents = [];
   /*
    * constructor
    */
   constructor() {
     super(); // 초기화
-    this.items = [
-      { index: 0, title: '비밀번호 결제수단 고객센터', data: {} },
-      { index: 1, title: '자산관리' },
-      { index: 2, title: '보험' },
-      { index: 3, title: '대출' },
-      { index: 4, title: '전자문서' },
-      { index: 5, title: '송금' },
-      { index: 6, title: '결제' },
-      { index: 7, title: '카카오페이증권' },
-      { index: 8, title: '제휴서비스' },
-      { index: 9, title: '사장님' },
+    this.contents = [
+      {
+        index: 0,
+        title: '비밀번호 결제수단 고객센터',
+        data: [{ name: '설정', url: '', spec: '' }],
+      },
+      {
+        index: 1,
+        title: '자산관리',
+        data: [
+          { name: '통합내역', url: '', spec: '' },
+          { name: '신용조회', url: '', spec: '' },
+          { name: '내 차 관리', url: '', spec: '' },
+          { name: '공모주 알리미', url: '', spec: '' },
+        ],
+      },
+      {
+        index: 2,
+        title: '보험',
+        data: [
+          { name: '병원비 청구', url: '', spec: '' },
+          { name: '자동차보험', url: '', spec: '' },
+          { name: '전세반환보증', url: '', spec: '' },
+          { name: '보험상품', url: '', spec: '' },
+        ],
+      },
+      {
+        index: 3,
+        title: '대출',
+        data: [
+          { name: '대출비교', url: '', spec: '' },
+          { name: '내 대출 한도', url: '', spec: '' },
+          { name: '카드대출', url: '', spec: '' },
+          { name: '버팀목 전세자금대출', url: '', spec: '' },
+          { name: '대출이자 계산기', url: '', spec: '' },
+        ],
+      },
+      {
+        index: 4,
+        title: '전자문서',
+        data: [
+          { name: '내문서함', url: '', spec: '' },
+          { name: '인증', url: '', spec: '' },
+          { name: '청구서', url: '', spec: '' },
+          { name: '영수증', url: '', spec: '' },
+        ],
+      },
+      {
+        index: 5,
+        title: '송금',
+        data: [
+          { name: '송금', url: '', spec: '' },
+          { name: '예약송금', url: '', spec: '' },
+          { name: '1/N 정산하기', url: '', spec: '' },
+          { name: '정산 현황', url: '', spec: '' },
+          { name: '사다리타기', url: '', spec: '' },
+          { name: '송금코드', url: '', spec: '' },
+        ],
+      },
+      {
+        index: 6,
+        title: '결제',
+        data: [
+          { name: '결제', url: '', spec: '' },
+          { name: '멤버십', url: '', spec: '' },
+          { name: '페이카드', url: '', spec: '' },
+          { name: '페이상품권', url: '', spec: '' },
+          { name: '모바일 교통카드', url: '', spec: '' },
+          { name: '이벤트', url: '', spec: '' },
+        ],
+      },
+      {
+        index: 7,
+        title: '카카오페이증권',
+        data: [
+          { name: '투자매니저', url: '', spec: 'new' },
+          { name: '증권계자', url: '' },
+          { name: '주식', url: 'new' },
+          { name: '동전 모으기', url: '' },
+          { name: '펀드', url: '' },
+          { name: '버킷리스트', url: '' },
+          { name: '미니금고', url: '' },
+        ],
+      },
+      {
+        index: 8,
+        title: '제휴서비스',
+        data: [
+          { name: 'ATM출금', url: '', spec: '' },
+          { name: '금융제휴', url: '' },
+          { name: '배송', url: '' },
+          { name: '환전(하나은행)', url: '' },
+          { name: '스마트폰(KT)', url: '' },
+          { name: '온라인 연계투자 현황', url: '' },
+        ],
+      },
+      {
+        index: 9,
+        title: '사장님',
+        data: [
+          { name: '비즈니스 앱', url: '', spec: '' },
+          { name: '가맹점 신청', url: '' },
+          { name: '맴버십 신청', url: '' },
+        ],
+      },
     ];
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.shadowRoot
-      .querySelector('section')
+      ?.querySelector('section')
       .insertAdjacentHTML('afterbegin', this.renderMenu());
   }
   /*
@@ -35,7 +130,7 @@ export class QuickMenuPage extends HTMLElement {
    */
 
   static get observedAttributes() {
-    return ['items'];
+    return [''];
   }
   /*
    * Methods
@@ -47,10 +142,14 @@ export class QuickMenuPage extends HTMLElement {
   }
 
   renderMenu(): string {
-    const menu = '';
-    for (let i = 0; i < this.items.length; i++) {
+    let menu = '';
+    for (let i = 0; i < this.contents.length; i++) {
       menu += `
-        <menu-container title='${this.items[i].title}'></menu-container>
+        <menu-container 
+          title='${this.contents[i].title}'
+          contents='${this.contents[i].data}'
+        >
+        </menu-container>
       `;
     }
     return menu;
@@ -66,12 +165,6 @@ export class QuickMenuPage extends HTMLElement {
     console.log('3::: disconnectedCallback');
   }
 
-  set title(newValue: string) {
-    this.setAttribute('title', newValue);
-  }
-  get title() {
-    return this.getAttribute('title');
-  }
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     //// called when one of attributes listed above is modified
   }

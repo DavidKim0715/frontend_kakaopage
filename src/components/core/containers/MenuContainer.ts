@@ -20,10 +20,18 @@ export class MenuContainer extends HTMLElement {
   /*
    * variables
    */
+  // // 외부 스타일을 shadow dom에 적용하기
+  // const linkElem = document.createElement('link');
+  // linkElem.setAttribute('rel', 'stylesheet');
+  // linkElem.setAttribute('href', 'style.css');
+
+  // // 생성된 요소를 shadow dom에 부착하기
+  // shadow.appendChild(linkElem);
 
   static get observedAttributes() {
-    return ['title', 'items'];
+    return ['title', 'contents'];
   }
+
   /*
    * Methods
    */
@@ -33,20 +41,33 @@ export class MenuContainer extends HTMLElement {
     //이벤트 리스터 등록
   }
 
-  renderMenuButton(): string {
-    const btns = '';
-    for (let i = 0; i < this.items.length; i++) {
-      btns += `
-        <menu-btn ></menu-btn>
-      `;
-    }
-    return btns;
-  }
+  // renderMenuButton(): string {
+  //   let btns = '';
+  //   for (let i = 0; i < this.contents.length; i++) {
+  //     btns += `
+  //       <menu-btn >
+  //       </menu-btn>
+  //     `;
+  //   }
+  //   return btns;
+  // }
 
   /*
    * life cycle
    */
+
+  getTitleProps(): void {
+    const titleData = this.title;
+    this.menuTitle.innerText = titleData;
+  }
+
+  getContentsProps(): void {
+    console.log(this.contents, '<<<<<<<<<<<<<<<<<<<<<');
+  }
+
   connectedCallback() {
+    this.getTitleProps();
+    this.getContentsProps();
     this.attachEvents();
   }
   disconnectedCallback() {
@@ -59,16 +80,27 @@ export class MenuContainer extends HTMLElement {
   get title() {
     return this.getAttribute('title');
   }
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+
+  set contents(newValue: Array<string>) {
+    this.setAttribute('contents', newValue);
+  }
+  get contents() {
+    return this.getAttribute('contents');
+  }
+
+  attributeChangedCallback(name: string, oldValue: any, newValue: any) {
     //// called when one of attributes listed above is modified
-    switch (name) {
-      case 'title':
-        this.menuTitle.innerText = newValue;
-        break;
-      default:
-        break;
-    }
-    this.connectedCallback(); //rerender
+    // switch (name) {
+    //   case 'title':
+    //     this.menuTitle.innerText = newValue;
+    //     break;
+    //   case 'contents':
+    //     console.log(JSON.parse(newValue));
+    //     break;
+    //   default:
+    //     break;
+    // }
+    // this.connectedCallback(); //rerender
   }
   adoptedCallback() {
     // called when the element is moved to a new document
