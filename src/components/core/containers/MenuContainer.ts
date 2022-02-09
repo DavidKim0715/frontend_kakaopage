@@ -2,6 +2,7 @@ const template = document.createElement('template');
 template.innerHTML = `
     <article class='menu-wrap'>
       <span class="menu-title"></span>
+      <div class="menu-btn-wrapper"></div>
     </article>
   `;
 
@@ -16,6 +17,9 @@ export class MenuContainer extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
 
     this.menuTitle = this.shadowRoot.querySelector('.menu-title');
+    this.shadowRoot
+      ?.querySelector('.menu-btn-wrapper')
+      .insertAdjacentHTML('afterbegin', this.renderMenuButton());
   }
   /*
    * variables
@@ -41,16 +45,17 @@ export class MenuContainer extends HTMLElement {
     //이벤트 리스터 등록
   }
 
-  // renderMenuButton(): string {
-  //   let btns = '';
-  //   for (let i = 0; i < this.contents.length; i++) {
-  //     btns += `
-  //       <menu-btn >
-  //       </menu-btn>
-  //     `;
-  //   }
-  //   return btns;
-  // }
+  renderMenuButton(): string {
+    let btns = '';
+    for (let i = 0; i < this.contents.length; i++) {
+      const content = JSON.stringify(this.contents[i]);
+      btns += `
+        <menu-btn content='${content}'>
+        </menu-btn>
+      `;
+    }
+    return btns;
+  }
 
   /*
    * life cycle
@@ -61,13 +66,13 @@ export class MenuContainer extends HTMLElement {
     this.menuTitle.innerText = titleData;
   }
 
-  getContentsProps(): void {
-    console.log(this.contents, '<<<<<<<<<<<<<<<<<<<<<');
-  }
+  // getContentsProps(): void {
+  //   const contentsData
+  // }
 
   connectedCallback() {
     this.getTitleProps();
-    this.getContentsProps();
+    // this.getContentsProps();
     this.attachEvents();
   }
   disconnectedCallback() {
@@ -81,14 +86,14 @@ export class MenuContainer extends HTMLElement {
     return this.getAttribute('title');
   }
 
-  set contents(newValue: Array<string>) {
+  set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }
   get contents() {
-    return this.getAttribute('contents');
+    return JSON.parse(this.getAttribute('contents'));
   }
 
-  attributeChangedCallback(name: string, oldValue: any, newValue: any) {
+  attributeChangedCallback(name: any, oldValue: any, newValue: any) {
     //// called when one of attributes listed above is modified
     // switch (name) {
     //   case 'title':

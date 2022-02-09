@@ -2,7 +2,7 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
     </style>
-    <button type='button'>
+    <button class='menu-btn' type='button'>
     </button>
     `;
 
@@ -17,7 +17,7 @@ export class MenuBtn extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     this.shadowRoot
       .querySelector('button')
-      .insertAdjacentHTML('afterbegin', this.renderMenu());
+      .insertAdjacentHTML('afterbegin', this.renderButton());
   }
   /*
    * variables
@@ -31,14 +31,18 @@ export class MenuBtn extends HTMLElement {
    */
 
   attachEvents(): void {
-    console.log('dd');
     //이벤트 리스터 등록
+    const btn = this.shadowRoot.querySelector('.menu-btn');
+    btn.addEventListener('click', this.onClickBtn);
   }
 
+  // onClickBtn(e: Event): {
+
+  // };
   renderButton(): string {
     const btn = '';
     btn += `<span>
-      ${data.name}
+      ${this.content.name}
     </span>`;
     return btn;
   }
@@ -50,16 +54,17 @@ export class MenuBtn extends HTMLElement {
     this.attachEvents();
   }
   disconnectedCallback() {
-    console.log('3::: disconnectedCallback');
+    const btn = this.shadowRoot.querySelector('.menu-btn');
+    btn.removeEventListener('click', this.onClickBtn);
   }
 
-  set data(newValue: string) {
-    this.setAttribute('data', newValue);
+  set content(newValue: string) {
+    this.setAttribute('content', newValue);
   }
-  get data() {
-    return this.getAttribute('data');
+  get content(): object {
+    return JSON.parse(this.getAttribute('content'));
   }
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+  attributeChangedCallback(name: any, oldValue: any, newValue: any) {
     //// called when one of attributes listed above is modified
   }
   adoptedCallback() {

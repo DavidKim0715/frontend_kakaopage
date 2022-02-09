@@ -11,6 +11,7 @@ import { QuickMenuPage } from './pages/quick/index';
 import { MainTab } from './components/tabs/MainTab';
 import { TextBtn } from './components/core/buttons/TextBtn';
 import { BannerBtn } from './components/core/buttons/BannerBtn';
+import { MenuBtn } from './components/core/buttons/MenuBtn';
 import { IconBtn } from './components/core/buttons/IconBtn';
 import { AccountContainer } from './components/core/containers/AccountContainer';
 import { MenuContainer } from './components/core/containers/MenuContainer';
@@ -35,6 +36,7 @@ window.customElements.define('main-btn-container', MainBtnContainer);
 window.customElements.define('text-btn', TextBtn);
 window.customElements.define('banner-btn', BannerBtn);
 window.customElements.define('icon-btn', IconBtn);
+window.customElements.define('menu-btn', MenuBtn);
 
 window.customElements.define('page-footer', PageFooter);
 window.customElements.define('footer-link', FooterLink);

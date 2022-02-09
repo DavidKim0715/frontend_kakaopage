@@ -15,7 +15,7 @@ export class QuickMenuPage extends HTMLElement {
     super(); // 초기화
     this.contents = [
       {
-        index: 0,
+        index: '0',
         title: '비밀번호 결제수단 고객센터',
         data: [{ name: '설정', url: '', spec: '' }],
       },
@@ -144,10 +144,12 @@ export class QuickMenuPage extends HTMLElement {
   renderMenu(): string {
     let menu = '';
     for (let i = 0; i < this.contents.length; i++) {
+      const contents = JSON.stringify(this.contents[i].data);
+      const title = this.contents[i].title;
       menu += `
         <menu-container 
-          title='${this.contents[i].title}'
-          contents='${this.contents[i].data}'
+          contents='${contents}'
+          title='${title}'
         >
         </menu-container>
       `;
