@@ -36,6 +36,12 @@ export class MenuContainer extends HTMLElement {
     return ['title', 'contents'];
   }
 
+  renderElement(tag: string, position: string, el: string): void {
+    const data = this.shadowRoot?.querySelector(tag);
+    const element = document.createElement(el);
+    data.insertAdjacentElement(position, element);
+  }
+
   /*
    * Methods
    */

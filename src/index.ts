@@ -60,6 +60,12 @@ mainTab.innerHTML = `
         <quick-menu-page></quick-menu-page>
     </p>
 `;
-app?.appendChild(header);
-app?.appendChild(mainTab);
-app?.appendChild(footer);
+
+const fragments = document.createDocumentFragment();
+
+//rendering optimization
+fragments?.appendChild(header);
+fragments?.appendChild(mainTab);
+fragments?.appendChild(footer);
+
+app.appendChild(fragments);
