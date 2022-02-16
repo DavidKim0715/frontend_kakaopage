@@ -15,11 +15,8 @@ export class MenuContainer extends HTMLElement {
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-
     this.menuTitle = this.shadowRoot.querySelector('.menu-title');
-    this.shadowRoot
-      ?.querySelector('.menu-btn-wrapper')
-      .insertAdjacentHTML('afterbegin', this.renderMenuButton());
+    this.renderHTML('.menu-btn-wrapper', 'afterbegin', this.renderMenuButton());
   }
   /*
    * variables
@@ -36,12 +33,10 @@ export class MenuContainer extends HTMLElement {
     return ['title', 'contents'];
   }
 
-  renderElement(tag: string, position: string, el: string): void {
+  renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    const element = document.createElement(el);
-    data.insertAdjacentElement(position, element);
+    data.insertAdjacentHTML(position, element);
   }
-
   /*
    * Methods
    */
@@ -78,7 +73,6 @@ export class MenuContainer extends HTMLElement {
 
   connectedCallback() {
     this.getTitleProps();
-    // this.getContentsProps();
     this.attachEvents();
   }
   disconnectedCallback() {

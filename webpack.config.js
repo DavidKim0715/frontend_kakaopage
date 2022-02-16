@@ -135,7 +135,14 @@ module.exports = (_env, argv) => {
           test: /\.(bmp|gif|png|jpe?g|svg)$/i,
           loader: 'url-loader',
           options: {
-            outputPath: 'static/media',
+            publicPath: 'static/media',
+            // outputPath: 'static/media',
+            // (url, resourcePath) => {
+            //      if (/subfolder/.test(resourcePath)) {
+            //          return `images/subfolder/${url}`;
+            //      }
+            //  return `images/${url}`;
+            //  }
             name: '[name].[contenthash:8]?.[ext]',
             limit: 10000,
             fallback: require.resolve('file-loader'),
@@ -174,14 +181,15 @@ module.exports = (_env, argv) => {
         extensions: ['.ts', '.js'],
         exclude: 'node_modules',
       }),
-      new CopyWebpackPlugin({
-        patterns: [
-          {
-            from: `static`,
-            noErrorOnMissing: true,
-          },
-        ],
-      }),
+      // new CopyWebpackPlugin({
+      //   patterns: [
+      //     {
+      //       from: 'static/media',
+      //       to: 'static/media',
+      //       noErrorOnMissing: true,
+      //     },
+      //   ],
+      // }),
       // 플러그인 옵션 셜정
       new CleanWebpackPlugin({
         // dry 기본 값: false
@@ -219,7 +227,7 @@ module.exports = (_env, argv) => {
     config.devtool = 'inline-source-map';
     config.devServer = {
       hot: true, // 서버에서 HMR을 켠다.
-      static: './dist',
+      // static: './dist', //dist default
       port: 8080,
       client: {
         overlay: true,
@@ -228,6 +236,12 @@ module.exports = (_env, argv) => {
       compress: true,
       // host: '0.0.0.0', // 디폴트로는 "localhost" 로 잡혀있다. 외부에서 개발 서버에 접속해서 테스트하기 위해서는 '0.0.0.0'으로 설정
       open: true,
+      // proxy: {
+      //   '/api': {
+      //     target: 'http://localhost:5000',
+      //     changeOrigin: true,
+      //   },
+      // },
     };
     config.optimization.minimize = false;
   } else {

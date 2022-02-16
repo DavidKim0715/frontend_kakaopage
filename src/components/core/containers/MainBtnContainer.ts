@@ -1,77 +1,100 @@
+const template = document.createElement('template');
+template.innerHTML = `
+    <article class="main-btn-tab">
+    </article>
+  `;
+
 export class MainBtnContainer extends HTMLElement {
   /*
-  * constructor
-  */
-  items = [
-    { idx : 0, label: '결제', url:'../static/media/logo.png'},
-    { idx : 1, label: '주식',  url:''},
-    { idx : 2, label: '신용조회', url:''},
-    { idx : 3, label: '대출',url:''},
-    { idx : 4, label: '투자',url:''},
-    { idx : 5, label: '실비청구',url:''},
-    { idx : 6, label: '내문서함',url:''},
-    { idx : 7, label: '페이카드',url:''},
-  ]
-  constructor() { 
-    super() // 초기화
-    this.bind(this)
+   * constructor
+   */
+  constructor() {
+    super(); // 초기화
+
+    this.attachShadow({ mode: 'open' }); // DOM scope 생성
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.renderHTML('.main-btn-tab', 'afterbegin', this.renderBtn());
   }
   /*
-  * variables
-  */
+   * variables
+   */
+  // // 외부 스타일을 shadow dom에 적용하기
+  // const linkElem = document.createElement('link');
+  // linkElem.setAttribute('rel', 'stylesheet');
+  // linkElem.setAttribute('href', 'style.css');
 
-  static get observedAttributes() { 
-    return [] 
+  // // 생성된 요소를 shadow dom에 부착하기
+  // shadow.appendChild(linkElem);
+
+  static get observedAttributes() {
+    return ['contents'];
   }
- /*
-  * Methods
-  */
-    buttonRender(){
-      const btn = ``
-      for(let i = 0; i < this.items.length; i++){
-        btn+=`
+
+  renderHTML(tag: string, position: string, element: string): void {
+    const data = this.shadowRoot?.querySelector(tag);
+    data.insertAdjacentHTML(position, element);
+  }
+
+  renderBtn(): string {
+    let btn = ``;
+    for (let i = 0; i < this.contents.length; i++) {
+      btn += `
           <a href="" class="ripple">
-            <i></i>
-            <span>${this.items[i].label}</span>
+            <i src='${this.contents[i].icon}'></i>
+            <span>${this.contents[i].label}</span>
           </a>
-        `
-      }
-      return btn
+        `;
     }
-    bind(element) {
-        element.render = element.render.bind(element)
-        // element.addEvent = element.addEvent.bind(element)
-    }
-    render(){
-        this.shadow = this.attachShadow({ mode: "open" }) // DOM scope 생성
-        this.shadow.innerHTML=`
-        <article class="main-btn-tab">
-          ${this.buttonRender()}
-        </article>
-        `
-    }
-    // addEvent():void{
-    //     const collection = this.shadow.host.shadowRoot.querySelectorAll('a')
-    //     console.log(collection,'<><<<<<<')
-    // }
+    return btn;
+  }
   /*
-  * life cycle
-  */
-  connectedCallback() { 
-    this.render()
+   * Methods
+   */
 
-    console.log('2::: connectedCallback')
+  attachEvents(): void {
+    console.log('메인 버튼 탭 이벤트 등록');
 
+    //이벤트 리스터 등록
   }
-  disconnectedCallback() { 
-    console.log('3::: disconnectedCallback')
-  }
-  attributeChangedCallback(name, oldValue, newValue) { //// called when one of attributes listed above is modified
 
-    this.connectedCallback() //rerender
+  /*
+   * life cycle
+   */
+
+  // getContentsProps(): void {
+  //   const contentsData
+  // }
+
+  connectedCallback() {
+    this.attachEvents();
+  }
+  disconnectedCallback() {
+    console.log('3::: disconnectedCallback');
+  }
+
+  set contents(newValue: any) {
+    this.setAttribute('contents', newValue);
+  }
+  get contents() {
+    return JSON.parse(this.getAttribute('contents'));
+  }
+
+  attributeChangedCallback(name: any, oldValue: any, newValue: any) {
+    //// called when one of attributes listed above is modified
+    // switch (name) {
+    //   case 'title':
+    //     this.menuTitle.innerText = newValue;
+    //     break;
+    //   case 'contents':
+    //     console.log(JSON.parse(newValue));
+    //     break;
+    //   default:
+    //     break;
+    // }
+    // this.connectedCallback(); //rerender
   }
   adoptedCallback() {
     // called when the element is moved to a new document
     // 거의 쓸 일 x
   }
- }
+}

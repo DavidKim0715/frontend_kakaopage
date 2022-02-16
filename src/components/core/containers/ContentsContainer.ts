@@ -1,30 +1,11 @@
 const template = document.createElement('template');
 template.innerHTML = `
-    <style>
-    .slide-wrapper{
-      position: relative; 
-      width: 400px; 
-      margin: auto; 
-      padding: 30px 0;
-    }
-    .slide-list{
-      width: 100%; 
-      margin: auto; 
-      overflow-x: hidden;
-    }
-    .slide-item{
-        width:  300px;
-        height: 400px;
-    }
-    </style>
-    <article class="slide-wrapper">
-      <div class="slide-list">
-      </div>
+    <article>
+      <span class="contents-container-title"></span>
     </article>
   `;
 
-export class CardSlider extends HTMLElement {
-  slideWidth = 300;
+export class ContentsContainer extends HTMLElement {
   /*
    * constructor
    */
@@ -33,7 +14,14 @@ export class CardSlider extends HTMLElement {
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.renderHTML('.slide-list', 'afterbegin', this.renderCard());
+    this.containerTitle = this.shadowRoot.querySelector(
+      '.contents-container-title'
+    );
+    this.renderHTML(
+      '.contents-container-title',
+      'afterend',
+      this.renderListBtn()
+    );
   }
   /*
    * variables
@@ -49,45 +37,48 @@ export class CardSlider extends HTMLElement {
   static get observedAttributes() {
     return ['contents'];
   }
+
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
     data.insertAdjacentHTML(position, element);
+  }
+
+  renderListBtn(): string {
+    let btns = '';
+    for (let i = 0; i < this.contents.data.length; i++) {
+      btns += `
+        <list-btn 
+            contents='${JSON.stringify(this.contents.data[i])}'
+        >
+        </list-btn>
+      `;
+    }
+    return btns;
   }
   /*
    * Methods
    */
 
   attachEvents(): void {
-    console.log('ee');
+    console.log('dd');
     //이벤트 리스터 등록
-    const btn = this.shadowRoot.querySelector('.slide-list');
-    btn.addEventListener('click', this.onClickBtn);
-  }
-
-  renderCard(): string {
-    let cards = ``;
-    for (let i = 0; i < this.contents?.length; i++) {
-      cards += `
-        <div class="slider-item">
-          <strong>${this.contents[i].mainText}<br></strong>
-          <span>${this.contents[i].subText}<br></span>
-          <img 
-          src='${this.contents[i].image}'
-          "alt="${this.contents[i].desc}"
-          />
-        </div>
-      `;
-    }
-    return cards;
   }
 
   /*
    * life cycle
    */
 
+  getTitleProps(): void {
+    const titleData = this.contents.title;
+    this.containerTitle.innerText = titleData;
+  }
+
+  // getContentsProps(): void {
+  //   const contentsData
+  // }
+
   connectedCallback() {
-    this.shadowRoot.querySelector('.slide-list').style.width =
-      this.contents.length * this.slideWidth + 'px';
+    this.getTitleProps();
     this.attachEvents();
   }
   disconnectedCallback() {

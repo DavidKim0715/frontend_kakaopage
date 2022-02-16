@@ -23,8 +23,7 @@ template.innerHTML = `
     </article>
   `;
 
-export class CardSlider extends HTMLElement {
-  slideWidth = 300;
+export class IconCardSlider extends HTMLElement {
   /*
    * constructor
    */
@@ -69,12 +68,9 @@ export class CardSlider extends HTMLElement {
     for (let i = 0; i < this.contents?.length; i++) {
       cards += `
         <div class="slider-item">
-          <strong>${this.contents[i].mainText}<br></strong>
+          <i src=${this.contents[i].url}><br></i>
           <span>${this.contents[i].subText}<br></span>
-          <img 
-          src='${this.contents[i].image}'
-          "alt="${this.contents[i].desc}"
-          />
+          <strong>${this.contents[i].mainText}</strong>
         </div>
       `;
     }
@@ -86,8 +82,6 @@ export class CardSlider extends HTMLElement {
    */
 
   connectedCallback() {
-    this.shadowRoot.querySelector('.slide-list').style.width =
-      this.contents.length * this.slideWidth + 'px';
     this.attachEvents();
   }
   disconnectedCallback() {

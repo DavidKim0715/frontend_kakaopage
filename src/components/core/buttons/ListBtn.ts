@@ -2,11 +2,11 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
     </style>
-    <button class='menu-btn' type='button'>
-    </button>
+    <a class='list-btn'>
+    </a>
     `;
 
-export class MenuBtn extends HTMLElement {
+export class ListBtn extends HTMLElement {
   /*
    * constructor
    */
@@ -15,7 +15,8 @@ export class MenuBtn extends HTMLElement {
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.renderHTML('button', 'afterbegin', this.renderButton());
+    this.shadowRoot.querySelector('.list-btn').href = this.contents.url;
+    this.renderHTML('.list-btn', 'afterbegin', this.renderButton());
   }
   /*
    * variables
@@ -41,8 +42,8 @@ export class MenuBtn extends HTMLElement {
 
   attachEvents(): void {
     //이벤트 리스터 등록
-    const btn = this.shadowRoot.querySelector('.menu-btn');
-    btn.addEventListener('click', this.onClickBtn);
+    // const btn = this.shadowRoot.querySelector('.menu-btn');
+    // btn.addEventListener('click', this.onClickBtn);
   }
 
   // onClickBtn(e: Event): {
@@ -50,12 +51,13 @@ export class MenuBtn extends HTMLElement {
   // };
   renderButton(): string {
     let btn = '';
-    btn += `<span>
-      ${this.content.name}
-    </span>`;
+    btn += `
+        <i src='${this.contents.icon}'></i>
+        <strong>${this.contents.text}</strong>
+        <span>${this.contents.subText}</span>
+    `;
     return btn;
   }
-
   /*
    * life cycle
    */
@@ -63,15 +65,15 @@ export class MenuBtn extends HTMLElement {
     this.attachEvents();
   }
   disconnectedCallback() {
-    const btn = this.shadowRoot.querySelector('.menu-btn');
-    btn.removeEventListener('click', this.onClickBtn);
+    // const btn = this.shadowRoot.querySelector('.list-btn');
+    // btn.removeEventListener('click', this.onClickBtn);
   }
 
-  set content(newValue: string) {
-    this.setAttribute('content', newValue);
+  set contents(newValue: any) {
+    this.setAttribute('contents', newValue);
   }
-  get content(): object {
-    return JSON.parse(this.getAttribute('content'));
+  get contents() {
+    return JSON.parse(this.getAttribute('contents'));
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

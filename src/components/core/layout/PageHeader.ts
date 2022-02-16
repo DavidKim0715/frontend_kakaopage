@@ -22,7 +22,7 @@ export class PageHeader extends HTMLElement {
     this.shadow = this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadow.innerHTML = `
     <header>
-      <img src="/static/media/logo.png" alt="logo" />
+      <img src="" alt="logo" />
     </header>
     `;
   }

@@ -1,59 +1,89 @@
+const template = document.createElement('template');
+template.innerHTML = `
+    <style>
+    </style>
+    <button
+      class="text-btn"
+      type='button'
+    >
+      <span class='text-title'></span>
+    </button>
+  `;
+
 export class TextBtn extends HTMLElement {
+  textTilte = '';
   /*
-  * constructor
-  */
-  label  = ''
-  constructor() { 
-    super() // 초기화
-    this.bind(this)
+   * constructor
+   */
+  constructor() {
+    super(); // 초기화
+    this.attachShadow({ mode: 'open' }); // DOM scope 생성
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.textTitle = this.shadowRoot.querySelector('.text-title');
   }
   /*
-  * variables
-  */
+   * variables
+   */
+  // // 외부 스타일을 shadow dom에 적용하기
+  // const linkElem = document.createElement('link');
+  // linkElem.setAttribute('rel', 'stylesheet');
+  // linkElem.setAttribute('href', 'style.css');
 
-  static get observedAttributes() { 
-    return ['label'] 
-  }
- /*
-  * Methods
-  */
-    bind(element) {
-        element.render = element.render.bind(element)
-    }
-    render(){
-        this.shadow = this.attachShadow({ mode: "open" }) // DOM scope 생성
-        this.shadow.innerHTML=`
-        <button
-          class="text-btn"
-          type='button'
-        >
-        </button>
-        `
-  }
-  /*
-  * life cycle
-  */
-  // get getLabel():string{
-  //   return this.label
-  // }
-  // set setLabel(){
-  //   // const span = document.querySelector('span')
-  //   // conosle.log(span)
-  //   // this.label=span.getAttribute('label')
-  // }
-  connectedCallback() { 
-    this.render()
-    console.log('2::: connectedCallback')
-  }
-  disconnectedCallback() { 
-    console.log('3::: disconnectedCallback')
-  }
-  attributeChangedCallback(name, oldValue, newValue) { //// called when one of attributes listed above is modified
+  // // 생성된 요소를 shadow dom에 부착하기
+  // shadow.appendChild(linkElem);
 
-    this.connectedCallback() //rerender
+  static get observedAttributes() {
+    return ['title'];
+  }
+
+  /*
+   * Methods
+   */
+
+  attachEvents(): void {
+    //이벤트 리스터 등록
+  }
+
+  getTitleProps(): void {
+    const titleData = this.title;
+    this.textTitle.innerText = titleData;
+  }
+
+  /*
+   * life cycle
+   */
+
+  connectedCallback() {
+    this.getTitleProps();
+    this.attachEvents();
+  }
+  disconnectedCallback() {
+    console.log('3::: disconnectedCallback');
+  }
+
+  set title(newValue: string) {
+    this.setAttribute('title', newValue);
+  }
+  get title(): string {
+    return this.getAttribute('title');
+  }
+
+  attributeChangedCallback(name: any, oldValue: any, newValue: any) {
+    //// called when one of attributes listed above is modified
+    // switch (name) {
+    //   case 'title':
+    //     this.menuTitle.innerText = newValue;
+    //     break;
+    //   case 'contents':
+    //     console.log(JSON.parse(newValue));
+    //     break;
+    //   default:
+    //     break;
+    // }
+    // this.connectedCallback(); //rerender
   }
   adoptedCallback() {
     // called when the element is moved to a new document
     // 거의 쓸 일 x
   }
- }
+}

@@ -121,9 +121,7 @@ export class QuickMenuPage extends HTMLElement {
     ];
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.shadowRoot
-      ?.querySelector('section')
-      .insertAdjacentHTML('afterbegin', this.renderMenu());
+    this.renderHTML('section', 'afterbegin', this.renderMenu());
   }
   /*
    * variables
@@ -136,6 +134,16 @@ export class QuickMenuPage extends HTMLElement {
    * Methods
    */
 
+  renderHTML(tag: string, position: string, element: string): void {
+    const data = this.shadowRoot?.querySelector(tag);
+    data.insertAdjacentHTML(position, element);
+  }
+  // set contents(newValue: any) {
+  //   this.setAttribute('contents', newValue);
+  // }
+  // get contents() {
+  //   return JSON.parse(this.getAttribute('contents'));
+  // }
   attachEvents(): void {
     console.log('dd');
     //이벤트 리스터 등록

@@ -1,53 +1,99 @@
+const template = document.createElement('template');
+template.innerHTML = `
+    <nav class="footer-link-wrapper">
+    </nav>
+  `;
+
 export class FooterLink extends HTMLElement {
   /*
-  * constructor
-  */
-  constructor() { 
-    super() // 초기화
+   * constructor
+   */
+  constructor() {
+    super(); // 초기화
+
+    this.attachShadow({ mode: 'open' }); // DOM scope 생성
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.renderHTML('.footer-link-wrapper', 'afterbegin', this.renderBtn());
   }
   /*
-  * variables
-  */
+   * variables
+   */
+  // // 외부 스타일을 shadow dom에 적용하기
+  // const linkElem = document.createElement('link');
+  // linkElem.setAttribute('rel', 'stylesheet');
+  // linkElem.setAttribute('href', 'style.css');
 
-  //return attributes in setup method
-  static get observedAttributes() { // browser calls this method when the element is removed from the document
-    return [] 
+  // // 생성된 요소를 shadow dom에 부착하기
+  // shadow.appendChild(linkElem);
+
+  static get observedAttributes() {
+    return ['contents'];
   }
- /*
-  * Methods
-  */
-  render(){
-    this.shadow = this.attachShadow({ mode: "open" }) // DOM scope 생성
-    this.shadow.innerHTML=`
-    <nav>
-        <a href="">고객센터</a>
-        <a href="">신고하기</a>
-        <a href="">홈페이지</a>
-        <a href="">페이스북</a>
-    </nav>
-    `
+
+  renderHTML(tag: string, position: string, element: string): void {
+    const data = this.shadowRoot?.querySelector(tag);
+    data.insertAdjacentHTML(position, element);
+  }
+
+  renderBtn(): string {
+    let btn = ``;
+    for (let i = 0; i < this.contents.length; i++) {
+      btn += `
+          <a href="${this.contents[i].url}" class="ripple">
+            <span>${this.contents[i].text}</span>
+          </a>
+        `;
+    }
+    return btn;
   }
   /*
-  * life cycle
-  */
-  connectedCallback() { // onload = created => event
-    this.render()
-    // this.shadowRoot.querySelector('#toggle-info').
-    // addEventListener('click',()=>this.toggleInfo())
-    console.log('2::: connectedCallback')
+   * Methods
+   */
 
-  }
-  disconnectedCallback() { // unmounted => remove binding
-     // this.shadowRoot.querySelector('#toggle-info').
-    // removeEventListener('click',()=>this.toggleInfo())
-    console.log('3::: disconnectedCallback')
-  }
-  attributeChangedCallback(name, oldValue, newValue) { //// called when one of attributes listed above is modified
+  attachEvents(): void {
+    console.log('메인 버튼 탭 이벤트 등록');
 
-    this.connectedCallback() //rerender
+    //이벤트 리스터 등록
+  }
+
+  /*
+   * life cycle
+   */
+
+  // getContentsProps(): void {
+  //   const contentsData
+  // }
+
+  connectedCallback() {
+    this.attachEvents();
+  }
+  disconnectedCallback() {
+    console.log('3::: disconnectedCallback');
+  }
+
+  set contents(newValue: any) {
+    this.setAttribute('contents', newValue);
+  }
+  get contents() {
+    return JSON.parse(this.getAttribute('contents'));
+  }
+
+  attributeChangedCallback(name: any, oldValue: any, newValue: any) {
+    //// called when one of attributes listed above is modified
+    // switch (name) {
+    //   case 'title':
+    //     this.menuTitle.innerText = newValue;
+    //     break;
+    //   case 'contents':
+    //     console.log(JSON.parse(newValue));
+    //     break;
+    //   default:
+    //     break;
+    // }
+    // this.connectedCallback(); //rerender
   }
   adoptedCallback() {
     // called when the element is moved to a new document
     // 거의 쓸 일 x
   }
- }
+}
