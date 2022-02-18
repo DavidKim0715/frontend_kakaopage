@@ -1,5 +1,12 @@
 const template = document.createElement('template');
 template.innerHTML = `
+    <style>
+    .menu-wrap{
+      border : 1px solid black;
+    }
+    .menu-btn-wrapper{
+    }
+    </style>
     <article class='menu-wrap'>
       <span class="menu-title"></span>
       <div class="menu-btn-wrapper"></div>

@@ -1,6 +1,9 @@
 const template = document.createElement('template');
 template.innerHTML = `
     <style>
+    .list-btn{
+      display: inline-grid;
+    }
     </style>
     <a class='list-btn'>
     </a>

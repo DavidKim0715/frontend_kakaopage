@@ -244,6 +244,7 @@ module.exports = (_env, argv) => {
       // },
     };
     config.optimization.minimize = false;
+    console.log(path);
   } else {
     // production
     config.mode = 'production';

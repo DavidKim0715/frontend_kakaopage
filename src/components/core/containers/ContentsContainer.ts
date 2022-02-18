@@ -1,6 +1,13 @@
 const template = document.createElement('template');
 template.innerHTML = `
-    <article>
+    <style>
+    .contents-container-wrapper{
+      display: flex;
+      flex-direction: column;
+    }
+    .
+    </style>
+    <article class='contents-container-wrapper'>
       <span class="contents-container-title"></span>
     </article>
   `;

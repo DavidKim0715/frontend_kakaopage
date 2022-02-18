@@ -1,9 +1,21 @@
 const template = document.createElement('template');
 template.innerHTML = `
-    <article>
-      <span class="title"></span>
-      <icon-btn class="btn-collection"></icon-btn>
+    <style>
+    .account-wrapper{
+      border : 1px solid black;
+      display :
+    }
+    .top-account{
+      
+    }
+    </style>
+    <article class='account-wrapper'>
+      <div class='top-account'>
+        <span class="title"></span>
+        <icon-btn class="btn-collection"></icon-btn>      
+      </div>
       <span class="account-info"></span>
+      <div class='bottom-account'></div>
     </article>
   `;
 
@@ -19,7 +31,7 @@ export class AccountContainer extends HTMLElement {
     this.containerTitle = this.shadowRoot.querySelector('.title');
     this.accountInfo = this.shadowRoot.querySelector('.account-info');
     this.renderHTML('.account-info', 'afterbegin', this.renderInfo());
-    this.renderHTML('.account-info', 'afterend', this.renderBtn());
+    this.renderHTML('.bottom-account', 'afterbegin', this.renderBtn());
   }
   /*
    * variables

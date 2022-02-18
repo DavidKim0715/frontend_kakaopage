@@ -4,17 +4,18 @@ template.innerHTML = `
     .slide-wrapper{
       position: relative; 
       width: 400px; 
-      margin: auto; 
       padding: 30px 0;
     }
     .slide-list{
+      display: inline-flex;
       width: 100%; 
       margin: auto; 
       overflow-x: hidden;
     }
     .slide-item{
+        border : 1px solid black;
         width:  300px;
-        height: 400px;
+        height: 200px;
     }
     </style>
     <article class="slide-wrapper">
@@ -67,7 +68,7 @@ export class IconCardSlider extends HTMLElement {
     let cards = ``;
     for (let i = 0; i < this.contents?.length; i++) {
       cards += `
-        <div class="slider-item">
+        <div class="slide-item">
           <i src=${this.contents[i].url}><br></i>
           <span>${this.contents[i].subText}<br></span>
           <strong>${this.contents[i].mainText}</strong>

@@ -2,19 +2,22 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
     .slide-wrapper{
+      cursor : grab;
       position: relative; 
       width: 400px; 
-      margin: auto; 
       padding: 30px 0;
     }
     .slide-list{
+      display: inline-flex;
       width: 100%; 
       margin: auto; 
       overflow-x: hidden;
     }
     .slide-item{
-        width:  300px;
-        height: 400px;
+      border : 1px solid black;
+      border-radius : 0.7em;
+      width:  10em;
+      height: 10em;
     }
     </style>
     <article class="slide-wrapper">
@@ -24,7 +27,7 @@ template.innerHTML = `
   `;
 
 export class CardSlider extends HTMLElement {
-  slideWidth = 300;
+  slideWidth = 400;
   /*
    * constructor
    */
@@ -68,14 +71,14 @@ export class CardSlider extends HTMLElement {
     let cards = ``;
     for (let i = 0; i < this.contents?.length; i++) {
       cards += `
-        <div class="slider-item">
+        <a class="slide-item" >
           <strong>${this.contents[i].mainText}<br></strong>
           <span>${this.contents[i].subText}<br></span>
           <img 
           src='${this.contents[i].image}'
           "alt="${this.contents[i].desc}"
           />
-        </div>
+        </a>
       `;
     }
     return cards;
@@ -86,10 +89,12 @@ export class CardSlider extends HTMLElement {
    */
 
   connectedCallback() {
+    //mount
     this.shadowRoot.querySelector('.slide-list').style.width =
       this.contents.length * this.slideWidth + 'px';
     this.attachEvents();
   }
+
   disconnectedCallback() {
     console.log('3::: disconnectedCallback');
   }
@@ -103,16 +108,6 @@ export class CardSlider extends HTMLElement {
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
     //// called when one of attributes listed above is modified
-    // switch (name) {
-    //   case 'title':
-    //     this.menuTitle.innerText = newValue;
-    //     break;
-    //   case 'contents':
-    //     console.log(JSON.parse(newValue));
-    //     break;
-    //   default:
-    //     break;
-    // }
     // this.connectedCallback(); //rerender
   }
   adoptedCallback() {
