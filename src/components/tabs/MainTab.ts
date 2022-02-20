@@ -13,8 +13,10 @@ template.innerHTML = `
     </style>
     <main class="main-tab-wrapper">
         <div class="tabs">
+          <slot id="tab-slot" name="tab"></slot>
         </div>
         <section class="tab-contents">
+          <slot id="content-slot" name="content"></slot>
         </section>
     </main>
     `;
@@ -35,7 +37,7 @@ template.innerHTML = `
 //         <quick-menu-page></quick-menu-page>
 //     </p>
 export class MainTab extends HTMLElement {
-  #selectedIndex = 0;
+ #selectedIndex = 0;
   contents = [];
   dom = {};
   /*
@@ -44,7 +46,7 @@ export class MainTab extends HTMLElement {
   constructor() {
     super(); // 초기화
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.contents = [
       { idx: 0, title: '홈', data: 'home-page' },
       { idx: 1, title: '자산', data: '' },
@@ -65,29 +67,29 @@ export class MainTab extends HTMLElement {
   }
 
   private renderTabSlot(): string {
-    // let h1 = '';
-    // const len = this.items.length;
-    // const content = this.contents;
-    // for (let i = 0; i < len; i++) {
-    //   h1 += `
-    //         <h1 slot='tab'>${content[i].title}</h1>
-    //       `;
-    // }
-    return `<slot id="tab-slot" name="tab"></slot>`;
+    let slot = '';
+    const len = this.contents.length;
+    const content = this.contents;
+    for (let i = 0; i < len; i++) {
+      slot += `
+            <h1 slot='tab'>${content[i].title}</h1>
+          `;
+    }
+    return slot;
   }
   private renderTabContents(): string {
-    // let p = '';
-    // const len = this.items.length;
-    // const content = this.contents;
-    // for (let i = 0; i < len; i++) {
-    //   const tag = document.createElement(content[i].data);
-    //   p += `
-    //         <p slot="content">
-    //             ${tag}
-    //         </p>
-    //       `;
-    // }
-    return `<slot id="content-slot" name="content"></slot>`;
+    let slot = '';
+    const len = this.contents.length;
+    const content = this.contents;
+    for (let i = 0; i < len; i++) {
+      const tag = document.createElement(content[i].data);
+      slot += `
+            <p slot="content">
+                ${tag}
+            </p>
+          `;
+    }
+    return slot;
   }
   set selectedIndex(value) {
     this.#selectedIndex = value;
@@ -98,7 +100,7 @@ export class MainTab extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
 
   attachEvents(): void {
@@ -112,8 +114,8 @@ export class MainTab extends HTMLElement {
 
   cacheDom(): void {
     this.dom = {
-      tabSlot: this.shadowRoot.querySelector('#tab-slot'),
-      contentSlot: this.shadowRoot.querySelector('#content-slot'),
+      tabSlot: this.shadowRoot?.querySelector('#tab-slot'),
+      contentSlot: this.shadowRoot?.querySelector('#content-slot'),
     };
     this.dom.tabs = this.dom.tabSlot.assignedElements();
     this.dom.contents = this.dom.contentSlot.assignedElements();
@@ -129,7 +131,7 @@ export class MainTab extends HTMLElement {
 
   onTabClick(e: Event): void {
     const target = e.target;
-    if (target.slot === 'tab') {
+    if (target?.slot === 'tab') {
       const tabIndex = this.dom.tabs.indexOf(target);
       this.selectTabIndex(tabIndex);
     }
