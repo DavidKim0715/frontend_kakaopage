@@ -12,7 +12,7 @@ export class MainBtnContainer extends HTMLElement {
     super(); // 초기화
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML('.main-btn-tab', 'afterbegin', this.renderBtn());
   }
   /*
@@ -25,7 +25,7 @@ export class MainBtnContainer extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position as InsertPosition, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
 
   renderBtn(): string {

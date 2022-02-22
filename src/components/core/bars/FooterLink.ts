@@ -12,7 +12,7 @@ export class FooterLink extends HTMLElement {
     super(); // 초기화
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML('.footer-link-wrapper', 'afterbegin', this.renderBtn());
   }
   /*
@@ -32,7 +32,7 @@ export class FooterLink extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
 
   renderBtn(): string {

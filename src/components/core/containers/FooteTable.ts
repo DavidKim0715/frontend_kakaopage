@@ -22,7 +22,7 @@ export class FooterTable extends HTMLElement {
     super(); // 초기화
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML('text-btn', 'afterend', this.renderStaticTable());
   }
   /*
@@ -42,7 +42,7 @@ export class FooterTable extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position as InsertPosition, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
 
   /*
@@ -50,13 +50,13 @@ export class FooterTable extends HTMLElement {
    */
 
   attachEvents() {
-    const btn = this.shadowRoot.querySelector('text-btn');
-    const table = this.shadowRoot.querySelector('.detail');
-    btn.addEventListener('click', () => {
-      if (table.classList.contains('active')) {
+    const btn = this.shadowRoot?.querySelector('text-btn');
+    const table = this.shadowRoot?.querySelector('.detail');
+    btn?.addEventListener('click', () => {
+      if (table?.classList.contains('active')) {
         table.classList.remove('active');
       } else {
-        table.classList.add('active');
+        table?.classList.add('active');
       }
     });
   }

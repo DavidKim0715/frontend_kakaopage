@@ -27,10 +27,10 @@ export class AccountContainer extends HTMLElement {
     super(); // 초기화
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.containerTitle = this.shadowRoot.querySelector('.title');
-    this.accountInfo = this.shadowRoot.querySelector('.account-info');
-    this.renderHTML('.account-info', 'afterbegin', this.renderInfo());
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
+    this.containerTitle = this.shadowRoot?.querySelector('.title');
+    this.accountInfo = this.shadowRoot?.querySelector('.account-info');
+    // this.renderHTML('.account-info', 'afterbegin', this.renderInfo());
     this.renderHTML('.bottom-account', 'afterbegin', this.renderBtn());
   }
   /*
@@ -50,10 +50,10 @@ export class AccountContainer extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
 
-  renderInfo(): void {
+  getInfoProps(): void {
     const accountData = this.contents.account;
     this.accountInfo.innerText = accountData + '원';
   }
@@ -91,6 +91,7 @@ export class AccountContainer extends HTMLElement {
 
   connectedCallback() {
     this.getTitleProps();
+    this.getInfoProps();
     this.attachEvents();
   }
   disconnectedCallback() {

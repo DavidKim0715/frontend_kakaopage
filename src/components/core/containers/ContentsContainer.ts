@@ -20,8 +20,8 @@ export class ContentsContainer extends HTMLElement {
     super(); // 초기화
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.containerTitle = this.shadowRoot.querySelector(
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
+    this.containerTitle = this.shadowRoot?.querySelector(
       '.contents-container-title'
     );
     this.renderHTML(

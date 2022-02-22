@@ -40,7 +40,7 @@ export class MainTab extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position as InsertPosition, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
 
   renderNav(): string {
@@ -54,17 +54,17 @@ export class MainTab extends HTMLElement {
       contents='${content}'
        >
     </main-contents-container>
-    ss`;
+  `;
   }
 
   attachEvents(): void {
-    const tabNav = this.shadowRoot.querySelector('tab-nav');
-    const tabContents = this.shadowRoot.querySelector(
+    const tabNav = this.shadowRoot?.querySelector('tab-nav');
+    const tabContents = this.shadowRoot?.querySelector(
       'main-contents-container'
     );
-    tabNav.addEventListener('selectedIndex', (event: Event) => {
+    tabNav?.addEventListener('selectedIndex', (event: Event) => {
       this.selectedIndex = event.detail;
-      tabContents.setAttribute('index', this.selectedIndex);
+      tabContents?.setAttribute('index', this.selectedIndex);
     });
   }
 
@@ -73,8 +73,8 @@ export class MainTab extends HTMLElement {
   }
 
   disconnectedCallback(): void {
-    const tabNav = this.shadowRoot.querySelector('tab-nav');
-    tabNav.removeEventListener('selectedIndex', (event: Event) => {
+    const tabNav = this.shadowRoot?.querySelector('tab-nav');
+    tabNav?.removeEventListener('selectedIndex', (event: Event) => {
       this.selectedIndex = event.detail;
     });
     console.log('event is removed');

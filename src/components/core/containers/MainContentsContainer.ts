@@ -15,14 +15,14 @@ template.innerHTML = `
 
 export class MainContentsContainer extends HTMLElement {
   containerWidth = 1000;
-  slide = '';
+  slide ='' as HTMLElement;
   /*
    * constructor
    */
   constructor() {
     super(); // 초기화
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML(
       '.main-contents-page-wrapper',
       'afterbegin',
@@ -39,7 +39,7 @@ export class MainContentsContainer extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position as InsertPosition, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
 
   renderPage(): string {
@@ -64,7 +64,7 @@ export class MainContentsContainer extends HTMLElement {
    */
 
   connectedCallback() {
-    this.slide = this.shadowRoot?.querySelector('.main-contents-page-wrapper');
+    this.slide = this.shadowRoot?.querySelector('.main-contents-page-wrapper') as HTMLElement;
     this.slide.style.width = this.containerWidth * this.contents.length + 'px';
     this.slide.style.transition = '300ms';
     this.attachEvents();

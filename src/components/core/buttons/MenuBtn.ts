@@ -2,7 +2,7 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
     .menu-btn{
-      border : 1px solid black;
+      
     }
     </style>
     <a class='menu-btn'>
@@ -17,7 +17,7 @@ export class MenuBtn extends HTMLElement {
     super(); // 초기화
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML('.menu-btn', 'afterbegin', this.renderButton());
   }
   /*
@@ -32,13 +32,13 @@ export class MenuBtn extends HTMLElement {
    */
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position as InsertPosition, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
 
   attachEvents(): void {
     //이벤트 리스터 등록
-    const btn = this.shadowRoot.querySelector('.menu-btn');
-    btn.addEventListener('click', this.onClickBtn);
+    const btn = this.shadowRoot?.querySelector('.menu-btn');
+    btn?.addEventListener('click', this.onClickBtn);
   }
 
   // onClickBtn(e: Event): {
@@ -59,8 +59,8 @@ export class MenuBtn extends HTMLElement {
     this.attachEvents();
   }
   disconnectedCallback() {
-    const btn = this.shadowRoot.querySelector('.menu-btn');
-    btn.removeEventListener('click', this.onClickBtn);
+    const btn = this.shadowRoot?.querySelector('.menu-btn');
+    btn?.removeEventListener('click', this.onClickBtn);
   }
 
   set content(newValue: string) {

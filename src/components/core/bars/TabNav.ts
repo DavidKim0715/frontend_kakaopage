@@ -2,11 +2,9 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
     .tab-nav-btn{
-
     }
     .selected{
-      border-bottom: 4px dashed blue;
-      background-color : yellow;
+      border-bottom: 2px solid black;
     }
     </style>
     <nav class='tab-nav-wrapper'>
@@ -33,7 +31,7 @@ export class TabNav extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position as InsertPosition, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
   renderButton(): string {
     let btns = ``;
@@ -82,7 +80,7 @@ export class TabNav extends HTMLElement {
    */
 
   connectedCallback() {
-    this.tabSlot = this.shadowRoot.querySelectorAll('.tab-nav-btn');
+    this.tabSlot = this.shadowRoot?.querySelectorAll('.tab-nav-btn');
     this.tabSlot[0].classList.add('selected'); //초기 인덱스 세팅
     this.attachEvents();
   }

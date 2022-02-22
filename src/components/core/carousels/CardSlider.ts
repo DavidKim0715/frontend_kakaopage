@@ -35,7 +35,7 @@ export class CardSlider extends HTMLElement {
     super(); // 초기화
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML('.slide-list', 'afterbegin', this.renderCard());
   }
   /*
@@ -54,7 +54,7 @@ export class CardSlider extends HTMLElement {
   }
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
   /*
    * Methods
@@ -63,8 +63,8 @@ export class CardSlider extends HTMLElement {
   attachEvents(): void {
     console.log('ee');
     //이벤트 리스터 등록
-    const btn = this.shadowRoot.querySelector('.slide-list');
-    btn.addEventListener('click', this.onClickBtn);
+    const btn = this.shadowRoot?.querySelector('.slide-list');
+    btn?.addEventListener('click', this.onClickBtn);
   }
 
   renderCard(): string {
@@ -90,7 +90,8 @@ export class CardSlider extends HTMLElement {
 
   connectedCallback() {
     //mount
-    this.shadowRoot.querySelector('.slide-list').style.width =
+    const slide = this.shadowRoot?.querySelector('.slide-list')
+    slide!.style.width =
       this.contents.length * this.slideWidth + 'px';
     this.attachEvents();
   }

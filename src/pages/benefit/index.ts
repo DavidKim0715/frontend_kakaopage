@@ -17,7 +17,7 @@ export class BenefitPage extends HTMLElement {
     super(); // 초기화
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.pointItems = {
       title: '페이포인트',
       account: 0,
@@ -186,7 +186,7 @@ export class BenefitPage extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
   attachEvents(): void {
     console.log('hompage 이벤트 등록');

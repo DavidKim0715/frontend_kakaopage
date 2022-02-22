@@ -20,10 +20,9 @@ export class PointContainer extends HTMLElement {
     super(); // 초기화
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.containerTitle = this.shadowRoot.querySelector('.title');
-    this.pointInfo = this.shadowRoot.querySelector('.point-info');
-    this.renderHTML('.point-info', 'afterbegin', this.renderInfo());
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
+    this.containerTitle = this.shadowRoot?.querySelector('.title');
+    this.pointInfo = this.shadowRoot?.querySelector('.point-info');
   }
   /*
    * variables
@@ -35,10 +34,10 @@ export class PointContainer extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position as InsertPosition, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
 
-  renderInfo(): void {
+  getInfoProps(): void {
     const pointData = this.contents.account;
     this.pointInfo.innerText = pointData + 'P';
   }
@@ -64,6 +63,7 @@ export class PointContainer extends HTMLElement {
 
   connectedCallback() {
     this.getTitleProps();
+    this.getInfoProps();
     this.attachEvents();
   }
   disconnectedCallback() {

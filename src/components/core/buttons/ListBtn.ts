@@ -17,8 +17,9 @@ export class ListBtn extends HTMLElement {
     super(); // 초기화
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.shadowRoot.querySelector('.list-btn').href = this.contents.url;
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
+    const list =  this.shadowRoot?.querySelector('.list-btn')
+    list.href = this.contents.url;
     this.renderHTML('.list-btn', 'afterbegin', this.renderButton());
   }
   /*
@@ -40,7 +41,7 @@ export class ListBtn extends HTMLElement {
    */
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
 
   attachEvents(): void {

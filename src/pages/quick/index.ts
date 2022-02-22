@@ -2,7 +2,7 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
     </style>
-    <section>
+    <section class="quick-menu-page-wrapper">
     </section>
     `;
 
@@ -136,7 +136,7 @@ export class QuickMenuPage extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
   // set contents(newValue: any) {
   //   this.setAttribute('contents', newValue);

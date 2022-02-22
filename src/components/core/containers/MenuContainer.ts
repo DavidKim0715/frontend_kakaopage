@@ -22,8 +22,8 @@ export class MenuContainer extends HTMLElement {
     super(); // 초기화
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.menuTitle = this.shadowRoot.querySelector('.menu-title');
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
+    this.menuTitle = this.shadowRoot?.querySelector('.menu-title');
     this.renderHTML('.menu-btn-wrapper', 'afterbegin', this.renderMenuButton());
   }
   /*
@@ -36,7 +36,7 @@ export class MenuContainer extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position as InsertPosition, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
   /*
    * Methods

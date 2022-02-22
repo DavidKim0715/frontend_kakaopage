@@ -11,14 +11,14 @@ template.innerHTML = `
   `;
 
 export class TextBtn extends HTMLElement {
-  textTilte = '';
+  textTitle = '';
   /*
    * constructor
    */
   constructor() {
     super(); // 초기화
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.textTitle = this.shadowRoot.querySelector('.text-title');
   }
   /*
