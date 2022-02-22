@@ -1,9 +1,12 @@
 const template = document.createElement('template');
 template.innerHTML = `
     <style>
+    .menu-btn{
+      border : 1px solid black;
+    }
     </style>
-    <button class='menu-btn' type='button'>
-    </button>
+    <a class='menu-btn'>
+    </a>
     `;
 
 export class MenuBtn extends HTMLElement {
@@ -15,28 +18,21 @@ export class MenuBtn extends HTMLElement {
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.renderHTML('button', 'afterbegin', this.renderButton());
+    this.renderHTML('.menu-btn', 'afterbegin', this.renderButton());
   }
   /*
    * variables
    */
 
-  // // 외부 스타일을 shadow dom에 적용하기
-  // const linkElem = document.createElement('link');
-  // linkElem.setAttribute('rel', 'stylesheet');
-  // linkElem.setAttribute('href', 'style.css');
-
-  // // 생성된 요소를 shadow dom에 부착하기
-  // shadow.appendChild(linkElem);
   static get observedAttributes() {
-    return ['data'];
+    return ['content', 'index'];
   }
   /*
    * Methods
    */
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position, element);
+    data.insertAdjacentHTML(position as InsertPosition, element);
   }
 
   attachEvents(): void {
@@ -72,6 +68,13 @@ export class MenuBtn extends HTMLElement {
   }
   get content(): object {
     return JSON.parse(this.getAttribute('content'));
+  }
+
+  set index(newValue: number) {
+    this.setAttribute('index', newValue);
+  }
+  get index(): number {
+    return parseInt(this.getAttribute('index'));
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

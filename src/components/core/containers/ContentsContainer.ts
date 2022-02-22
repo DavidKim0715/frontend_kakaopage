@@ -33,13 +33,6 @@ export class ContentsContainer extends HTMLElement {
   /*
    * variables
    */
-  // // 외부 스타일을 shadow dom에 적용하기
-  // const linkElem = document.createElement('link');
-  // linkElem.setAttribute('rel', 'stylesheet');
-  // linkElem.setAttribute('href', 'style.css');
-
-  // // 생성된 요소를 shadow dom에 부착하기
-  // shadow.appendChild(linkElem);
 
   static get observedAttributes() {
     return ['contents'];
@@ -47,7 +40,7 @@ export class ContentsContainer extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position, element);
+    data.insertAdjacentHTML(position as InsertPosition, element);
   }
 
   renderListBtn(): string {

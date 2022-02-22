@@ -1,86 +1,76 @@
 const template = document.createElement('template');
 template.innerHTML = `
     <style>
-    .menu-wrap{
-      border : 1px solid black;
-      width: 980px;
+    .main-contents-page-wrapper{
+      overflow-x: hidden;
+      display : flex;
     }
-    .menu-btn-wrapper{
+    .page-detail{
+      width : 980px;
     }
     </style>
-    <article class='menu-wrap'>
-      <span class="menu-title"></span>
-      <div class="menu-btn-wrapper"></div>
-    </article>
+    <main class="main-contents-page-wrapper">
+    </main>
   `;
 
-export class MenuContainer extends HTMLElement {
+export class MainContentsContainer extends HTMLElement {
+  containerWidth = 1000;
+  slide = '';
   /*
    * constructor
    */
   constructor() {
     super(); // 초기화
-
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.menuTitle = this.shadowRoot.querySelector('.menu-title');
-    this.renderHTML('.menu-btn-wrapper', 'afterbegin', this.renderMenuButton());
+    this.renderHTML(
+      '.main-contents-page-wrapper',
+      'afterbegin',
+      this.renderPage()
+    );
   }
   /*
    * variables
    */
 
   static get observedAttributes() {
-    return ['title', 'contents'];
+    return ['contents', 'index'];
   }
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
     data.insertAdjacentHTML(position as InsertPosition, element);
   }
+
+  renderPage(): string {
+    let pages = ``;
+    const len = this.contents.length;
+    for (let i = 0; i < len; i++) {
+      pages += `
+      <${this.contents[i].title}></${this.contents[i].title}>`;
+    }
+    return pages;
+  }
   /*
    * Methods
    */
 
   attachEvents(): void {
-    console.log('dd');
     //이벤트 리스터 등록
-  }
-
-  renderMenuButton(): string {
-    let btns = '';
-    for (let i = 0; i < this.contents.length; i++) {
-      const content = JSON.stringify(this.contents[i]);
-      btns += `
-        <menu-btn content='${content}'>
-        </menu-btn>
-      `;
-    }
-    return btns;
   }
 
   /*
    * life cycle
    */
 
-  getTitleProps(): void {
-    const titleData = this.title;
-    this.menuTitle.innerText = titleData;
-  }
-
   connectedCallback() {
-    this.getTitleProps();
+    this.slide = this.shadowRoot?.querySelector('.main-contents-page-wrapper');
+    this.slide.style.width = this.containerWidth * this.contents.length + 'px';
+    this.slide.style.transition = '300ms';
     this.attachEvents();
   }
   disconnectedCallback() {
     console.log('3::: disconnectedCallback');
-  }
-
-  set title(newValue: string) {
-    this.setAttribute('title', newValue);
-  }
-  get title() {
-    return this.getAttribute('title');
   }
 
   set contents(newValue: any) {
@@ -90,9 +80,16 @@ export class MenuContainer extends HTMLElement {
     return JSON.parse(this.getAttribute('contents'));
   }
 
+  set index(newValue: any) {
+    this.setAttribute('index', newValue);
+  }
+  get index() {
+    return parseInt(this.getAttribute('index'));
+  }
+
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
-    //// called when one of attributes listed above is modified
-    // this.connectedCallback(); //rerender
+    this.slide.style.transform =
+      'translate3d(-' + this.containerWidth * this.index + 'px, 0px, 0px)';
   }
   adoptedCallback() {
     // called when the element is moved to a new document

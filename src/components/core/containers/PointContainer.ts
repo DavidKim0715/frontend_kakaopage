@@ -1,6 +1,12 @@
 const template = document.createElement('template');
 template.innerHTML = `
-    <article>
+  <style>
+  .point-wrapper{
+    border : 1px solid black;
+    width: 980px;
+  }
+  </style>
+    <article class='point-wrapper'>
       <span class="title"></span>
       <span class="point-info"></span>
     </article>
@@ -22,13 +28,6 @@ export class PointContainer extends HTMLElement {
   /*
    * variables
    */
-  // // 외부 스타일을 shadow dom에 적용하기
-  // const linkElem = document.createElement('link');
-  // linkElem.setAttribute('rel', 'stylesheet');
-  // linkElem.setAttribute('href', 'style.css');
-
-  // // 생성된 요소를 shadow dom에 부착하기
-  // shadow.appendChild(linkElem);
 
   static get observedAttributes() {
     return ['contents'];
@@ -36,7 +35,7 @@ export class PointContainer extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position, element);
+    data.insertAdjacentHTML(position as InsertPosition, element);
   }
 
   renderInfo(): void {
@@ -63,10 +62,6 @@ export class PointContainer extends HTMLElement {
     this.containerTitle.innerText = titleData;
   }
 
-  // getContentsProps(): void {
-  //   const contentsData
-  // }
-
   connectedCallback() {
     this.getTitleProps();
     this.attachEvents();
@@ -84,16 +79,6 @@ export class PointContainer extends HTMLElement {
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
     //// called when one of attributes listed above is modified
-    // switch (name) {
-    //   case 'title':
-    //     this.menuTitle.innerText = newValue;
-    //     break;
-    //   case 'contents':
-    //     console.log(JSON.parse(newValue));
-    //     break;
-    //   default:
-    //     break;
-    // }
     // this.connectedCallback(); //rerender
   }
   adoptedCallback() {

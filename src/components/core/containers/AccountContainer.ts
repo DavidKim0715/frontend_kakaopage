@@ -3,7 +3,7 @@ template.innerHTML = `
     <style>
     .account-wrapper{
       border : 1px solid black;
-      display :
+      width: 980px;
     }
     .top-account{
       

@@ -1,7 +1,7 @@
 const template = document.createElement('template');
 
 template.innerHTML = `
-    <section>
+    <section class="home-page-wrapper">
     </section>
   `;
 
@@ -119,7 +119,7 @@ export class HomePage extends HTMLElement {
       ],
     };
     this.renderHTML(
-      'section',
+      '.home-page-wrapper',
       'afterbegin',
       `
     <account-container 
