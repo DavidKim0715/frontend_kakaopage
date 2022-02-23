@@ -8,10 +8,11 @@ template.innerHTML = `
   </style>
     <article class='point-wrapper'>
       <span class="title"></span>
-      <span class="point-info"></span>
+      <br>
+      <a class="point-info"></a>
+      <hr>
     </article>
   `;
-
 export class PointContainer extends HTMLElement {
   /*
    * constructor
@@ -23,6 +24,8 @@ export class PointContainer extends HTMLElement {
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.containerTitle = this.shadowRoot?.querySelector('.title');
     this.pointInfo = this.shadowRoot?.querySelector('.point-info');
+    this.pointLink = this.shadowRoot?.querySelector('hr');
+    this.renderHTML('hr', 'afterend', this.renderPointLink());
   }
   /*
    * variables
@@ -46,6 +49,12 @@ export class PointContainer extends HTMLElement {
    * Methods
    */
 
+  renderPointLink(): string {
+    return `
+    <span class='point-link-icon'></span>
+    <span class='point-link-content'>페이포인트를 쓸 수 있는 곳은?</span>
+    `;
+  }
   attachEvents(): void {
     console.log('dd');
 

@@ -1,10 +1,22 @@
 const template = document.createElement('template');
 template.innerHTML = `
-    <article class="main-btn-tab">
+  <style>
+  .capital-wrapper{
+    border : 1px solid black;
+    width: 980px;
+  }
+  </style>
+    <article class='capital-wrapper'>
+      <div>
+        <span class="title"></span>
+        <span class="refresh-icon"></span>
+      </div>
+      <span class="capital-info"></span>
     </article>
   `;
 
-export class MainBtnContainer extends HTMLElement {
+export class CapitalContainer extends HTMLElement {
+  capitalInfo = '';
   /*
    * constructor
    */
@@ -13,14 +25,15 @@ export class MainBtnContainer extends HTMLElement {
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML('.main-btn-tab', 'afterbegin', this.renderBtn());
+    this.containerTitle = this.shadowRoot?.querySelector('.title');
+    this.capitalInfo = this.shadowRoot?.querySelector('.capital-info');
   }
   /*
    * variables
    */
 
   static get observedAttributes() {
-    return ['contents', 'rows-per-contents'];
+    return ['contents'];
   }
 
   renderHTML(tag: string, position: string, element: string): void {
@@ -28,25 +41,17 @@ export class MainBtnContainer extends HTMLElement {
     data?.insertAdjacentHTML(position as InsertPosition, element);
   }
 
-  renderBtn(): string {
-    let btn = ``;
-    const len = this.contents?.length;
-    for (let i = 0; i < len; i++) {
-      btn += `
-          <a href="" class="ripple">
-            <span src='${this.contents[i].icon}'></span>
-            <span>${this.contents[i].label}</span>
-          </a>
-        `;
-    }
-    return btn;
+  getInfoProps(): void {
+    const capitalData = this.contents?.account;
+    this.capitalInfo.innerText = capitalData + '원';
   }
+
   /*
    * Methods
    */
 
   attachEvents(): void {
-    console.log('메인 버튼 탭 이벤트 등록');
+    console.log('dd');
 
     //이벤트 리스터 등록
   }
@@ -55,19 +60,20 @@ export class MainBtnContainer extends HTMLElement {
    * life cycle
    */
 
+  getTitleProps(): void {
+    const titleData = this.contents?.title;
+    this.containerTitle.innerText = titleData;
+  }
+
   connectedCallback() {
+    this.getTitleProps();
+    this.getInfoProps();
     this.attachEvents();
   }
   disconnectedCallback() {
     console.log('3::: disconnectedCallback');
   }
 
-  set rosPerContents(newValue: string) {
-    this.setAttribute('rows-per-contents', newValue);
-  }
-  get rosPerContents(): number {
-    return parseInt(this.getAttribute('rows-per-contents'));
-  }
   set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }

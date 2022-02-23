@@ -2,21 +2,21 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
     .slide-wrapper{
+      cursor : grab;
       position: relative; 
-      width: 960px; 
+      width: 400px; 
       padding: 30px 0;
-      overflow-x: hidden;
     }
     .slide-list{
       display: inline-flex;
-      pointer-events: none;
       width: 100%; 
       margin: auto; 
+      overflow-x: hidden;
     }
     .slide-item{
       border : 1px solid black;
       border-radius : 0.7em;
-      width:  960px;
+      width:  10em;
       height: 10em;
     }
     </style>
@@ -26,30 +26,21 @@ template.innerHTML = `
     </article>
   `;
 
-export class CardSlider extends HTMLElement {
-  pressed = false;
-  slide = '';
-  slideWidth = 960;
+export class BannerSlider extends HTMLElement {
+  slideWidth = 400;
   /*
    * constructor
    */
   constructor() {
     super(); // 초기화
+
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML('.slide-list', 'afterbegin', this.renderCard());
-    this.slide = this.shadowRoot?.querySelector('.slide-list');
   }
   /*
    * variables
    */
-  // // 외부 스타일을 shadow dom에 적용하기
-  // const linkElem = document.createElement('link');
-  // linkElem.setAttribute('rel', 'stylesheet');
-  // linkElem.setAttribute('href', 'style.css');
-
-  // // 생성된 요소를 shadow dom에 부착하기
-  // shadow.appendChild(linkElem);
 
   static get observedAttributes() {
     return ['contents'];
@@ -62,48 +53,23 @@ export class CardSlider extends HTMLElement {
    * Methods
    */
 
+  attachEvents(): void {
+    console.log('ee');
+    //이벤트 리스터 등록
+    const btn = this.shadowRoot?.querySelector('.slide-list');
+    btn?.addEventListener('click', this.onClickBtn);
+  }
+
   renderCard(): string {
     let cards = ``;
     const len = this.contents?.length;
-    for (let i = 0; i < this.contents?.length; i++) {
-      const content = this.contents[i];
+    for (let i = 0; i < len; i++) {
+      const content = this.cotents[i];
       cards += `
-        <a class="slide-item" >
-          <strong>${content.mainText}<br></strong>
-          <span>${content.subText}<br></span>
-          <img 
-          src='${content.image}'
-          "alt="${content.desc}"
-          />
-        </a>
+        <img src='${content?.imgPath}' alt='${content?.imgPath}'/>
       `;
     }
     return cards;
-  }
-
-  opratePosition(): void {
-    //
-  }
-
-  attachEvents(): void {
-    this.slide.addEventListener('mousedown', (e: Event) => {
-      pressed = true;
-      // startx = e.offsetX - innerSlider.offsetLeft;
-      this.slide.style.cursor = 'grabbing';
-    });
-    this.slide.addEventListener('mouseenter', (e: Event) => {
-      this.slide.style.cursor = 'grab';
-    });
-
-    this.slide.addEventListener('mouseup', (e: Event) => {
-      this.slide.style.cursor = 'grab';
-    });
-    this.slide.addEventListener('mousemove', (e: Event) => {
-      if (!pressed) {
-        return;
-      }
-      e.preventDefault();
-    });
   }
 
   /*
@@ -112,7 +78,8 @@ export class CardSlider extends HTMLElement {
 
   connectedCallback() {
     //mount
-    this.slide!.style.width = this.contents.length * this.slideWidth + 'px';
+    const slide = this.shadowRoot?.querySelector('.slide-list');
+    slide!.style.width = this.contents.length * this.slideWidth + 'px';
     this.attachEvents();
   }
 

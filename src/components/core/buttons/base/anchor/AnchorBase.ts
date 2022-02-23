@@ -1,39 +1,28 @@
 const template = document.createElement('template');
-
 template.innerHTML = `
-    <section class="capital-page-wrapper">
-    </section>
+    <style>
+    .anchor-base-ripple{
+
+    }
+    </style>
+    <a class='base-btn-ripple' href='' return false>
+    </a>
   `;
 
-export class CapitalPage extends HTMLElement {
-  cardItems = [];
-  menuItmes = [];
-  contentItems = [];
-  capitalItems = {};
+export class TextBtn extends HTMLElement {
+  textTitle = '';
   /*
    * constructor
    */
   constructor() {
     super(); // 초기화
-    this.capitalItems = {
-      title: '순자산',
-      account: 12314,
-    };
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML(
-      '.capital-page-wrapper',
-      'afterbegin',
-      `
-    <capital-container
-      contents='${JSON.stringify(this.capitalItems)}'>
-    ></capital-container>`
-    );
+    this.textTitle = this.shadowRoot.querySelector('.text-title');
   }
   /*
    * variables
    */
-
   // // 외부 스타일을 shadow dom에 적용하기
   // const linkElem = document.createElement('link');
   // linkElem.setAttribute('rel', 'stylesheet');
@@ -43,25 +32,20 @@ export class CapitalPage extends HTMLElement {
   // shadow.appendChild(linkElem);
 
   static get observedAttributes() {
-    return [''];
+    return ['title'];
   }
 
   /*
    * Methods
    */
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
-  }
-  renderLinkBtn(): string {
-    return `
-      
-    `;
-  }
   attachEvents(): void {
-    console.log('hompage 이벤트 등록');
     //이벤트 리스터 등록
+  }
+
+  getTitleProps(): void {
+    const titleData = this.title;
+    this.textTitle.innerText = titleData;
   }
 
   /*
@@ -69,20 +53,32 @@ export class CapitalPage extends HTMLElement {
    */
 
   connectedCallback() {
+    this.getTitleProps();
     this.attachEvents();
   }
   disconnectedCallback() {
     console.log('3::: disconnectedCallback');
   }
 
-  set contents(newValue: any) {
-    this.setAttribute('contents', newValue);
+  set title(newValue: string) {
+    this.setAttribute('title', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get title(): string {
+    return this.getAttribute('title');
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
+    //// called when one of attributes listed above is modified
+    // switch (name) {
+    //   case 'title':
+    //     this.menuTitle.innerText = newValue;
+    //     break;
+    //   case 'contents':
+    //     console.log(JSON.parse(newValue));
+    //     break;
+    //   default:
+    //     break;
+    // }
     // this.connectedCallback(); //rerender
   }
   adoptedCallback() {

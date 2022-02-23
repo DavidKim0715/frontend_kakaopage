@@ -131,7 +131,9 @@ export class HomePage extends HTMLElement {
       'account-container',
       'afterend',
       `<main-btn-container 
-       contents='${JSON.stringify(this.menuItems)}'>
+       contents='${JSON.stringify(this.menuItems)}'
+       rows-per-contents='4'
+       '>
       </main-btn-container>`
     );
     this.renderHTML(

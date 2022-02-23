@@ -6,7 +6,7 @@ template.innerHTML = `
       display : flex;
     }
     .page-detail{
-      width : 980px;
+      width : 982px;
     }
     </style>
     <main class="main-contents-page-wrapper">
@@ -14,8 +14,8 @@ template.innerHTML = `
   `;
 
 export class MainContentsContainer extends HTMLElement {
-  containerWidth = 1000;
-  slide ='' as HTMLElement;
+  containerWidth = 982;
+  slide = '' as HTMLElement;
   /*
    * constructor
    */
@@ -64,7 +64,9 @@ export class MainContentsContainer extends HTMLElement {
    */
 
   connectedCallback() {
-    this.slide = this.shadowRoot?.querySelector('.main-contents-page-wrapper') as HTMLElement;
+    this.slide = this.shadowRoot?.querySelector(
+      '.main-contents-page-wrapper'
+    ) as HTMLElement;
     this.slide.style.width = this.containerWidth * this.contents.length + 'px';
     this.slide.style.transition = '300ms';
     this.attachEvents();

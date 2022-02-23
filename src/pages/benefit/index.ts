@@ -7,9 +7,9 @@ template.innerHTML = `
 
 export class BenefitPage extends HTMLElement {
   cardItems = [];
-  accountItems = [];
   menuItmes = [];
   contentItems = [];
+  pointItems = [];
   /*
    * constructor
    */
