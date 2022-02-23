@@ -3,10 +3,10 @@ template.innerHTML = `
     <style>
 
     </style>
-    <button>
-    <i>
+    <button type='button'>
+    <span>
       icon
-    </i>
+    </span>
   </button>
     `;
 

@@ -20,6 +20,8 @@ template.innerHTML = `
   `;
 
 export class AccountContainer extends HTMLElement {
+  containerTitle = ''  as HTMLElement
+  accountInfo = ''  as HTMLElement
   /*
    * constructor
    */
@@ -54,12 +56,12 @@ export class AccountContainer extends HTMLElement {
   }
 
   getInfoProps(): void {
-    const accountData = this.contents.account;
+    const accountData = this.contents?.account;
     this.accountInfo.innerText = accountData + '원';
   }
   renderBtn(): string {
     let btns = '';
-    for (let i = 0, btn = this.contents.button; i < btn.length; i++) {
+    for (let i = 0, btn = this.contents?.button; i < btn?.length; i++) {
       btns += `
         <text-btn title='${btn[i].text}'></text-btn>
       `;
@@ -81,7 +83,7 @@ export class AccountContainer extends HTMLElement {
    */
 
   getTitleProps(): void {
-    const titleData = this.contents.title;
+    const titleData = this.contents?.title;
     this.containerTitle.innerText = titleData;
   }
 

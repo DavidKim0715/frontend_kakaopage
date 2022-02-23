@@ -33,7 +33,7 @@ export class MainBtnContainer extends HTMLElement {
     for (let i = 0; i < this.contents.length; i++) {
       btn += `
           <a href="" class="ripple">
-            <i src='${this.contents[i].icon}'></i>
+            <span src='${this.contents[i].icon}'></span>
             <span>${this.contents[i].label}</span>
           </a>
         `;

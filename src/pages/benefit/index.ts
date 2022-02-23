@@ -1,7 +1,7 @@
 const template = document.createElement('template');
 
 template.innerHTML = `
-    <section>
+    <section class='benefit-page-wrapper'>
     </section>
   `;
 

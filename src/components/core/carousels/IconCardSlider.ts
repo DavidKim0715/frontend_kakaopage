@@ -2,6 +2,7 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
     .slide-wrapper{
+      cursor : grab;
       position: relative; 
       width: 400px; 
       padding: 30px 0;
@@ -13,9 +14,10 @@ template.innerHTML = `
       overflow-x: hidden;
     }
     .slide-item{
-        border : 1px solid black;
-        width:  300px;
-        height: 200px;
+      border : 1px solid black;
+      border-radius : 0.7em;
+      width:  10em;
+      height: 10em;
     }
     </style>
     <article class="slide-wrapper">
@@ -25,6 +27,7 @@ template.innerHTML = `
   `;
 
 export class IconCardSlider extends HTMLElement {
+  slideWidth = 400;
   /*
    * constructor
    */
@@ -32,7 +35,7 @@ export class IconCardSlider extends HTMLElement {
     super(); // 초기화
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML('.slide-list', 'afterbegin', this.renderCard());
   }
   /*
@@ -51,7 +54,7 @@ export class IconCardSlider extends HTMLElement {
   }
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
   /*
    * Methods
@@ -60,8 +63,8 @@ export class IconCardSlider extends HTMLElement {
   attachEvents(): void {
     console.log('ee');
     //이벤트 리스터 등록
-    const btn = this.shadowRoot.querySelector('.slide-list');
-    btn.addEventListener('click', this.onClickBtn);
+    const btn = this.shadowRoot?.querySelector('.slide-list');
+    btn?.addEventListener('click', this.onClickBtn);
   }
 
   renderCard(): string {
@@ -69,7 +72,7 @@ export class IconCardSlider extends HTMLElement {
     for (let i = 0; i < this.contents?.length; i++) {
       cards += `
         <div class="slide-item">
-          <i src=${this.contents[i].url}><br></i>
+          <span src=${this.contents[i].url}><br></span>
           <span>${this.contents[i].subText}<br></span>
           <strong>${this.contents[i].mainText}</strong>
         </div>
@@ -83,6 +86,9 @@ export class IconCardSlider extends HTMLElement {
    */
 
   connectedCallback() {
+    const slide = this.shadowRoot?.querySelector('.slide-list')
+    slide!.style.width =
+      this.contents.length * this.slideWidth + 'px';
     this.attachEvents();
   }
   disconnectedCallback() {
@@ -98,16 +104,6 @@ export class IconCardSlider extends HTMLElement {
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
     //// called when one of attributes listed above is modified
-    // switch (name) {
-    //   case 'title':
-    //     this.menuTitle.innerText = newValue;
-    //     break;
-    //   case 'contents':
-    //     console.log(JSON.parse(newValue));
-    //     break;
-    //   default:
-    //     break;
-    // }
     // this.connectedCallback(); //rerender
   }
   adoptedCallback() {

@@ -56,7 +56,7 @@ export class ListBtn extends HTMLElement {
   renderButton(): string {
     let btn = '';
     btn += `
-        <i src='${this.contents.icon}'></i>
+        <span class='${this.contents.icon}'></span>
         <strong>${this.contents.text}</strong>
         <span>${this.contents.subText}</span>
     `;
