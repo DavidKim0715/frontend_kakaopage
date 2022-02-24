@@ -135,14 +135,6 @@ module.exports = (_env, argv) => {
           test: /\.(bmp|gif|png|jpe?g|svg)$/i,
           loader: 'url-loader',
           options: {
-            publicPath: 'static/media',
-            // outputPath: 'static/media',
-            // (url, resourcePath) => {
-            //      if (/subfolder/.test(resourcePath)) {
-            //          return `images/subfolder/${url}`;
-            //      }
-            //  return `images/${url}`;
-            //  }
             name: '[name].[contenthash:8]?.[ext]',
             limit: 10000,
             fallback: require.resolve('file-loader'),
@@ -181,15 +173,15 @@ module.exports = (_env, argv) => {
         extensions: ['.ts', '.js'],
         exclude: 'node_modules',
       }),
-      // new CopyWebpackPlugin({
-      //   patterns: [
-      //     {
-      //       from: 'static/media',
-      //       to: 'static/media',
-      //       noErrorOnMissing: true,
-      //     },
-      //   ],
-      // }),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: './src/assets',
+            to: 'static',
+            noErrorOnMissing: true,
+          },
+        ],
+      }),
       // 플러그인 옵션 셜정
       new CleanWebpackPlugin({
         // dry 기본 값: false
@@ -211,7 +203,7 @@ module.exports = (_env, argv) => {
       // //런타임마다 생성되는 chuck hash 번들 경로
       new WebpackManifestPlugin({
         // fileName: './manifest.json', // default
-        publicPath: '/dist/',
+        publicPath: './',
       }),
     ],
   };
@@ -224,6 +216,7 @@ module.exports = (_env, argv) => {
         showErrors: true, // 에러 발생시 메세지가 브라우저 화면에 노출
       }),
     ];
+    config.output.publicPath = 'http://localhost:8080/';
     config.devtool = 'inline-source-map';
     config.devServer = {
       hot: true, // 서버에서 HMR을 켠다.

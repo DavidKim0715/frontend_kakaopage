@@ -1,4 +1,4 @@
-import './static/scss/_main.scss';
+import './assets/scss/_main.scss';
 import '@webcomponents/webcomponentsjs/webcomponents-bundle';
 import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js'; //chrome에서 업로드하기 위해 꼭 필요
 import { PageHeader } from './components/core/layout/PageHeader';
@@ -17,6 +17,7 @@ import { BannerBtn } from './components/core/buttons/BannerBtn';
 import { MenuBtn } from './components/core/buttons/MenuBtn';
 import { IconBtn } from './components/core/buttons/IconBtn';
 import { ListBtn } from './components/core/buttons/ListBtn';
+import { LinkArrowBtn } from './components/core/buttons/LinkArrowBtn';
 import { AccountContainer } from './components/core/containers/AccountContainer';
 import { CapitalContainer } from './components/core/containers/CapitalContainer';
 import { PointContainer } from './components/core/containers/PointContainer';
@@ -47,6 +48,7 @@ window.customElements.define('card-slider', CardSlider);
 window.customElements.define('icon-card-slider', IconCardSlider);
 window.customElements.define('main-btn-container', MainBtnContainer);
 window.customElements.define('text-btn', TextBtn);
+window.customElements.define('link-arrow-btn', LinkArrowBtn);
 window.customElements.define('banner-btn', BannerBtn);
 window.customElements.define('icon-btn', IconBtn);
 window.customElements.define('menu-btn', MenuBtn);
@@ -62,6 +64,7 @@ const header = doc.createElement('page-header');
 const mainTab = doc.createElement('main-tab');
 const footer = doc.createElement('page-footer');
 const app = doc.getElementById('app');
+app.style.overflow = 'hidden';
 
 const fragments = doc.createDocumentFragment(); //append 최소화
 
@@ -70,4 +73,3 @@ fragments?.appendChild(mainTab);
 fragments?.appendChild(footer);
 
 app?.appendChild(fragments);
-app.style.overflow = 'hidden';

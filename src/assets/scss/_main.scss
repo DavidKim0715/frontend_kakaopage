@@ -1,0 +1,58 @@
+@import 'abstracts/variables', 'abstracts/functions', 'abstracts/mixins';
+
+@import 'vendors/jquery-ui';
+
+@import 'base/reset', 'base/typography';
+
+@import 'layout/navigation', 'layout/grid', 'layout/header', 'layout/footer',
+  'layout/sidebar', 'layout/form';
+
+@import 'components/buttons', 'components/carousels', 'components/covers',
+  'components/dropdown', 'components/inputs';
+
+@import 'pages/home', 'pages/contact';
+
+@import 'themes/theme', 'themes/admin';
+@import 'abstracts/variables', 'abstracts/functions', 'abstracts/mixins';
+
+@import 'vendors/jquery-ui';
+
+@import 'base/reset', 'base/typography';
+
+@import 'layout/navigation', 'layout/grid', 'layout/header', 'layout/footer',
+  'layout/sidebar', 'layout/form';
+
+@import 'components/buttons', 'components/carousels', 'components/covers',
+  'components/dropdown', 'components/inputs';
+
+@import 'pages/home', 'pages/contact';
+
+@import 'themes/theme', 'themes/admin';
+
+//ul 태그 불릿 제거
+ul {
+  list-style: none;
+  padding-left: 0px;
+}
+
+//기본 페이지 마진 제거
+body {
+  margin: 0;
+}
+// 텍스트 밑줄, 파란색 글자 제거
+a:link {
+  color: #222222;
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
+}

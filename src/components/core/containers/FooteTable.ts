@@ -4,14 +4,14 @@ template.innerHTML = `
     .detail {
       list-style:none;
       display : none;
-      
+
     }
     .active{
       display : block;
     }
     </style>
-    <text-btn id="footer-btn" title='(주)카카오페이 사업자 정보'>
-    </text-btn>
+    <link-arrow-btn id="footer-btn" title='(주)카카오페이 사업자 정보'>
+    </link-arrow-btn>
   `;
 
 export class FooterTable extends HTMLElement {
@@ -23,7 +23,7 @@ export class FooterTable extends HTMLElement {
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML('text-btn', 'afterend', this.renderStaticTable());
+    this.renderHTML('link-arrow-btn', 'afterend', this.renderStaticTable());
   }
   /*
    * variables
@@ -50,7 +50,7 @@ export class FooterTable extends HTMLElement {
    */
 
   attachEvents() {
-    const btn = this.shadowRoot?.querySelector('text-btn');
+    const btn = this.shadowRoot?.querySelector('link-arrow-btn');
     const table = this.shadowRoot?.querySelector('.detail');
     btn?.addEventListener('click', () => {
       if (table?.classList.contains('active')) {

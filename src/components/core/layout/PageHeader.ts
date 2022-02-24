@@ -1,50 +1,76 @@
-// import './static/scss/_main.scss';
+// import { logo } from 'src/static/image/logo.png';
+const template = document.createElement('template');
+template.innerHTML = `
+  <style>
+  .page-header-wrapper{
+
+  }
+  .logo-img{
+    
+  }
+  </style>
+   <header class='page-header-wrapper'>
+      <img class='logo-img' loading='lazy'/>
+    </header>
+  `;
+
 export class PageHeader extends HTMLElement {
+  logo = '';
   /*
    * constructor
    */
   constructor() {
     super(); // 초기화
+
+    this.attachShadow({ mode: 'open' }); // DOM scope 생성
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
+    this.logo = this.shadowRoot?.querySelector('.logo-img');
   }
   /*
    * variables
    */
 
-  //return attributes in setup method
   static get observedAttributes() {
-    // browser calls this method when the element is removed from the document
-    return [];
+    return ['contents'];
   }
+
+  renderHTML(tag: string, position: string, element: string): void {
+    const data = this.shadowRoot?.querySelector(tag);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
+  }
+
   /*
    * Methods
    */
-  render() {
-    this.shadow = this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadow.innerHTML = `
-    <header>
-      <img src="" alt="logo" />
-    </header>
-    `;
-  }
-  // onCardClick(){
 
-  // }
+  attachEvents(): void {
+    console.log('dd');
+
+    //이벤트 리스터 등록
+  }
+
   /*
    * life cycle
    */
+
   connectedCallback() {
-    // onload = created => event
-    this.render();
-    console.log('2::: connectedCallback');
+    // this.logo.style.background = "url: 'static/image/logo.png'";
+    this.attachEvents();
   }
   disconnectedCallback() {
-    // unmounted => remove binding
     console.log('3::: disconnectedCallback');
   }
-  attributeChangedCallback(name, oldValue, newValue) {
-    //// called when one of attributes listed above is modified
 
-    this.connectedCallback(); //rerender
+  set contents(newValue: any) {
+    this.setAttribute('contents', newValue);
+  }
+  get contents() {
+    return JSON.parse(this.getAttribute('contents'));
+  }
+
+  attributeChangedCallback(name: any, oldValue: any, newValue: any) {
+    //// called when one of attributes listed above is modified
+    // this.connectedCallback(); //rerender
   }
   adoptedCallback() {
     // called when the element is moved to a new document

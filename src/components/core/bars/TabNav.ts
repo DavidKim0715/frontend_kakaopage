@@ -1,6 +1,11 @@
 const template = document.createElement('template');
 template.innerHTML = `
     <style>
+    .tab-nav-wrapper{
+      display : block;
+      margin : 3em auto;
+      width: 1000px;
+    }
     .tab-nav-btn{
     }
     .selected{

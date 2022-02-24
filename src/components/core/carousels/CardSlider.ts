@@ -2,22 +2,23 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
     .slide-wrapper{
+      display : block;
       position: relative; 
-      width: 960px; 
-      padding: 30px 0;
+      margin : 0 auto;
+      width: 1000px;
       overflow-x: hidden;
     }
     .slide-list{
       display: inline-flex;
+      justify-content: space-around;
+      margin: auto; 
       pointer-events: none;
       width: 100%; 
-      margin: auto; 
     }
     .slide-item{
-      border : 1px solid black;
-      border-radius : 0.7em;
-      width:  960px;
-      height: 10em;
+      border-radius : 2.7em;
+      width:  900px;
+      height: 800px;
     }
     </style>
     <article class="slide-wrapper">
@@ -29,6 +30,7 @@ template.innerHTML = `
 export class CardSlider extends HTMLElement {
   pressed = false;
   slide = '';
+  slideItem = '';
   slideWidth = 960;
   /*
    * constructor
@@ -39,6 +41,7 @@ export class CardSlider extends HTMLElement {
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML('.slide-list', 'afterbegin', this.renderCard());
     this.slide = this.shadowRoot?.querySelector('.slide-list');
+    this.slideItem = this.shadowRoot?.querySelectorAll('.slide-item');
   }
   /*
    * variables
@@ -72,15 +75,24 @@ export class CardSlider extends HTMLElement {
           <strong>${content.mainText}<br></strong>
           <span>${content.subText}<br></span>
           <img 
-          src='${content.image}'
+          src='${content.imgPath}'
           "alt="${content.desc}"
           />
         </a>
       `;
+      this.slideItem[i].style.background = content.backgroundColor;
     }
     return cards;
   }
 
+  paintCard(): void {
+    const items = this.slideItem;
+    const content = this.contents;
+    for (let i = 0, len = items.length; i < len; i++) {
+      const content = this.contents[i];
+      // items[i].style.background = content.backgroundColor;
+    }
+  }
   opratePosition(): void {
     //
   }
@@ -113,6 +125,7 @@ export class CardSlider extends HTMLElement {
   connectedCallback() {
     //mount
     this.slide!.style.width = this.contents.length * this.slideWidth + 'px';
+    this.paintCard();
     this.attachEvents();
   }
 

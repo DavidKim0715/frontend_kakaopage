@@ -1,27 +1,19 @@
 const template = document.createElement('template');
 template.innerHTML = `
     <style>
-    .text-btn{
-      background-color: gray;
-      border: none;
-      border-radius: 4em;
-      color: #fff;
-      width : 8em;
-      height : 5em;
-    }
-    .text-title{
-      font-size : 3em;
+    .link-arrow-btn{
     }
     </style>
     <button
-      class="text-btn"
+      class="link-arrow-btn"
       type='button'
     >
       <span class='text-title'></span>
+      <span class='arrow-icon'></span>
     </button>
   `;
 
-export class TextBtn extends HTMLElement {
+export class LinkArrowBtn extends HTMLElement {
   textTitle = '';
   /*
    * constructor

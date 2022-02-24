@@ -1,5 +1,18 @@
 const template = document.createElement('template');
 template.innerHTML = `
+    <style>
+    .main-btn-tab{
+      display : block;
+      margin : 0 auto;
+      width: 1000px;
+      height : 300px;
+    }
+    .ripple{
+    }
+    .main-btn-text{
+      font-size : 3em;
+    }
+    </style>
     <article class="main-btn-tab">
     </article>
   `;
@@ -35,7 +48,7 @@ export class MainBtnContainer extends HTMLElement {
       btn += `
           <a href="" class="ripple">
             <span src='${this.contents[i].icon}'></span>
-            <span>${this.contents[i].label}</span>
+            <span class='main-btn-text'>${this.contents[i].label}</span>
           </a>
         `;
     }

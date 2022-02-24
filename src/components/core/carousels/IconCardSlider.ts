@@ -2,22 +2,24 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
     .slide-wrapper{
-      cursor : grab;
+      display : block;
       position: relative; 
-      width: 400px; 
-      padding: 30px 0;
+      margin : 0 auto;
+      width: 1000px;
+      overflow-x: hidden;
     }
     .slide-list{
       display: inline-flex;
-      width: 100%; 
+      justify-content: space-around;
       margin: auto; 
-      overflow-x: hidden;
+      pointer-events: none;
+      width: 100%; 
     }
     .slide-item{
       border : 1px solid black;
-      border-radius : 0.7em;
-      width:  10em;
-      height: 10em;
+      border-radius : 2.7em;
+      width:  900px;
+      height: 800px;
     }
     </style>
     <article class="slide-wrapper">
@@ -27,16 +29,18 @@ template.innerHTML = `
   `;
 
 export class IconCardSlider extends HTMLElement {
-  slideWidth = 400;
+  pressed = false;
+  slide = '';
+  slideWidth = 960;
   /*
    * constructor
    */
   constructor() {
     super(); // 초기화
-
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML('.slide-list', 'afterbegin', this.renderCard());
+    this.slide = this.shadowRoot?.querySelector('.slide-list');
   }
   /*
    * variables
@@ -60,25 +64,45 @@ export class IconCardSlider extends HTMLElement {
    * Methods
    */
 
-  attachEvents(): void {
-    console.log('ee');
-    //이벤트 리스터 등록
-    const btn = this.shadowRoot?.querySelector('.slide-list');
-    btn?.addEventListener('click', this.onClickBtn);
-  }
-
   renderCard(): string {
     let cards = ``;
+    const len = this.contents?.length;
     for (let i = 0; i < this.contents?.length; i++) {
+      const content = this.contents[i];
       cards += `
-        <div class="slide-item">
+        <a class="slide-item">
           <span src=${this.contents[i].url}><br></span>
           <span>${this.contents[i].subText}<br></span>
           <strong>${this.contents[i].mainText}</strong>
-        </div>
+        </a>
       `;
     }
     return cards;
+  }
+
+  opratePosition(): void {
+    //
+  }
+
+  attachEvents(): void {
+    this.slide.addEventListener('mousedown', (e: Event) => {
+      pressed = true;
+      // startx = e.offsetX - innerSlider.offsetLeft;
+      this.slide.style.cursor = 'grabbing';
+    });
+    this.slide.addEventListener('mouseenter', (e: Event) => {
+      this.slide.style.cursor = 'grab';
+    });
+
+    this.slide.addEventListener('mouseup', (e: Event) => {
+      this.slide.style.cursor = 'grab';
+    });
+    this.slide.addEventListener('mousemove', (e: Event) => {
+      if (!pressed) {
+        return;
+      }
+      e.preventDefault();
+    });
   }
 
   /*
@@ -86,11 +110,11 @@ export class IconCardSlider extends HTMLElement {
    */
 
   connectedCallback() {
-    const slide = this.shadowRoot?.querySelector('.slide-list')
-    slide!.style.width =
-      this.contents.length * this.slideWidth + 'px';
+    //mount
+    this.slide!.style.width = this.contents.length * this.slideWidth + 'px';
     this.attachEvents();
   }
+
   disconnectedCallback() {
     console.log('3::: disconnectedCallback');
   }

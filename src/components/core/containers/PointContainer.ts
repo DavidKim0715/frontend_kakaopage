@@ -2,9 +2,18 @@ const template = document.createElement('template');
 template.innerHTML = `
   <style>
   .point-wrapper{
-    border : 1px solid black;
-    width: 980px;
+    display : block;
+      height : 300px;
+      margin : 0 auto;
+      width: 1000px;
   }
+  .title{
+      font-size: 3em;
+      color : #c5c5c5;
+    }
+    .point-info{
+      font-size: 5em;
+    }
   </style>
     <article class='point-wrapper'>
       <span class="title"></span>

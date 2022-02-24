@@ -18,7 +18,7 @@ export class ListBtn extends HTMLElement {
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    const list =  this.shadowRoot?.querySelector('.list-btn')
+    const list = this.shadowRoot?.querySelector('.list-btn');
     list.href = this.contents.url;
     this.renderHTML('.list-btn', 'afterbegin', this.renderButton());
   }
@@ -59,6 +59,7 @@ export class ListBtn extends HTMLElement {
         <span class='${this.contents.icon}'></span>
         <strong>${this.contents.text}</strong>
         <span>${this.contents.subText}</span>
+        <span class='arrow-icon'></span>
     `;
     return btn;
   }

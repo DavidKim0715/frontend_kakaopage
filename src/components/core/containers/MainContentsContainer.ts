@@ -6,7 +6,7 @@ template.innerHTML = `
       display : flex;
     }
     .page-detail{
-      width : 982px;
+      width : 1080px;
     }
     </style>
     <main class="main-contents-page-wrapper">
@@ -14,7 +14,7 @@ template.innerHTML = `
   `;
 
 export class MainContentsContainer extends HTMLElement {
-  containerWidth = 982;
+  containerWidth = 1080;
   slide = '' as HTMLElement;
   /*
    * constructor

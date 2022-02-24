@@ -1,6 +1,12 @@
 const template = document.createElement('template');
 
 template.innerHTML = `
+    <style>
+     @media (min-width: 1080px) {
+      .capital-page-wrapper{
+        width: 1080px;
+      }
+    </style>
     <section class="capital-page-wrapper">
     </section>
   `;

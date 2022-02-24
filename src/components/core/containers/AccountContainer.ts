@@ -2,26 +2,48 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
     .account-wrapper{
-      border : 1px solid black;
-      width: 980px;
+      background-color: #524e67;
+      border-radius: 30px;
+      display : block;
+      height : 300px;
+      margin : 0 auto;
+      width: 1000px;
+    }
+    .account-box{
+      height: 100%;
+      padding : 2em; 
     }
     .top-account{
       
     }
+    .title{
+      font-size: 3em;
+      color : #c5c5c5;
+    }
+    .account-info{
+      font-size: 5em;
+      color : #fff;
+    }
+    .bottom-account{
+      display: flex;
+      justify-content: flex-end;
+    }
     </style>
     <article class='account-wrapper'>
-      <div class='top-account'>
-        <span class="title"></span>
-        <icon-btn class="btn-collection"></icon-btn>      
+      <div class='account-box'>
+        <div class='top-account'>
+          <span class="title"></span>
+          <icon-btn class="btn-collection"></icon-btn>      
+        </div>
+        <span class="account-info"></span>
+        <div class='bottom-account'></div>
       </div>
-      <span class="account-info"></span>
-      <div class='bottom-account'></div>
     </article>
   `;
 
 export class AccountContainer extends HTMLElement {
-  containerTitle = ''  as HTMLElement
-  accountInfo = ''  as HTMLElement
+  containerTitle = '' as HTMLElement;
+  accountInfo = '' as HTMLElement;
   /*
    * constructor
    */
@@ -63,7 +85,9 @@ export class AccountContainer extends HTMLElement {
     let btns = '';
     for (let i = 0, btn = this.contents?.button; i < btn?.length; i++) {
       btns += `
-        <text-btn title='${btn[i].text}'></text-btn>
+        <text-btn 
+        class='pay-btn' 
+        title='${btn[i].text}'></text-btn>
       `;
     }
     return btns;
@@ -108,17 +132,6 @@ export class AccountContainer extends HTMLElement {
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
-    //// called when one of attributes listed above is modified
-    // switch (name) {
-    //   case 'title':
-    //     this.menuTitle.innerText = newValue;
-    //     break;
-    //   case 'contents':
-    //     console.log(JSON.parse(newValue));
-    //     break;
-    //   default:
-    //     break;
-    // }
     // this.connectedCallback(); //rerender
   }
   adoptedCallback() {

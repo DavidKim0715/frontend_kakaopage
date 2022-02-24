@@ -1,6 +1,14 @@
 const template = document.createElement('template');
 
 template.innerHTML = `
+    <style>
+    @media (min-width: 1080px) {
+      .home-page-wrapper{
+        width: 1080px;
+      }
+    }
+    
+     </style>
     <section class="home-page-wrapper">
     </section>
   `;
@@ -29,45 +37,57 @@ export class HomePage extends HTMLElement {
     this.cardItems = [
       {
         idx: 0,
+        desc: '',
         mainText: '내가 찾던 대출한도, 여기 다 모여 있다!',
         subText: '50개 금융사 비교를 한 번에!',
-        image: '',
+        imgPath: '',
         url: '',
+        backgroundColor: '#eeffee',
       },
       {
         idx: 1,
+        desc: '',
         mainText: '혜택 올★픽엔 실격이 없어요',
         subText: '공정한 동계 이벤트',
-        image: '',
+        imgPath: '',
         url: '',
+        backgroundColor: '',
       },
       {
         idx: 2,
+        desc: '',
         mainText: '선물 결제할 땐 카카오페이신용카드',
         subText: '톡 선물하기 결제 시 3% 적립',
-        image: '',
+        imgPath: '',
         url: '',
+        backgroundColor: '',
       },
       {
         idx: 3,
+        desc: '',
         mainText: '귀여운 페이머니카드 집사 구합니다',
         subText: '다양한 집사 지원 혜택',
-        image: '',
+        imgPath: '',
         url: '',
+        backgroundColor: '',
       },
       {
         idx: 4,
+        desc: '',
         mainText: '1월 자동차세 연납 놓치지말고 납부샇세요',
         subText: '세액 공제받고 혜택받고',
-        image: '',
+        imgPath: '',
         url: '',
+        backgroundColor: '',
       },
       {
         idx: 5,
+        desc: '',
         mainText: '1월 자동차세 연납 놓치지말고 납부샇세요',
         subText: '세액 공제받고 혜택받고',
-        image: '',
+        imgPath: '',
         url: '',
+        backgroundColor: '',
       },
       // {
       //   idx: 5,

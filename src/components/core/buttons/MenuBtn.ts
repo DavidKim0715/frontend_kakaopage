@@ -2,7 +2,9 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
     .menu-btn{
-      
+    }
+    .menu-btn-text{
+      font-size : 4.5em;
     }
     </style>
     <a class='menu-btn'>
@@ -46,7 +48,7 @@ export class MenuBtn extends HTMLElement {
   // };
   renderButton(): string {
     let btn = '';
-    btn += `<span>
+    btn += `<span class='menu-btn-text'>
       ${this.content.name}
     </span>`;
     return btn;

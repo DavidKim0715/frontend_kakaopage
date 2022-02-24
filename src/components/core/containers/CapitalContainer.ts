@@ -2,8 +2,10 @@ const template = document.createElement('template');
 template.innerHTML = `
   <style>
   .capital-wrapper{
-    border : 1px solid black;
-    width: 980px;
+      display : block;
+      height : 300px;
+      margin : 0 auto;
+      width: 1000px;
   }
   </style>
     <article class='capital-wrapper'>
