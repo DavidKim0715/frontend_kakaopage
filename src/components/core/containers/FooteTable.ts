@@ -4,7 +4,6 @@ template.innerHTML = `
     .detail {
       list-style:none;
       display : none;
-
     }
     .active{
       display : block;
@@ -50,8 +49,9 @@ export class FooterTable extends HTMLElement {
    */
 
   attachEvents() {
-    const btn = this.shadowRoot?.querySelector('link-arrow-btn');
-    const table = this.shadowRoot?.querySelector('.detail');
+    const shadow = this.shadowRoot;
+    const btn = shadow?.querySelector('link-arrow-btn');
+    const table = shadow?.querySelector('.detail');
     btn?.addEventListener('click', () => {
       if (table?.classList.contains('active')) {
         table.classList.remove('active');

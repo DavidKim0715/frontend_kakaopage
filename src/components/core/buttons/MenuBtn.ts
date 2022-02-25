@@ -2,9 +2,11 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
     .menu-btn{
+      text-align : center;
     }
     .menu-btn-text{
       font-size : 4.5em;
+      display: table-cell;
     }
     </style>
     <a class='menu-btn'>
@@ -12,6 +14,7 @@ template.innerHTML = `
     `;
 
 export class MenuBtn extends HTMLElement {
+  btn = '';
   /*
    * constructor
    */
@@ -20,14 +23,17 @@ export class MenuBtn extends HTMLElement {
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
+    this.btn = this.shadowRoot?.querySelector('.menu-btn');
     this.renderHTML('.menu-btn', 'afterbegin', this.renderButton());
+    this.btn.style.fontSize = this.fontSize;
+    this.btn.style.color = this.fontColor;
   }
   /*
    * variables
    */
 
   static get observedAttributes() {
-    return ['content', 'index'];
+    return ['content', 'index', 'font-size', 'font-color'];
   }
   /*
    * Methods
@@ -39,8 +45,7 @@ export class MenuBtn extends HTMLElement {
 
   attachEvents(): void {
     //이벤트 리스터 등록
-    const btn = this.shadowRoot?.querySelector('.menu-btn');
-    btn?.addEventListener('click', this.onClickBtn);
+    this.btn?.addEventListener('click', this.onClickBtn);
   }
 
   // onClickBtn(e: Event): {
@@ -61,8 +66,20 @@ export class MenuBtn extends HTMLElement {
     this.attachEvents();
   }
   disconnectedCallback() {
-    const btn = this.shadowRoot?.querySelector('.menu-btn');
-    btn?.removeEventListener('click', this.onClickBtn);
+    this.btn?.removeEventListener('click', this.onClickBtn);
+  }
+
+  set fontSize(newValue: string) {
+    this.setAttribute('font-size', newValue);
+  }
+  get fontSize(): object {
+    return this.getAttribute('font-size');
+  }
+  set fontColor(newValue: string) {
+    this.setAttribute('color', newValue);
+  }
+  get fontColor(): object {
+    return this.getAttribute('color');
   }
 
   set content(newValue: string) {

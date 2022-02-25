@@ -7,7 +7,6 @@ import { FooterLink } from './components/core/bars/FooterLink';
 import { HomePage } from './pages/home/index';
 import { BenefitPage } from './pages/benefit/index';
 import { CapitalPage } from './pages/capital/index';
-
 import { QuickMenuPage } from './pages/quick/index';
 import { MainTab } from './components/tabs/MainTab';
 import { TabNav } from './components/core/bars/TabNav';

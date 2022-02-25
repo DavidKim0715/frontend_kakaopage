@@ -5,7 +5,7 @@ template.innerHTML = `
       display : block;
       position: relative; 
       margin : 0 auto;
-      width: 1000px;
+      width: 800px;
       overflow-x: hidden;
     }
     .slide-list{
@@ -17,7 +17,7 @@ template.innerHTML = `
     }
     .slide-item{
       border-radius : 2.7em;
-      width:  900px;
+      width:  800px;
       height: 800px;
     }
     </style>
@@ -80,19 +80,10 @@ export class CardSlider extends HTMLElement {
           />
         </a>
       `;
-      this.slideItem[i].style.background = content.backgroundColor;
     }
     return cards;
   }
 
-  paintCard(): void {
-    const items = this.slideItem;
-    const content = this.contents;
-    for (let i = 0, len = items.length; i < len; i++) {
-      const content = this.contents[i];
-      // items[i].style.background = content.backgroundColor;
-    }
-  }
   opratePosition(): void {
     //
   }
@@ -125,7 +116,7 @@ export class CardSlider extends HTMLElement {
   connectedCallback() {
     //mount
     this.slide!.style.width = this.contents.length * this.slideWidth + 'px';
-    this.paintCard();
+    // this.paintCard();
     this.attachEvents();
   }
 

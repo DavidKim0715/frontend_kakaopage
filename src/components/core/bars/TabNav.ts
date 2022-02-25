@@ -7,12 +7,16 @@ template.innerHTML = `
       width: 1000px;
     }
     .tab-nav-btn{
+     
     }
     .selected{
-      border-bottom: 2px solid black;
+       color : black;
+       border-bottom: 2px solid black;
+       padding-bottom: 1.15em;
     }
     </style>
     <nav class='tab-nav-wrapper'>
+      <span></span>
     </nav>
   `;
 
@@ -25,6 +29,8 @@ export class TabNav extends HTMLElement {
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML('.tab-nav-wrapper', 'afterbegin', this.renderButton());
+
+    this.tabSlot = this.shadowRoot?.querySelectorAll('.tab-nav-btn');
   }
   /*
    * variables
@@ -47,9 +53,10 @@ export class TabNav extends HTMLElement {
       const content = JSON.stringify(data.data);
       btns += `
             <menu-btn
-              class='tab-nav-btn' 
+              class='tab-nav-btn'
               content='${content}'
               index=${idx}
+              font-size='0.7em'
               >
             </menu-btn>
           `;
@@ -85,7 +92,6 @@ export class TabNav extends HTMLElement {
    */
 
   connectedCallback() {
-    this.tabSlot = this.shadowRoot?.querySelectorAll('.tab-nav-btn');
     this.tabSlot[0].classList.add('selected'); //초기 인덱스 세팅
     this.attachEvents();
   }

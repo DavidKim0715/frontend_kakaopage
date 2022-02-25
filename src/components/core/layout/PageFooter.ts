@@ -18,7 +18,7 @@ export class PageFooter extends HTMLElement {
       { idx: 3, text: '페이스북', url: '' },
     ];
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML('.page-footer', 'afterbegin', this.renderFooterLink());
     this.renderHTML('.footer-link', 'afterend', this.renderFooterTable());
   }

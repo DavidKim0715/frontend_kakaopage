@@ -1,9 +1,9 @@
 const template = document.createElement('template');
 template.innerHTML = `
     <style>
-      @media (min-width: 1080px) {
       .quick-menu-page-wrapper{
         width: 1080px;
+        display : block;
       }
     }
     </style>

@@ -52,7 +52,10 @@ export class MenuContainer extends HTMLElement {
     for (let i = 0; i < this.contents.length; i++) {
       const content = JSON.stringify(this.contents[i]);
       btns += `
-        <menu-btn content='${content}'>
+        <menu-btn 
+        content='${content}' 
+        font-size='0.5em'
+        >
         </menu-btn>
       `;
     }

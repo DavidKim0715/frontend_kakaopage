@@ -14,7 +14,8 @@ template.innerHTML = `
       padding : 2em; 
     }
     .top-account{
-      
+      display: flex;
+    justify-content: space-between;
     }
     .title{
       font-size: 3em;

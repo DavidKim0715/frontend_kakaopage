@@ -77,3 +77,4 @@ export class PageHeader extends HTMLElement {
     // 거의 쓸 일 x
   }
 }
+// window.customElements.define('page-header', PageHeader);
