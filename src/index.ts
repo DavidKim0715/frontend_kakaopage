@@ -29,41 +29,43 @@ import { ContentsContainer } from './components/core/containers/ContentsContaine
 import { FooterTable } from './components/core/containers/FooteTable';
 import Ripple from './components/core/animation/Ripple';
 
-window.customElements.define('page-header', PageHeader);
-window.customElements.define('main-tab', MainTab);
-window.customElements.define('tab-nav', TabNav);
-window.customElements.define('main-contents-container', MainContentsContainer);
-window.customElements.define('home-page', HomePage);
-window.customElements.define('capital-page', CapitalPage);
-window.customElements.define('benefit-page', BenefitPage);
-window.customElements.define('quick-menu-page', QuickMenuPage);
-window.customElements.define('account-container', AccountContainer);
-window.customElements.define('capital-container', CapitalContainer);
-window.customElements.define('menu-container', MenuContainer);
-window.customElements.define('modal-container', ModalContainer);
-window.customElements.define('contents-container', ContentsContainer);
-window.customElements.define('point-container', PointContainer);
-window.customElements.define('card-slider', CardSlider);
-window.customElements.define('icon-card-slider', IconCardSlider);
-window.customElements.define('main-btn-container', MainBtnContainer);
-window.customElements.define('text-btn', TextBtn);
-window.customElements.define('link-arrow-btn', LinkArrowBtn);
-window.customElements.define('banner-btn', BannerBtn);
-window.customElements.define('icon-btn', IconBtn);
-window.customElements.define('menu-btn', MenuBtn);
-window.customElements.define('list-btn', ListBtn);
-window.customElements.define('page-footer', PageFooter);
-window.customElements.define('footer-link', FooterLink);
-window.customElements.define('footer-table', FooterTable);
+//전역 객체 지역 변수 화
+const win = window
+const doc = document; 
+
+win.customElements.define('page-header', PageHeader);
+win.customElements.define('main-tab', MainTab);
+win.customElements.define('tab-nav', TabNav);
+win.customElements.define('main-contents-container', MainContentsContainer);
+win.customElements.define('home-page', HomePage);
+win.customElements.define('capital-page', CapitalPage);
+win.customElements.define('benefit-page', BenefitPage);
+win.customElements.define('quick-menu-page', QuickMenuPage);
+win.customElements.define('account-container', AccountContainer);
+win.customElements.define('capital-container', CapitalContainer);
+win.customElements.define('menu-container', MenuContainer);
+win.customElements.define('modal-container', ModalContainer);
+win.customElements.define('contents-container', ContentsContainer);
+win.customElements.define('point-container', PointContainer);
+win.customElements.define('card-slider', CardSlider);
+win.customElements.define('icon-card-slider', IconCardSlider);
+win.customElements.define('main-btn-container', MainBtnContainer);
+win.customElements.define('text-btn', TextBtn);
+win.customElements.define('link-arrow-btn', LinkArrowBtn);
+win.customElements.define('banner-btn', BannerBtn);
+win.customElements.define('icon-btn', IconBtn);
+win.customElements.define('menu-btn', MenuBtn);
+win.customElements.define('list-btn', ListBtn);
+win.customElements.define('page-footer', PageFooter);
+win.customElements.define('footer-link', FooterLink);
+win.customElements.define('footer-table', FooterTable);
 
 //rendering optimization
-const doc = window.document; //전역 객체 참조 복사
-
 const header = doc.createElement('page-header');
 const mainTab = doc.createElement('main-tab');
 const footer = doc.createElement('page-footer');
 const app = doc.getElementById('app');
-app.style.overflow = 'hidden';
+app!.style.overflow = 'hidden';
 
 const fragments = doc.createDocumentFragment(); //append 최소화
 

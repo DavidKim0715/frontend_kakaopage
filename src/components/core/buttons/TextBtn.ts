@@ -1,26 +1,25 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
-    .text-btn{
-      background-color: gray;
-      border: none;
-      border-radius: 4em;
-      color: #fff;
-      width : 8em;
-      height : 5em;
-    }
-    .text-title{
-      font-size : 3em;
-    }
-    </style>
-    <button
-      class="text-btn"
-      type='button'
-    >
-      <span class='text-title'></span>
-    </button>
-  `;
-
+template.insertAdjacentHTML('afterbegin', `
+<style>
+.text-btn{
+  background-color: gray;
+  border: none;
+  border-radius: 4em;
+  color: #fff;
+  width : 8em;
+  height : 5em;
+}
+.text-title{
+  font-size : 3em;
+}
+</style>
+<button
+  class="text-btn"
+  type='button'
+>
+  <span class='text-title'></span>
+</button>`
+)
 export class TextBtn extends HTMLElement {
   textTitle = '';
   /*
@@ -30,7 +29,6 @@ export class TextBtn extends HTMLElement {
     super(); // 초기화
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.textTitle = this.shadowRoot.querySelector('.text-title');
   }
   /*
    * variables
@@ -56,8 +54,10 @@ export class TextBtn extends HTMLElement {
   }
 
   getTitleProps(): void {
+    const textTitle = this.shadowRoot?.querySelector('.text-title') as HTMLElement;
     const titleData = this.title;
-    this.textTitle.innerText = titleData;
+    
+    textTitle.innerText = titleData;
   }
 
   /*
@@ -76,7 +76,7 @@ export class TextBtn extends HTMLElement {
     this.setAttribute('title', newValue);
   }
   get title(): string {
-    return this.getAttribute('title');
+    return this.getAttribute('title') as string;
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

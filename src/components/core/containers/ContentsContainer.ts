@@ -1,34 +1,29 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
+template.insertAdjacentHTML('afterbegin', `
+<style>
     .contents-container-wrapper{
       display: flex;
       flex-direction: column;
     }
-    .
     </style>
-    <article class='contents-container-wrapper'>
-      <span class="contents-container-title"></span>
-    </article>
-  `;
-
+    `
+    )
 export class ContentsContainer extends HTMLElement {
+  private doc = document
+  private node  = this.doc.createElement('article')
   /*
    * constructor
    */
   constructor() {
-    super(); // 초기화
+    // initializtion
+    super(); 
 
+    //Append shadowDom 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.containerTitle = this.shadowRoot?.querySelector(
-      '.contents-container-title'
-    );
-    this.renderHTML(
-      '.contents-container-title',
-      'afterend',
-      this.renderListBtn()
-    );
+
+    //init-call connectedCallback
+    this.init()
   }
   /*
    * variables
@@ -38,9 +33,13 @@ export class ContentsContainer extends HTMLElement {
     return ['contents'];
   }
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position as InsertPosition, element);
+  /*
+   * Methods
+   */
+
+  init(): void{
+    this.node.classList.add('contents-container-wrapper')
+    this.shadowRoot?.appendChild(this.node)
   }
 
   renderListBtn(): string {
@@ -55,10 +54,7 @@ export class ContentsContainer extends HTMLElement {
     }
     return btns;
   }
-  /*
-   * Methods
-   */
-
+  
   attachEvents(): void {
     console.log('dd');
     //이벤트 리스터 등록
@@ -68,43 +64,30 @@ export class ContentsContainer extends HTMLElement {
    * life cycle
    */
 
-  getTitleProps(): void {
-    const titleData = this.contents.title;
-    this.containerTitle.innerText = titleData;
-  }
-
-  // getContentsProps(): void {
-  //   const contentsData
-  // }
-
   connectedCallback() {
-    this.getTitleProps();
+    this.node.insertAdjacentHTML('afterbegin',`
+    <span class="contents-container-title">${this.contents.title}</span>
+    ${this.renderListBtn()}
+    `)
+    
     this.attachEvents();
   }
+
   disconnectedCallback() {
     console.log('3::: disconnectedCallback');
   }
 
-  set contents(newValue: any) {
+  set contents(newValue: object) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() : object {
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
-    //// called when one of attributes listed above is modified
-    // switch (name) {
-    //   case 'title':
-    //     this.menuTitle.innerText = newValue;
-    //     break;
-    //   case 'contents':
-    //     console.log(JSON.parse(newValue));
-    //     break;
-    //   default:
-    //     break;
-    // }
-    // this.connectedCallback(); //rerender
+    if(oldValue.title !== newValue.title){
+      this.contents.title = newValue.title;
+    }
   }
   adoptedCallback() {
     // called when the element is moved to a new document

@@ -1,6 +1,6 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
+template.insertAdjacentHTML('afterbegin', `
+<style>
     .detail {
       list-style:none;
       display : none;
@@ -9,44 +9,43 @@ template.innerHTML = `
       display : block;
     }
     </style>
-    <link-arrow-btn id="footer-btn" title='(주)카카오페이 사업자 정보'>
-    </link-arrow-btn>
-  `;
+   `
+    )
 
 export class FooterTable extends HTMLElement {
+  private doc = document
+  private node  = this.doc.createElement('link-arrow-btn')
   /*
    * constructor
    */
   constructor() {
-    super(); // 초기화
+    // initializtion
+    super(); 
 
+    //Append shadowDom 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML('link-arrow-btn', 'afterend', this.renderStaticTable());
+
+    //init-call connectedCallback
+    this.init()
   }
   /*
    * variables
    */
-  // // 외부 스타일을 shadow dom에 적용하기
-  // const linkElem = document.createElement('link');
-  // linkElem.setAttribute('rel', 'stylesheet');
-  // linkElem.setAttribute('href', 'style.css');
-
-  // // 생성된 요소를 shadow dom에 부착하기
-  // shadow.appendChild(linkElem);
 
   static get observedAttributes() {
     return [];
   }
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
-  }
-
   /*
    * Methods
    */
+
+  init(): void{
+    this.node.id ="footer-btn"
+    this.node.innerText = '(주)카카오페이 사업자 정보'
+    this.shadowRoot?.appendChild(this.node)
+  }
 
   attachEvents() {
     const shadow = this.shadowRoot;
@@ -96,7 +95,7 @@ export class FooterTable extends HTMLElement {
         `;
   }
   connectedCallback() {
-    // this.getContentsProps();
+    this.node.insertAdjacentHTML('afterbegin', this.renderStaticTable())
     this.attachEvents();
   }
   disconnectedCallback() {

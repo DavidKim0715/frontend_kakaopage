@@ -1,21 +1,20 @@
 const template = document.createElement('template');
 
-template.innerHTML = `
-    <style>
+template.insertAdjacentHTML('afterbegin', `
+<style>
      @media (min-width: 1080px) {
       .benefit-page-wrapper{
         width: 1080px;
       }
     </style>
     <section class='benefit-page-wrapper'>
-    </section>
-  `;
-
+    </section>`
+  )
 export class BenefitPage extends HTMLElement {
-  cardItems = [];
-  menuItmes = [];
-  contentItems = [];
-  pointItems = [];
+  private cardItems = [];
+  private menuItems = [];
+  private contentItems = [];
+  private pointItems = [];
   /*
    * constructor
    */
@@ -174,10 +173,7 @@ export class BenefitPage extends HTMLElement {
    * variables
    */
 
-  // // 외부 스타일을 shadow dom에 적용하기
-  // const linkElem = document.createElement('link');
-  // linkElem.setAttribute('rel', 'stylesheet');
-  // linkElem.setAttribute('href', 'style.css');
+
 
   // // 생성된 요소를 shadow dom에 부착하기
   // shadow.appendChild(linkElem);
@@ -213,8 +209,8 @@ export class BenefitPage extends HTMLElement {
   set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() : object {
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

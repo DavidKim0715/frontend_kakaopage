@@ -1,7 +1,7 @@
 const template = document.createElement('template');
 
-template.innerHTML = `
-    <style>
+template.insertAdjacentHTML('afterbegin', `
+<style>
     @media (min-width: 1080px) {
       .home-page-wrapper{
         width: 1080px;
@@ -10,14 +10,13 @@ template.innerHTML = `
     
      </style>
     <section class="home-page-wrapper">
-    </section>
-  `;
-
+    </section>`
+    )
 export class HomePage extends HTMLElement {
-  cardItems = [];
-  accountItems = [];
-  menuItmes = [];
-  contentItems = [];
+  private cardItems = [];
+  private accountItems = [];
+  private menuItems = [];
+  private contentItems = [];
   /*
    * constructor
    */
@@ -25,7 +24,7 @@ export class HomePage extends HTMLElement {
     super(); // 초기화
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.accountItems = {
       title: '카카오페이머니',
       account: 0,
@@ -201,10 +200,9 @@ export class HomePage extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
   attachEvents(): void {
-    console.log('hompage 이벤트 등록');
     //이벤트 리스터 등록
   }
 
@@ -222,8 +220,8 @@ export class HomePage extends HTMLElement {
   set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() : object{
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

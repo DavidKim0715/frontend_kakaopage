@@ -1,53 +1,49 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
-    .list-btn{
-      display: inline-grid;
-    }
-    </style>
-    <a class='list-btn'>
-    </a>
-    `;
+template.insertAdjacentHTML('afterbegin', `
+<style>
+.list-btn{
+  display: inline-grid;
+}
+</style>
+`
+)
 
 export class ListBtn extends HTMLElement {
+  private doc = document
+  private node  = this.doc.createElement('a')
   /*
    * constructor
    */
   constructor() {
-    super(); // 초기화
+    // initializtion
+    super(); 
 
+    //Append shadowDom 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    const list = this.shadowRoot?.querySelector('.list-btn');
-    list.href = this.contents.url;
-    this.renderHTML('.list-btn', 'afterbegin', this.renderButton());
+
+    //init-call connectedCallback
+    this.init()
   }
   /*
    * variables
    */
 
-  // // 외부 스타일을 shadow dom에 적용하기
-  // const linkElem = document.createElement('link');
-  // linkElem.setAttribute('rel', 'stylesheet');
-  // linkElem.setAttribute('href', 'style.css');
 
-  // // 생성된 요소를 shadow dom에 부착하기
-  // shadow.appendChild(linkElem);
   static get observedAttributes() {
     return ['data'];
   }
   /*
    * Methods
    */
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
+
+  init():void{
+    this.node.classList.add('list-btn');
+    this.shadowRoot?.appendChild(this.node)
   }
 
   attachEvents(): void {
     //이벤트 리스터 등록
-    // const btn = this.shadowRoot.querySelector('.menu-btn');
-    // btn.addEventListener('click', this.onClickBtn);
   }
 
   // onClickBtn(e: Event): {
@@ -67,6 +63,7 @@ export class ListBtn extends HTMLElement {
    * life cycle
    */
   connectedCallback() {
+    this.node.insertAdjacentHTML('afterbegin',this.renderButton())
     this.attachEvents();
   }
   disconnectedCallback() {
@@ -78,7 +75,7 @@ export class ListBtn extends HTMLElement {
     this.setAttribute('contents', newValue);
   }
   get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

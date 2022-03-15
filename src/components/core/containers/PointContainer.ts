@@ -1,41 +1,38 @@
 const template = document.createElement('template');
-template.innerHTML = `
-  <style>
-  .point-wrapper{
-    display : block;
-      height : 300px;
-      margin : 0 auto;
-      width: 1000px;
+template.insertAdjacentHTML('afterbegin', `
+<style>
+.point-wrapper{
+  display : block;
+    height : 300px;
+    margin : 0 auto;
+    width: 1000px;
+}
+.title{
+    font-size: 3em;
+    color : #c5c5c5;
   }
-  .title{
-      font-size: 3em;
-      color : #c5c5c5;
-    }
-    .point-info{
-      font-size: 5em;
-    }
-  </style>
-    <article class='point-wrapper'>
-      <span class="title"></span>
-      <br>
-      <a class="point-info"></a>
-      <hr>
-    </article>
-  `;
+  .point-info{
+    font-size: 5em;
+  }
+</style>
+`)
 export class PointContainer extends HTMLElement {
+  private doc = document
+  private node  = this.doc.createElement('article')
   /*
    * constructor
    */
   constructor() {
-    super(); // 초기화
+    super(); // initializtion
 
+    //Append shadowDom 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.containerTitle = this.shadowRoot?.querySelector('.title');
-    this.pointInfo = this.shadowRoot?.querySelector('.point-info');
-    this.pointLink = this.shadowRoot?.querySelector('hr');
-    this.renderHTML('hr', 'afterend', this.renderPointLink());
+
+    //init-call connectedCallback
+    this.init()
   }
+  
   /*
    * variables
    */
@@ -44,14 +41,9 @@ export class PointContainer extends HTMLElement {
     return ['contents'];
   }
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
-  }
-
-  getInfoProps(): void {
-    const pointData = this.contents.account;
-    this.pointInfo.innerText = pointData + 'P';
+  init(): void{
+    this.node.classList.add('point-wrapper')
+    this.shadowRoot?.appendChild(this.node)
   }
 
   /*
@@ -74,14 +66,20 @@ export class PointContainer extends HTMLElement {
    * life cycle
    */
 
-  getTitleProps(): void {
-    const titleData = this.contents.title;
-    this.containerTitle.innerText = titleData;
-  }
-
+  
   connectedCallback() {
-    this.getTitleProps();
-    this.getInfoProps();
+    this.node.insertAdjacentHTML('afterbegin',`
+      <span class="title">
+        ${this.contents.title}
+      </span>
+      <br>
+      <a class="point-info">
+        ${this.contents.account}P
+      </a>
+      <hr>
+      ${this.renderPointLink()}
+    `
+    )
     this.attachEvents();
   }
   disconnectedCallback() {
@@ -91,13 +89,18 @@ export class PointContainer extends HTMLElement {
   set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() : object {
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
     //// called when one of attributes listed above is modified
-    // this.connectedCallback(); //rerender
+    if(oldValue.title !== newValue.title){
+      this.contents.title = newValue.title
+    }
+    if(oldValue.account !== newValue.account){
+      this.contents.account = newValue.account
+    }
   }
   adoptedCallback() {
     // called when the element is moved to a new document

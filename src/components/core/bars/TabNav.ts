@@ -1,36 +1,39 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
+template.insertAdjacentHTML('afterbegin', `
+<style>
     .tab-nav-wrapper{
-      display : block;
-      margin : 3em auto;
-      width: 1000px;
+      position : absolute;
     }
-    .tab-nav-btn{
-     
+    .tab-nav{
+      display : grid;
+      grid-template-column : repeat(auto-fill, 1fr);
     }
-    .selected{
-       color : black;
-       border-bottom: 2px solid black;
-       padding-bottom: 1.15em;
+    .tab-line{
+      background-color : black;
+      border : 0;
+      transition : all 0.3s ease-in-out;
     }
     </style>
-    <nav class='tab-nav-wrapper'>
-      <span></span>
-    </nav>
-  `;
+   `
+    )
 
 export class TabNav extends HTMLElement {
+  private doc = document
+  private node  = this.doc.createElement('div')
+
   /*
    * constructor
    */
   constructor() {
-    super(); // 초기화
+    // initializtion
+    super(); 
+
+    //Append shadowDom 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML('.tab-nav-wrapper', 'afterbegin', this.renderButton());
 
-    this.tabSlot = this.shadowRoot?.querySelectorAll('.tab-nav-btn');
+    //init-call connectedCallback
+    this.init()
   }
   /*
    * variables
@@ -40,9 +43,13 @@ export class TabNav extends HTMLElement {
     return ['contents'];
   }
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
+  /*
+   * Methods
+   */
+
+  init():void{
+    this.node.classList.add('tab-nav-wrapper')
+    this.shadowRoot?.appendChild(this.node)
   }
   renderButton(): string {
     let btns = ``;
@@ -53,7 +60,6 @@ export class TabNav extends HTMLElement {
       const content = JSON.stringify(data.data);
       btns += `
             <menu-btn
-              class='tab-nav-btn'
               content='${content}'
               index=${idx}
               font-size='0.7em'
@@ -61,29 +67,19 @@ export class TabNav extends HTMLElement {
             </menu-btn>
           `;
     }
+    btns += `<hr class="tab-line">`
     return btns;
   }
 
-  /*
-   * Methods
-   */
-
+  onClickBtn(e : Event){
+    const target = e.target as HTMLElement;
+    // const a = e.target?.shadowRoot.querySelector('a')
+    target.classList.add('selected')
+    this.dispatchEvent(new CustomEvent('selectedIndex', { detail: target.getAttribute('index') })); //emit tabIndex
+  }
   attachEvents(): void {
-    const len = this.tabSlot.length;
-    for (let i = 0; i < len; i++) {
-      this.tabSlot[i].addEventListener('click', (e: Event) => {
-        const target = e.target;
-        for (let i = 0; i < len; i++) {
-          if (this.tabSlot[i].classList.contains('selected')) {
-            // this.dom.contents[i].classList.remove('selected');
-            this.tabSlot[i].classList.remove('selected');
-            break;
-          }
-        }
-        target.classList.add('selected');
-        this.dispatchEvent(new CustomEvent('selectedIndex', { detail: i })); //emit tabIndex
-      });
-    }
+    this.node.addEventListener('click', this.onClickBtn)
+    
     //이벤트 리스터 등록
   }
 
@@ -92,32 +88,27 @@ export class TabNav extends HTMLElement {
    */
 
   connectedCallback() {
-    this.tabSlot[0].classList.add('selected'); //초기 인덱스 세팅
+    this.node.insertAdjacentHTML('afterbegin', `
+      <nav class="tab-nav">
+        ${ this.renderButton()}
+      </nav>
+    `)
+
+    // const tabNav = this.node.querySelector('.tab-nav')
+    // const len = tabNav?.children?.length-1
+    // tabNav.style.gridTemplateColumns = `repeat(${len}, 1fr)`
+    // console.log(tabNav,'<<<<<<<<<<<<<<<<<<<')
     this.attachEvents();
   }
   disconnectedCallback() {
-    const len = this.tabSlot.length;
-    for (let i = 0; i < len; i++) {
-      this.tabSlot[i].removeEventListener('click', () => {
-        const target = e.target;
-        for (let i = 0; i < len; i++) {
-          if (this.tabSlot[i].classList.contains('selected')) {
-            // this.dom.contents[i].classList.remove('selected');
-            this.tabSlot[i].classList.remove('selected');
-            break;
-          }
-        }
-        target.classList.add('selected');
-        this.dispatchEvent(new CustomEvent('selectedIndex', { detail: i }));
-      });
-    }
+    //
   }
 
   set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() :object{
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

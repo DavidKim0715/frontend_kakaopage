@@ -1,32 +1,36 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
-    .main-btn-tab{
-      display : block;
-      margin : 0 auto;
-      width: 1000px;
-      height : 300px;
-    }
-    .ripple{
-    }
-    .main-btn-text{
-      font-size : 3em;
-    }
-    </style>
-    <article class="main-btn-tab">
-    </article>
-  `;
-
+template.insertAdjacentHTML('afterbegin', `
+<style>
+.main-btn-tab{
+  display : block;
+  margin : 0 auto;
+  width: 1000px;
+  height : 300px;
+}
+.ripple{
+}
+.main-btn-text{
+  font-size : 3em;
+}
+</style>
+`
+)
 export class MainBtnContainer extends HTMLElement {
+  private doc = document
+  private node  = this.doc.createElement('article')
   /*
    * constructor
    */
   constructor() {
-    super(); // 초기화
+    // initializtion
+    super(); 
 
+    //Append shadowDom 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML('.main-btn-tab', 'afterbegin', this.renderBtn());
+
+    //init-call connectedCallback
+    this.init()
   }
   /*
    * variables
@@ -36,9 +40,13 @@ export class MainBtnContainer extends HTMLElement {
     return ['contents', 'rows-per-contents'];
   }
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
+  /*
+   * Methods
+   */
+
+  init(): void{
+    this.node.classList.add('main-btn-tab')
+    this.shadowRoot?.appendChild(this.node)
   }
 
   renderBtn(): string {
@@ -54,9 +62,6 @@ export class MainBtnContainer extends HTMLElement {
     }
     return btn;
   }
-  /*
-   * Methods
-   */
 
   attachEvents(): void {
     console.log('메인 버튼 탭 이벤트 등록');
@@ -69,6 +74,9 @@ export class MainBtnContainer extends HTMLElement {
    */
 
   connectedCallback() {
+    this.node.insertAdjacentHTML('afterbegin',`
+      ${this.renderBtn()}
+    `)
     this.attachEvents();
   }
   disconnectedCallback() {
@@ -79,13 +87,13 @@ export class MainBtnContainer extends HTMLElement {
     this.setAttribute('rows-per-contents', newValue);
   }
   get rosPerContents(): number {
-    return parseInt(this.getAttribute('rows-per-contents'));
+    return parseInt(this.getAttribute('rows-per-contents') as string);
   }
   set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() : object {
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

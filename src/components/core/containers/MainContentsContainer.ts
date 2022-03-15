@@ -1,6 +1,6 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
+template.insertAdjacentHTML('afterbegin', `
+  <style>
     .main-contents-page-wrapper{
       overflow-x: hidden;
       display : flex;
@@ -9,25 +9,24 @@ template.innerHTML = `
       width : 1080px;
     }
     </style>
-    <main class="main-contents-page-wrapper">
-    </main>
-  `;
+`)
 
 export class MainContentsContainer extends HTMLElement {
-  containerWidth = 1080;
-  slide = '' as HTMLElement;
+  private doc = document
+  private containerWidth = 1080;
+  private node  = this.doc.createElement('main')
   /*
    * constructor
    */
   constructor() {
-    super(); // 초기화
+    super(); // initializtion
+
+    //Append shadowDom 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML(
-      '.main-contents-page-wrapper',
-      'afterbegin',
-      this.renderPage()
-    );
+
+    //init-call connectedCallback
+    this.init()
   }
   /*
    * variables
@@ -37,9 +36,13 @@ export class MainContentsContainer extends HTMLElement {
     return ['contents', 'index'];
   }
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
+  /*
+   * Methods
+   */
+
+  init(): void{
+    this.node.classList.add('main-contents-page-wrapper')
+    this.shadowRoot?.appendChild(this.node)
   }
 
   renderPage(): string {
@@ -52,24 +55,13 @@ export class MainContentsContainer extends HTMLElement {
     return pages;
   }
   /*
-   * Methods
-   */
-
-  attachEvents(): void {
-    //이벤트 리스터 등록
-  }
-
-  /*
    * life cycle
    */
 
   connectedCallback() {
-    this.slide = this.shadowRoot?.querySelector(
-      '.main-contents-page-wrapper'
-    ) as HTMLElement;
-    this.slide.style.width = this.containerWidth * this.contents.length + 'px';
-    this.slide.style.transition = '300ms';
-    this.attachEvents();
+    this.node.insertAdjacentHTML('afterbegin', this.renderPage())
+    this.node.style.width = this.containerWidth * this.contents.length + 'px';
+    this.node.style.transition = '300ms';
   }
   disconnectedCallback() {
     console.log('3::: disconnectedCallback');
@@ -79,18 +71,18 @@ export class MainContentsContainer extends HTMLElement {
     this.setAttribute('contents', newValue);
   }
   get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   set index(newValue: any) {
     this.setAttribute('index', newValue);
   }
   get index() {
-    return parseInt(this.getAttribute('index'));
+    return parseInt(this.getAttribute('index') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
-    this.slide.style.transform =
+    this.node.style.transform =
       'translate3d(-' + this.containerWidth * this.index + 'px, 0px, 0px)';
   }
   adoptedCallback() {

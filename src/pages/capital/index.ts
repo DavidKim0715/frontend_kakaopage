@@ -1,21 +1,20 @@
 const template = document.createElement('template');
-
-template.innerHTML = `
-    <style>
-     @media (min-width: 1080px) {
-      .capital-page-wrapper{
-        width: 1080px;
-      }
-    </style>
-    <section class="capital-page-wrapper">
-    </section>
-  `;
+template.insertAdjacentHTML('afterbegin', `
+<style>
+ @media (min-width: 1080px) {
+  .capital-page-wrapper{
+    width: 1080px;
+  }
+</style>
+<section class="capital-page-wrapper">
+</section>
+`)
 
 export class CapitalPage extends HTMLElement {
-  cardItems = [];
-  menuItmes = [];
-  contentItems = [];
-  capitalItems = {};
+  private cardItems = [];
+  private menuItmes = [];
+  private contentItems = [];
+  private capitalItems = {};
   /*
    * constructor
    */
@@ -84,8 +83,8 @@ export class CapitalPage extends HTMLElement {
   set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() : object {
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

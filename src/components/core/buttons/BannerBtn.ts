@@ -1,15 +1,12 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
-    
-    </style>
-    <button type='button'>
-          banner button
-    </button>
-    `;
+template.insertAdjacentHTML('afterbegin', `
+<style>    
+</style>
+<button type='button'>
+</button>`
+)
 
 export class BannerBtn extends HTMLElement {
-  label  = ''
   /*
    * constructor
    */
@@ -18,7 +15,6 @@ export class BannerBtn extends HTMLElement {
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-
   }
   /*
    * variables
@@ -65,8 +61,8 @@ export class BannerBtn extends HTMLElement {
   set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() : object {
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

@@ -1,6 +1,6 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
+template.insertAdjacentHTML('afterbegin', `
+<style>
     .slide-wrapper{
       cursor : grab;
       position: relative; 
@@ -23,8 +23,8 @@ template.innerHTML = `
     <article class="slide-wrapper">
       <div class="slide-list">
       </div>
-    </article>
-  `;
+    </article>`
+    )
 
 export class BannerSlider extends HTMLElement {
   slideWidth = 400;
@@ -78,8 +78,8 @@ export class BannerSlider extends HTMLElement {
 
   connectedCallback() {
     //mount
-    const slide = this.shadowRoot?.querySelector('.slide-list');
-    slide!.style.width = this.contents.length * this.slideWidth + 'px';
+    const slide = this.shadowRoot?.querySelector('.slide-list') as HTMLElement;
+    slide.style.width = this.contents.length * this.slideWidth + 'px';
     this.attachEvents();
   }
 
@@ -87,11 +87,11 @@ export class BannerSlider extends HTMLElement {
     console.log('3::: disconnectedCallback');
   }
 
-  set contents(newValue: any) {
+  set contents(newValue: ) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() : object{
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

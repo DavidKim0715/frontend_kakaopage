@@ -1,34 +1,31 @@
 const template = document.createElement('template');
-template.innerHTML = `
-  <style>
-  .capital-wrapper{
-      display : block;
-      height : 300px;
-      margin : 0 auto;
-      width: 1000px;
-  }
-  </style>
-    <article class='capital-wrapper'>
-      <div>
-        <span class="title"></span>
-        <span class="refresh-icon"></span>
-      </div>
-      <span class="capital-info"></span>
-    </article>
-  `;
+template.insertAdjacentHTML('afterbegin',  `
+<style>
+.capital-wrapper{
+    display : block;
+    height : 300px;
+    margin : 0 auto;
+    width: 1000px;
+}
+</style>
+`)
 
 export class CapitalContainer extends HTMLElement {
-  capitalInfo = '';
+  private doc = document
+  private node  = this.doc.createElement('article')
   /*
    * constructor
    */
   constructor() {
-    super(); // 초기화
+    // initializtion
+    super(); 
 
+    //Append shadowDom 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.containerTitle = this.shadowRoot?.querySelector('.title');
-    this.capitalInfo = this.shadowRoot?.querySelector('.capital-info');
+
+    //init-call connectedCallback
+    this.init()
   }
   /*
    * variables
@@ -38,19 +35,13 @@ export class CapitalContainer extends HTMLElement {
     return ['contents'];
   }
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
-  }
-
-  getInfoProps(): void {
-    const capitalData = this.contents?.account;
-    this.capitalInfo.innerText = capitalData + '원';
-  }
-
   /*
    * Methods
    */
+  init(): void{
+    this.node.classList.add('contents-container-wrapper')
+    this.shadowRoot?.appendChild(this.node)
+  }
 
   attachEvents(): void {
     console.log('dd');
@@ -62,14 +53,14 @@ export class CapitalContainer extends HTMLElement {
    * life cycle
    */
 
-  getTitleProps(): void {
-    const titleData = this.contents?.title;
-    this.containerTitle.innerText = titleData;
-  }
-
   connectedCallback() {
-    this.getTitleProps();
-    this.getInfoProps();
+    this.node.insertAdjacentHTML('afterbegin',`
+    <div>
+        <span class="title">${this.contents.title}</span>
+        <span class="refresh-icon"></span>
+    </div>
+    <span class="capital-info">${this.contents?.account}원</span>
+    `)
     this.attachEvents();
   }
   disconnectedCallback() {
@@ -79,13 +70,17 @@ export class CapitalContainer extends HTMLElement {
   set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() : object {
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
-    //// called when one of attributes listed above is modified
-    // this.connectedCallback(); //rerender
+    if(oldValue.title !== newValue.title){
+      this.contents.title = newValue.title
+    }
+    if(oldValue.account !== newValue.account){
+      this.contents.account = newValue.account
+    }
   }
   adoptedCallback() {
     // called when the element is moved to a new document

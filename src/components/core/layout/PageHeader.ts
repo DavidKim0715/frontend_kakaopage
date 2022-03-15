@@ -1,7 +1,7 @@
 // import { logo } from 'src/static/image/logo.png';
 const template = document.createElement('template');
-template.innerHTML = `
-  <style>
+template.insertAdjacentHTML('afterbegin', `
+<style>
   .page-header-wrapper{
 
   }
@@ -11,11 +11,12 @@ template.innerHTML = `
   </style>
    <header class='page-header-wrapper'>
       <img class='logo-img' loading='lazy'/>
-    </header>
-  `;
+    </header>`
+    )
 
 export class PageHeader extends HTMLElement {
-  logo = '';
+  private logo : HTMLElement | null = null
+  /*
   /*
    * constructor
    */
@@ -24,7 +25,7 @@ export class PageHeader extends HTMLElement {
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.logo = this.shadowRoot?.querySelector('.logo-img');
+    this.logo = this.shadowRoot?.querySelector('.logo-img') as HTMLElement;
   }
   /*
    * variables
@@ -64,8 +65,8 @@ export class PageHeader extends HTMLElement {
   set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() : object {
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

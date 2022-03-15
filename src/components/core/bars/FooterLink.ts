@@ -1,39 +1,43 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <nav class="footer-link-wrapper">
-    </nav>
-  `;
+template.insertAdjacentHTML('afterbegin', `
+  <style>
+  </style>
+`
+)
 
 export class FooterLink extends HTMLElement {
+  private doc = document
+  private node  = this.doc.createElement('nav')
+
   /*
    * constructor
    */
   constructor() {
-    super(); // 초기화
+    // initializtion
+    super(); 
 
+    //Append shadowDom 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML('.footer-link-wrapper', 'afterbegin', this.renderBtn());
+
+    //init-call connectedCallback
+    this.init()
   }
   /*
    * variables
    */
-  // // 외부 스타일을 shadow dom에 적용하기
-  // const linkElem = document.createElement('link');
-  // linkElem.setAttribute('rel', 'stylesheet');
-  // linkElem.setAttribute('href', 'style.css');
-
-  // // 생성된 요소를 shadow dom에 부착하기
-  // shadow.appendChild(linkElem);
 
   static get observedAttributes() {
     return ['contents'];
   }
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
-  }
+   /*
+   * Methods
+   */
+
+  init():void{
+    this.node.classList.add('footer-link-wrapper')
+  } 
 
   renderBtn(): string {
     let btn = ``;
@@ -46,9 +50,7 @@ export class FooterLink extends HTMLElement {
     }
     return btn;
   }
-  /*
-   * Methods
-   */
+ 
 
   attachEvents(): void {
     console.log('메인 버튼 탭 이벤트 등록');
@@ -56,27 +58,28 @@ export class FooterLink extends HTMLElement {
     //이벤트 리스터 등록
   }
 
+  set contents(newValue: any) {
+    this.setAttribute('contents', newValue);
+  }
+  
+  get contents() :object {
+    return JSON.parse(this.getAttribute('contents') as string);
+  }
   /*
    * life cycle
    */
 
-  // getContentsProps(): void {
-  //   const contentsData
-  // }
 
   connectedCallback() {
+    this.node.insertAdjacentHTML('afterbegin', this.renderBtn())
     this.attachEvents();
   }
+
   disconnectedCallback() {
     console.log('3::: disconnectedCallback');
   }
 
-  set contents(newValue: any) {
-    this.setAttribute('contents', newValue);
-  }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
-  }
+
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
     // this.connectedCallback(); //rerender

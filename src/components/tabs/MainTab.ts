@@ -1,23 +1,32 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
+template.insertAdjacentHTML('afterbegin',`
+<style>
     .main-tab-wrapper{
       position: relative;
     }
-    </style>
-    <div class='main-tab-wrapper'>
-    </div>
-    `;
+    </style>`
+)
 export class MainTab extends HTMLElement {
-  selectedIndex = 0;
-  contents = [];
+  private doc = document;
+  private node = this.doc.createElement('div');
+  private selectedIndex = 0;
+  private contents = [];
   /*
    * constructor
    */
+
+
+  // const linkElem = document.createElement('link');
+  // linkElem.setAttribute('rel', 'stylesheet');
+  // linkElem.setAttribute('href', 'style.css');
+
+  // // 생성된 요소를 shadow dom에 부착하기
+  // shadow.appendChild(linkElem);
+
   constructor() {
     super(); // 초기화
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.contents = [
       { index: 0, title: 'home-page', data: { name: '홈', url: '' } },
       { index: 1, title: 'capital-page', data: { name: '자산', url: '' } },
@@ -25,8 +34,9 @@ export class MainTab extends HTMLElement {
       { index: 3, title: 'quick-menu-page', data: { name: '전체', url: '' } },
     ];
 
-    this.renderHTML('.main-tab-wrapper', 'afterbegin', this.renderNav());
-    this.renderHTML('tab-nav', 'afterend', this.renderContents());
+    this.init()
+    // this.renderHTML('.main-tab-wrapper', 'afterbegin', this.renderNav());
+    // this.renderHTML('tab-nav', 'afterend', this.renderContents());
   }
   /*
    * variables
@@ -38,9 +48,9 @@ export class MainTab extends HTMLElement {
     return [''];
   }
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
+  init():void{
+    this.node.classList.add('main-tab-wrapper')
+    this.shadowRoot?.appendChild(this.node)
   }
 
   renderNav(): string {
@@ -69,15 +79,18 @@ export class MainTab extends HTMLElement {
   }
 
   connectedCallback(): void {
+    this.node.insertAdjacentHTML('afterbegin',`
+      ${this.renderNav()}
+      ${this.renderContents()}
+    `)
     this.attachEvents();
   }
 
   disconnectedCallback(): void {
-    const tabNav = this.shadowRoot?.querySelector('tab-nav');
-    tabNav?.removeEventListener('selectedIndex', (event: Event) => {
-      this.selectedIndex = event.detail;
-    });
-    console.log('event is removed');
+    // const tabNav = this.shadowRoot?.querySelector('tab-nav');
+    // tabNav?.removeEventListener('selectedIndex', (event: Event) => {
+    //   this.selectedIndex = event.detail;
+    // });
   }
 
   attributeChangedCallback(name, oldValue, newValue): void {

@@ -1,5 +1,5 @@
 const template = document.createElement('template');
-template.innerHTML = `
+template.insertAdjacentHTML('afterbegin',`
     <style>
       .quick-menu-page-wrapper{
         width: 1080px;
@@ -9,10 +9,10 @@ template.innerHTML = `
     </style>
     <section class="quick-menu-page-wrapper">
     </section>
-    `;
+`);
 
 export class QuickMenuPage extends HTMLElement {
-  contents = [];
+  private contents = [];
   /*
    * constructor
    */

@@ -1,11 +1,11 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <footer class='page-footer'>
+template.insertAdjacentHTML('afterbegin', `
+<footer class='page-footer'>
     </footer>
-  `;
+`)
 
 export class PageFooter extends HTMLElement {
-  items = [];
+  private items = [];
   /*
    * constructor
    */
@@ -39,7 +39,7 @@ export class PageFooter extends HTMLElement {
 
   renderHTML(tag: string, position: string, element: string): void {
     const data = this.shadowRoot?.querySelector(tag);
-    data.insertAdjacentHTML(position, element);
+    data?.insertAdjacentHTML(position as InsertPosition, element);
   }
 
   renderFooterLink(): string {
@@ -81,8 +81,8 @@ export class PageFooter extends HTMLElement {
   set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() :object {
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

@@ -1,42 +1,40 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
-    .modal-container-wrapper{
-      display : flex;
-      position:fixed; 
-      width:100%; 
-      height:100vh;
-    }
-    .close-btn{
-      
-    }
-    .close-icon{
-      
-    }
-    .closed{
-      display : none;
-    }
-    </style>
-    <section class="modal-container-wrapper">
-      <div class="modal-contents">
-        <button type="button" class="close-btn">
-          <span class='close-icon'>
-          </span>
-        </button>
-      </div>
-    </section>
-  `;
+template.insertAdjacentHTML('afterbegin',`
+<style>
+.modal-container-wrapper{
+  display : flex;
+  position:fixed; 
+  width:100%; 
+  height:100vh;
+}
+.close-btn{
+  
+}
+.close-icon{
+  
+}
+.closed{
+  display : none;
+}
+</style>
+`
+)
 
 export class ModalContainer extends HTMLElement {
+  private doc = document
+  private node  = this.doc.createElement('main')
   /*
    * constructor
    */
   constructor() {
-    super(); // 초기화
+    super(); // initializtion
 
+    //Append shadowDom 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML('.close-btn', 'afterend', this.renderContents());
+
+    //init-call connectedCallback
+    this.init()
   }
   /*
    * variables
@@ -46,9 +44,9 @@ export class ModalContainer extends HTMLElement {
     return ['contents'];
   }
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
+  init(): void{
+    this.node.classList.add('modal-container-wrapper')
+    this.shadowRoot?.appendChild(this.node)
   }
 
   renderContents(): string {
@@ -73,6 +71,15 @@ export class ModalContainer extends HTMLElement {
    */
 
   connectedCallback() {
+    this.node.insertAdjacentHTML('afterbegin',`
+      <div class="modal-contents">
+      <button type="button" class="close-btn">
+        <span class='close-icon'>
+        </span>
+        ${this.renderContents()}
+      </button>
+    </div>
+    `)
     this.attachEvents();
   }
   disconnectedCallback() {
@@ -84,8 +91,8 @@ export class ModalContainer extends HTMLElement {
   set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() :object {
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

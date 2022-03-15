@@ -1,32 +1,32 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
-    .slide-wrapper{
-      display : block;
-      position: relative; 
-      margin : 0 auto;
-      width: 1000px;
-      overflow-x: hidden;
-    }
-    .slide-list{
-      display: inline-flex;
-      justify-content: space-around;
-      margin: auto; 
-      pointer-events: none;
-      width: 100%; 
-    }
-    .slide-item{
-      border : 1px solid black;
-      border-radius : 2.7em;
-      width:  900px;
-      height: 800px;
-    }
-    </style>
-    <article class="slide-wrapper">
-      <div class="slide-list">
-      </div>
-    </article>
-  `;
+template.insertAdjacentHTML('afterbegin', `
+<style>
+.slide-wrapper{
+  display : block;
+  position: relative; 
+  margin : 0 auto;
+  width: 1000px;
+  overflow-x: hidden;
+}
+.slide-list{
+  display: inline-flex;
+  justify-content: space-around;
+  margin: auto; 
+  pointer-events: none;
+  width: 100%; 
+}
+.slide-item{
+  border : 1px solid black;
+  border-radius : 2.7em;
+  width:  900px;
+  height: 800px;
+}
+</style>
+<article class="slide-wrapper">
+  <div class="slide-list">
+  </div>
+</article>`
+)
 
 export class IconCardSlider extends HTMLElement {
   pressed = false;
@@ -40,7 +40,7 @@ export class IconCardSlider extends HTMLElement {
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML('.slide-list', 'afterbegin', this.renderCard());
-    this.slide = this.shadowRoot?.querySelector('.slide-list');
+    this.slide = this.shadowRoot?.querySelector('.slide-list') as HTMLElement;
   }
   /*
    * variables

@@ -1,6 +1,6 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
+template.insertAdjacentHTML('afterbegin', `
+<style>
     .menu-btn{
       text-align : center;
     }
@@ -8,50 +8,84 @@ template.innerHTML = `
       font-size : 4.5em;
       display: table-cell;
     }
+    .selected{
+      color : black;
+      border-bottom: 2px solid black;
+      padding-bottom: 1.15em;
+   }
     </style>
-    <a class='menu-btn'>
-    </a>
-    `;
-
+    `
+    )
 export class MenuBtn extends HTMLElement {
-  btn = '';
+  private doc = document
+  private node  = this.doc.createElement('a')
   /*
    * constructor
    */
   constructor() {
-    super(); // 초기화
+    // initializtion
+    super(); 
 
+    //Append shadowDom 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.btn = this.shadowRoot?.querySelector('.menu-btn');
-    this.renderHTML('.menu-btn', 'afterbegin', this.renderButton());
-    this.btn.style.fontSize = this.fontSize;
-    this.btn.style.color = this.fontColor;
+
+    //init-call connectedCallback
+    this.init()
   }
-  /*
+
+   /*
    * variables
    */
 
-  static get observedAttributes() {
+   static get observedAttributes() {
     return ['content', 'index', 'font-size', 'font-color'];
   }
+
   /*
    * Methods
    */
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
+
+  set fontSize(newValue: string) {
+    this.setAttribute('font-size', newValue);
+  }
+  get fontSize(): string {
+    return this.getAttribute('font-size') as string;
+  }
+  set fontColor(newValue: string) {
+    this.setAttribute('color', newValue);
+  }
+  get fontColor(): string {
+    return this.getAttribute('color') as string;
   }
 
+  set content(newValue: object) {
+    this.setAttribute('content', newValue);
+  }
+  get content(): object {
+    return JSON.parse(this.getAttribute('content') as string);
+  }
+
+  set index(newValue: number) {
+    this.setAttribute('index', newValue);
+  }
+  get index(): number {
+    return parseInt(this.getAttribute('index') as string);
+  }
+
+  init():void{
+    this.node.classList.add('menu-btn');
+    this.shadowRoot?.appendChild(this.node)
+  }
   attachEvents(): void {
     //이벤트 리스터 등록
-    this.btn?.addEventListener('click', this.onClickBtn);
+    // this.btn?.addEventListener('click', this.onClickBtn);
   }
 
   // onClickBtn(e: Event): {
 
   // };
-  renderButton(): string {
+  renderText(): string {
     let btn = '';
     btn += `<span class='menu-btn-text'>
       ${this.content.name}
@@ -63,38 +97,17 @@ export class MenuBtn extends HTMLElement {
    * life cycle
    */
   connectedCallback() {
+    this.node.insertAdjacentHTML('afterbegin',this.renderText())
+
+    this.node.style.fontSize  = this.fontSize;
+    this.node.style.color = this.fontColor;
+
     this.attachEvents();
   }
   disconnectedCallback() {
-    this.btn?.removeEventListener('click', this.onClickBtn);
+    // this.btn?.removeEventListener('click', this.onClickBtn);
   }
 
-  set fontSize(newValue: string) {
-    this.setAttribute('font-size', newValue);
-  }
-  get fontSize(): object {
-    return this.getAttribute('font-size');
-  }
-  set fontColor(newValue: string) {
-    this.setAttribute('color', newValue);
-  }
-  get fontColor(): object {
-    return this.getAttribute('color');
-  }
-
-  set content(newValue: string) {
-    this.setAttribute('content', newValue);
-  }
-  get content(): object {
-    return JSON.parse(this.getAttribute('content'));
-  }
-
-  set index(newValue: number) {
-    this.setAttribute('index', newValue);
-  }
-  get index(): number {
-    return parseInt(this.getAttribute('index'));
-  }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
     //// called when one of attributes listed above is modified

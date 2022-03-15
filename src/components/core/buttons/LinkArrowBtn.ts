@@ -1,17 +1,17 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
-    .link-arrow-btn{
-    }
-    </style>
-    <button
-      class="link-arrow-btn"
-      type='button'
-    >
-      <span class='text-title'></span>
-      <span class='arrow-icon'></span>
-    </button>
-  `;
+template.insertAdjacentHTML('afterbegin', `
+<style>
+.link-arrow-btn{
+}
+</style>
+<button
+  class="link-arrow-btn"
+  type='button'
+>
+  <span class='text-title'></span>
+  <span class='arrow-icon'></span>
+</button>`
+)
 
 export class LinkArrowBtn extends HTMLElement {
   textTitle = '';
@@ -22,7 +22,6 @@ export class LinkArrowBtn extends HTMLElement {
     super(); // 초기화
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.textTitle = this.shadowRoot.querySelector('.text-title');
   }
   /*
    * variables
@@ -48,8 +47,10 @@ export class LinkArrowBtn extends HTMLElement {
   }
 
   getTitleProps(): void {
+    const textTitle = this.shadowRoot?.querySelector('.text-title') as HTMLElement;
     const titleData = this.title;
-    this.textTitle.innerText = titleData;
+    
+    textTitle.innerText = titleData;
   }
 
   /*
@@ -68,7 +69,7 @@ export class LinkArrowBtn extends HTMLElement {
     this.setAttribute('title', newValue);
   }
   get title(): string {
-    return this.getAttribute('title');
+    return this.getAttribute('title') as string;
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

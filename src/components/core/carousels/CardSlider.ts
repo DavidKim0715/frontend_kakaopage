@@ -1,6 +1,6 @@
 const template = document.createElement('template');
-template.innerHTML = `
-    <style>
+template.insertAdjacentHTML('afterbegin', `
+<style>
     .slide-wrapper{
       display : block;
       position: relative; 
@@ -24,14 +24,14 @@ template.innerHTML = `
     <article class="slide-wrapper">
       <div class="slide-list">
       </div>
-    </article>
-  `;
+    </article>`
+    )
 
 export class CardSlider extends HTMLElement {
-  pressed = false;
-  slide = '';
-  slideItem = '';
-  slideWidth = 960;
+  private pressed = false;
+  private slide = '';
+  private slideItem = '';
+  private slideWidth = 960;
   /*
    * constructor
    */
@@ -40,8 +40,8 @@ export class CardSlider extends HTMLElement {
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.renderHTML('.slide-list', 'afterbegin', this.renderCard());
-    this.slide = this.shadowRoot?.querySelector('.slide-list');
-    this.slideItem = this.shadowRoot?.querySelectorAll('.slide-item');
+    this.slide = this.shadowRoot?.querySelector('.slide-list') as HTMLElement;
+    this.slideItem = this.shadowRoot?.querySelectorAll('.slide-item') as NodeList;
   }
   /*
    * variables
@@ -90,7 +90,7 @@ export class CardSlider extends HTMLElement {
 
   attachEvents(): void {
     this.slide.addEventListener('mousedown', (e: Event) => {
-      pressed = true;
+      this.pressed = true;
       // startx = e.offsetX - innerSlider.offsetLeft;
       this.slide.style.cursor = 'grabbing';
     });
@@ -127,8 +127,8 @@ export class CardSlider extends HTMLElement {
   set contents(newValue: any) {
     this.setAttribute('contents', newValue);
   }
-  get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+  get contents() : object {
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
