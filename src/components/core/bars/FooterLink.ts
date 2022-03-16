@@ -1,9 +1,7 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
-  <style>
-  </style>
+template.innerHTML =`
+<style></style>
 `
-)
 
 export class FooterLink extends HTMLElement {
   private doc = document

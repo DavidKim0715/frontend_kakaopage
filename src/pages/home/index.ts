@@ -1,6 +1,6 @@
 const template = document.createElement('template');
 
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
     @media (min-width: 1080px) {
       .home-page-wrapper{
@@ -9,10 +9,11 @@ template.insertAdjacentHTML('afterbegin', `
     }
     
      </style>
-    <section class="home-page-wrapper">
-    </section>`
-    )
+  `
+
 export class HomePage extends HTMLElement {
+  private doc = document;
+  private node = this.doc.createElement('section')
   private cardItems = [];
   private accountItems = [];
   private menuItems = [];
@@ -25,6 +26,8 @@ export class HomePage extends HTMLElement {
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
+
+    this.init()
     this.accountItems = {
       title: '카카오페이머니',
       account: 0,
@@ -137,46 +140,46 @@ export class HomePage extends HTMLElement {
         },
       ],
     };
-    this.renderHTML(
-      '.home-page-wrapper',
-      'afterbegin',
-      `
-    <account-container 
-      contents='${JSON.stringify(this.accountItems)}'
-    >
-    </account-container>`
-    );
-    this.renderHTML(
-      'account-container',
-      'afterend',
-      `<main-btn-container 
-       contents='${JSON.stringify(this.menuItems)}'
-       rows-per-contents='4'
-       '>
-      </main-btn-container>`
-    );
-    this.renderHTML(
-      'main-btn-container',
-      'afterend',
-      `<card-slider
-        contents='${JSON.stringify(this.cardItems)}'
-      >
-    </card-slider>`
-    );
-    this.renderHTML(
-      'card-slider',
-      'afterend',
-      `<contents-container
-        contents='${JSON.stringify(this.contentItems)}'
-      >
-    </contents-container>`
-    );
-    this.renderHTML(
-      'contents-container',
-      'afterend',
-      `<banner-btn>
-     </banner-btn>`
-    );
+    // this.renderHTML(
+    //   '.home-page-wrapper',
+    //   'afterbegin',
+    //   `
+    // <account-container 
+    //   contents='${JSON.stringify(this.accountItems)}'
+    // >
+    // </account-container>`
+    // );
+    // this.renderHTML(
+    //   'account-container',
+    //   'afterend',
+    //   `<main-btn-container 
+    //    contents='${JSON.stringify(this.menuItems)}'
+    //    rows-per-contents='4'
+    //    '>
+    //   </main-btn-container>`
+    // );
+    // this.renderHTML(
+    //   'main-btn-container',
+    //   'afterend',
+    //   `<card-slider
+    //     contents='${JSON.stringify(this.cardItems)}'
+    //   >
+    // </card-slider>`
+    // );
+    // this.renderHTML(
+    //   'card-slider',
+    //   'afterend',
+    //   `<contents-container
+    //     contents='${JSON.stringify(this.contentItems)}'
+    //   >
+    // </contents-container>`
+    // );
+    // this.renderHTML(
+    //   'contents-container',
+    //   'afterend',
+    //   `<banner-btn>
+    //  </banner-btn>`
+    // );
   }
   /*
    * variables
@@ -197,10 +200,9 @@ export class HomePage extends HTMLElement {
   /*
    * Methods
    */
-
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
+  init():void{
+    this.node.classList.add('home-page-wrapper')
+    this.shadowRoot?.appendChild(this.node)
   }
   attachEvents(): void {
     //이벤트 리스터 등록
@@ -211,6 +213,26 @@ export class HomePage extends HTMLElement {
    */
 
   connectedCallback() {
+    this.node.insertAdjacentHTML('afterbegin',`
+    <account-container 
+      contents='${JSON.stringify(this.accountItems)}'
+    >
+    </account-container>
+    <main-btn-container 
+      contents='${JSON.stringify(this.menuItems)}'
+      rows-per-contents='4'
+    '>
+    </main-btn-container>
+    <card-slider
+      contents='${JSON.stringify(this.cardItems)}'
+    >
+    </card-slider>
+    <contents-container
+      contents='${JSON.stringify(this.contentItems)}'
+    >
+    <banner-btn>
+     </banner-btn>
+    `)
     this.attachEvents();
   }
   disconnectedCallback() {

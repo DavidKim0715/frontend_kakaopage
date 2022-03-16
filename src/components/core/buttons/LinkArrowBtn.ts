@@ -1,20 +1,13 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
 .link-arrow-btn{
 }
 </style>
-<button
-  class="link-arrow-btn"
-  type='button'
->
-  <span class='text-title'></span>
-  <span class='arrow-icon'></span>
-</button>`
-)
-
+`
 export class LinkArrowBtn extends HTMLElement {
-  textTitle = '';
+  private doc =document
+  private node = this.doc.createElement('button')
   /*
    * constructor
    */
@@ -22,17 +15,12 @@ export class LinkArrowBtn extends HTMLElement {
     super(); // 초기화
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
+
+    this.init()
   }
   /*
    * variables
    */
-  // // 외부 스타일을 shadow dom에 적용하기
-  // const linkElem = document.createElement('link');
-  // linkElem.setAttribute('rel', 'stylesheet');
-  // linkElem.setAttribute('href', 'style.css');
-
-  // // 생성된 요소를 shadow dom에 부착하기
-  // shadow.appendChild(linkElem);
 
   static get observedAttributes() {
     return ['title'];
@@ -41,16 +29,13 @@ export class LinkArrowBtn extends HTMLElement {
   /*
    * Methods
    */
-
+  init(): void {
+    this.node.classList.add('link-arrow-btn')
+    this.node.type="button"
+    this.shadowRoot?.appendChild(this.node)
+  }
   attachEvents(): void {
     //이벤트 리스터 등록
-  }
-
-  getTitleProps(): void {
-    const textTitle = this.shadowRoot?.querySelector('.text-title') as HTMLElement;
-    const titleData = this.title;
-    
-    textTitle.innerText = titleData;
   }
 
   /*
@@ -58,7 +43,10 @@ export class LinkArrowBtn extends HTMLElement {
    */
 
   connectedCallback() {
-    this.getTitleProps();
+    this.node.insertAdjacentHTML('afterbegin',`
+    <span class='text-title'>${this.title}</span>
+    <span class='arrow-icon'></span>
+  `)
     this.attachEvents();
   }
   disconnectedCallback() {

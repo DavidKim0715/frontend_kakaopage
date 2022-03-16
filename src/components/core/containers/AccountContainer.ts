@@ -1,5 +1,5 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
 .account-wrapper{
   background-color: #524e67;
@@ -30,8 +30,7 @@ justify-content: space-between;
   justify-content: flex-end;
 }
 </style>
-`)
-
+`
 export class AccountContainer extends HTMLElement {
   private doc = document
   private node  = this.doc.createElement('article')
@@ -74,8 +73,12 @@ export class AccountContainer extends HTMLElement {
     return btns;
   }
 
+  onClickBtn(e : Event): void {
+    console.log(e.target,'<<<<<<<<<<<<<')
+  }
 
   attachEvents(): void {
+    this.node.addEventListener('click', this.onClickBtn)
     console.log('dd');
 
     //이벤트 리스터 등록
@@ -84,7 +87,6 @@ export class AccountContainer extends HTMLElement {
   /*
    * life cycle
    */
-
 
   connectedCallback() {
     this.node.insertAdjacentHTML('afterbegin',`
@@ -102,6 +104,9 @@ export class AccountContainer extends HTMLElement {
     this.attachEvents();
   }
   disconnectedCallback() {
+    this.node.removeEventListener('click', this.onClickBtn)
+    this.shadowRoot?.removeChild(this.node)
+    this.node = this.doc.createElement('article')
     console.log('3::: disconnectedCallback');
   }
 
@@ -113,12 +118,12 @@ export class AccountContainer extends HTMLElement {
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
-    if(oldValue.title !== newValue.title){
-      this.contents.title = newValue.title
-    }
-    if(oldValue.account !== newValue.account){
-      this.contents.account = newValue.account
-    } 
+    // if(oldValue.title !== newValue.title){
+    //   this.contents.title = newValue.title
+    // }
+    // if(oldValue.account !== newValue.account){
+    //   this.contents.account = newValue.account
+    // } 
   }
   adoptedCallback() {
     // called when the element is moved to a new document

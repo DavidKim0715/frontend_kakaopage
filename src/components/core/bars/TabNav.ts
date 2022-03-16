@@ -1,21 +1,20 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
-    .tab-nav-wrapper{
-      position : absolute;
-    }
-    .tab-nav{
-      display : grid;
-      grid-template-column : repeat(auto-fill, 1fr);
-    }
-    .tab-line{
-      background-color : black;
-      border : 0;
-      transition : all 0.3s ease-in-out;
-    }
+    // .tab-nav-wrapper{
+    //   position : absolute;
+    // }
+    // .tab-nav{
+    //   display : grid;
+    //   grid-template-column : repeat(auto-fill, 1fr);
+    // }
+    // .tab-line{
+    //   background-color : black;
+    //   border : 0;
+    //   transition : all 0.3s ease-in-out;
+    // }
     </style>
-   `
-    )
+`
 
 export class TabNav extends HTMLElement {
   private doc = document

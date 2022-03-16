@@ -1,6 +1,6 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
-  <style>
+template.innerHTML =`
+<style>
     .main-contents-page-wrapper{
       overflow-x: hidden;
       display : flex;
@@ -9,7 +9,7 @@ template.insertAdjacentHTML('afterbegin', `
       width : 1080px;
     }
     </style>
-`)
+  `
 
 export class MainContentsContainer extends HTMLElement {
   private doc = document

@@ -1,5 +1,5 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
     .detail {
       list-style:none;
@@ -9,8 +9,7 @@ template.insertAdjacentHTML('afterbegin', `
       display : block;
     }
     </style>
-   `
-    )
+`
 
 export class FooterTable extends HTMLElement {
   private doc = document
@@ -42,22 +41,23 @@ export class FooterTable extends HTMLElement {
    */
 
   init(): void{
-    this.node.id ="footer-btn"
-    this.node.innerText = '(주)카카오페이 사업자 정보'
+    // this.node.id ="footer-btn"
+    this.node.title = '(주)카카오페이 사업자 정보'
     this.shadowRoot?.appendChild(this.node)
   }
 
-  attachEvents() {
-    const shadow = this.shadowRoot;
-    const btn = shadow?.querySelector('link-arrow-btn');
-    const table = shadow?.querySelector('.detail');
-    btn?.addEventListener('click', () => {
-      if (table?.classList.contains('active')) {
-        table.classList.remove('active');
-      } else {
-        table?.classList.add('active');
+  onClickBtn(e : Event){
+    if(e.target.tagName === `LINK-ARROW-BTN`){
+      const ul = e.target.querySelector('.detail')
+      if(ul?.classList.contains('active')){
+        ul?.classList.remove('active');
+      }else{
+        ul?.classList.add('active');
       }
-    });
+    }
+  }
+  attachEvents() {
+    this.node.addEventListener('click', this.onClickBtn)
   }
 
   /*
@@ -99,7 +99,7 @@ export class FooterTable extends HTMLElement {
     this.attachEvents();
   }
   disconnectedCallback() {
-    console.log('3::: disconnectedCallback');
+    this.node.removeEventListener('click', this.onClickBtn)
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

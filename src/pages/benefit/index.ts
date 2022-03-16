@@ -1,16 +1,16 @@
 const template = document.createElement('template');
 
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
      @media (min-width: 1080px) {
       .benefit-page-wrapper{
         width: 1080px;
       }
     </style>
-    <section class='benefit-page-wrapper'>
-    </section>`
-  )
+`
 export class BenefitPage extends HTMLElement {
+  private doc = document;
+  private node= this.doc.createElement('section')
   private cardItems = [];
   private menuItems = [];
   private contentItems = [];
@@ -23,6 +23,8 @@ export class BenefitPage extends HTMLElement {
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
+
+    this.init()
     this.pointItems = {
       title: '페이포인트',
       account: 0,
@@ -128,46 +130,7 @@ export class BenefitPage extends HTMLElement {
         },
       ],
     };
-    this.renderHTML(
-      'section',
-      'afterbegin',
-      `
-    <point-container 
-      contents='${JSON.stringify(this.pointItems)}'
-    >
-    </point-container>`
-    );
 
-    this.renderHTML(
-      'point-container',
-      'afterend',
-      `<icon-card-slider
-       contents='${JSON.stringify(this.cardItems)}'>
-      </icon-card-slider>`
-    );
-
-    this.renderHTML(
-      'icon-card-slider',
-      'afterend',
-      `<main-btn-container
-        contents='${JSON.stringify(this.menuItems)}'
-      >
-        </main-btn-container>`
-    );
-    this.renderHTML(
-      'main-btn-container',
-      'afterend',
-      `<banner-btn>
-     </banner-btn>`
-    );
-    this.renderHTML(
-      'banner-btn',
-      'afterend',
-      `<contents-container
-         contents='${JSON.stringify(this.contentItems)}
-      >
-     </contents-container>`
-    );
   }
   /*
    * variables
@@ -185,10 +148,9 @@ export class BenefitPage extends HTMLElement {
   /*
    * Methods
    */
-
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
+  init(): void{
+    this.node.classList.add('benefit-page-wrapper')
+    this.shadowRoot?.appendChild(this.node)
   }
   attachEvents(): void {
     console.log('hompage 이벤트 등록');
@@ -200,6 +162,23 @@ export class BenefitPage extends HTMLElement {
    */
 
   connectedCallback() {
+    this.node.insertAdjacentHTML('afterbegin',`
+    <point-container 
+      contents='${JSON.stringify(this.pointItems)}'
+    >
+    </point-container>
+    <icon-card-slider
+       contents='${JSON.stringify(this.cardItems)}'>
+      </icon-card-slider>
+      <main-btn-container
+        contents='${JSON.stringify(this.menuItems)}'
+      >
+      </main-btn-container>
+      <contents-container
+         contents='${JSON.stringify(this.contentItems)}
+      >
+     </contents-container>
+    `)
     this.attachEvents();
   }
   disconnectedCallback() {

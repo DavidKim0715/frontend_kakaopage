@@ -1,11 +1,11 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin',`
+template.innerHTML =`
 <style>
     .main-tab-wrapper{
       position: relative;
     }
-    </style>`
-)
+    </style>
+    `
 export class MainTab extends HTMLElement {
   private doc = document;
   private node = this.doc.createElement('div');

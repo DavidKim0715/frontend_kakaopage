@@ -1,5 +1,5 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
 .text-btn{
   background-color: gray;
@@ -13,22 +13,24 @@ template.insertAdjacentHTML('afterbegin', `
   font-size : 3em;
 }
 </style>
-<button
-  class="text-btn"
-  type='button'
->
-  <span class='text-title'></span>
-</button>`
-)
+`
+
 export class TextBtn extends HTMLElement {
-  textTitle = '';
+  private doc = document
+  private node  = this.doc.createElement('button')
   /*
    * constructor
    */
   constructor() {
-    super(); // 초기화
+    // initializtion
+    super(); 
+
+    //Append shadowDom 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
+
+    //init-call connectedCallback
+    this.init()
   }
   /*
    * variables
@@ -49,15 +51,13 @@ export class TextBtn extends HTMLElement {
    * Methods
    */
 
+  init(): void {
+    this.node.classList.add('text-btn');
+    this.node.type='button'
+    this.shadowRoot?.appendChild(this.node)
+  }
   attachEvents(): void {
     //이벤트 리스터 등록
-  }
-
-  getTitleProps(): void {
-    const textTitle = this.shadowRoot?.querySelector('.text-title') as HTMLElement;
-    const titleData = this.title;
-    
-    textTitle.innerText = titleData;
   }
 
   /*
@@ -65,7 +65,9 @@ export class TextBtn extends HTMLElement {
    */
 
   connectedCallback() {
-    this.getTitleProps();
+    this.node.insertAdjacentHTML('afterbegin',`
+    <span class="text-title">${this.title}</span>
+    `)
     this.attachEvents();
   }
   disconnectedCallback() {
@@ -80,18 +82,7 @@ export class TextBtn extends HTMLElement {
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
-    //// called when one of attributes listed above is modified
-    // switch (name) {
-    //   case 'title':
-    //     this.menuTitle.innerText = newValue;
-    //     break;
-    //   case 'contents':
-    //     console.log(JSON.parse(newValue));
-    //     break;
-    //   default:
-    //     break;
-    // }
-    // this.connectedCallback(); //rerender
+   //
   }
   adoptedCallback() {
     // called when the element is moved to a new document

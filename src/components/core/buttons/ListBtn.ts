@@ -1,12 +1,11 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
 .list-btn{
   display: inline-grid;
 }
 </style>
 `
-)
 
 export class ListBtn extends HTMLElement {
   private doc = document

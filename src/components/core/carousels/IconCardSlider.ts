@@ -1,11 +1,11 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
 .slide-wrapper{
   display : block;
   position: relative; 
   margin : 0 auto;
-  width: 1000px;
+  width: 800px;
   overflow-x: hidden;
 }
 .slide-list{
@@ -16,22 +16,17 @@ template.insertAdjacentHTML('afterbegin', `
   width: 100%; 
 }
 .slide-item{
-  border : 1px solid black;
   border-radius : 2.7em;
-  width:  900px;
+  width:  800px;
   height: 800px;
 }
 </style>
-<article class="slide-wrapper">
-  <div class="slide-list">
-  </div>
-</article>`
-)
+`
 
 export class IconCardSlider extends HTMLElement {
-  pressed = false;
-  slide = '';
-  slideWidth = 960;
+  private doc = document
+  private node = this.doc.createElement('article')
+  private slideWidth = 960;
   /*
    * constructor
    */
@@ -39,8 +34,9 @@ export class IconCardSlider extends HTMLElement {
     super(); // 초기화
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML('.slide-list', 'afterbegin', this.renderCard());
-    this.slide = this.shadowRoot?.querySelector('.slide-list') as HTMLElement;
+
+    this.init()
+    // this.slide = this.shadowRoot?.querySelector('.slide-list') as HTMLElement;
   }
   /*
    * variables
@@ -56,13 +52,16 @@ export class IconCardSlider extends HTMLElement {
   static get observedAttributes() {
     return ['contents'];
   }
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
-  }
+
+
   /*
    * Methods
    */
+
+  init():void {
+    this.node.classList.add('slide-wrapper')
+    this.shadowRoot?.appendChild(this.node)
+  }
 
   renderCard(): string {
     let cards = ``;
@@ -85,24 +84,24 @@ export class IconCardSlider extends HTMLElement {
   }
 
   attachEvents(): void {
-    this.slide.addEventListener('mousedown', (e: Event) => {
-      pressed = true;
-      // startx = e.offsetX - innerSlider.offsetLeft;
-      this.slide.style.cursor = 'grabbing';
-    });
-    this.slide.addEventListener('mouseenter', (e: Event) => {
-      this.slide.style.cursor = 'grab';
-    });
+    // this.slide.addEventListener('mousedown', (e: Event) => {
+    //   pressed = true;
+    //   // startx = e.offsetX - innerSlider.offsetLeft;
+    //   this.slide.style.cursor = 'grabbing';
+    // });
+    // this.slide.addEventListener('mouseenter', (e: Event) => {
+    //   this.slide.style.cursor = 'grab';
+    // });
 
-    this.slide.addEventListener('mouseup', (e: Event) => {
-      this.slide.style.cursor = 'grab';
-    });
-    this.slide.addEventListener('mousemove', (e: Event) => {
-      if (!pressed) {
-        return;
-      }
-      e.preventDefault();
-    });
+    // this.slide.addEventListener('mouseup', (e: Event) => {
+    //   this.slide.style.cursor = 'grab';
+    // });
+    // this.slide.addEventListener('mousemove', (e: Event) => {
+    //   if (!pressed) {
+    //     return;
+    //   }
+    //   e.preventDefault();
+    // });
   }
 
   /*
@@ -110,8 +109,14 @@ export class IconCardSlider extends HTMLElement {
    */
 
   connectedCallback() {
+    this.node.insertAdjacentHTML('afterbegin',`
+    <div class="slide-list">
+      ${this.renderCard()}
+    </div>
+    `)
     //mount
-    this.slide!.style.width = this.contents.length * this.slideWidth + 'px';
+    const subNode= this.node.querySelector('.slide-list') as HTMLElement;
+    subNode.style.width = this.contents.length * this.slideWidth + 'px';
     this.attachEvents();
   }
 
@@ -123,7 +128,7 @@ export class IconCardSlider extends HTMLElement {
     this.setAttribute('contents', newValue);
   }
   get contents() {
-    return JSON.parse(this.getAttribute('contents'));
+    return JSON.parse(this.getAttribute('contents') as string);
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {

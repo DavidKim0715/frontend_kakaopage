@@ -1,5 +1,5 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
     .menu-btn{
       text-align : center;
@@ -15,7 +15,6 @@ template.insertAdjacentHTML('afterbegin', `
    }
     </style>
     `
-    )
 export class MenuBtn extends HTMLElement {
   private doc = document
   private node  = this.doc.createElement('a')

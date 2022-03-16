@@ -1,13 +1,13 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
     .contents-container-wrapper{
       display: flex;
       flex-direction: column;
     }
     </style>
-    `
-    )
+  `
+
 export class ContentsContainer extends HTMLElement {
   private doc = document
   private node  = this.doc.createElement('article')
@@ -85,7 +85,7 @@ export class ContentsContainer extends HTMLElement {
   }
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
-    if(oldValue.title !== newValue.title){
+    if(oldValue?.title !== newValue.title){
       this.contents.title = newValue.title;
     }
   }

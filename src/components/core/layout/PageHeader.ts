@@ -1,6 +1,6 @@
 // import { logo } from 'src/static/image/logo.png';
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
   .page-header-wrapper{
 
@@ -8,13 +8,10 @@ template.insertAdjacentHTML('afterbegin', `
   .logo-img{
     
   }
-  </style>
-   <header class='page-header-wrapper'>
-      <img class='logo-img' loading='lazy'/>
-    </header>`
-    )
-
+  </style>`
 export class PageHeader extends HTMLElement {
+  private doc = document;
+  private node = this.doc.createElement('header')
   private logo : HTMLElement | null = null
   /*
   /*
@@ -26,6 +23,8 @@ export class PageHeader extends HTMLElement {
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
     this.logo = this.shadowRoot?.querySelector('.logo-img') as HTMLElement;
+
+    this.init()
   }
   /*
    * variables
@@ -35,15 +34,14 @@ export class PageHeader extends HTMLElement {
     return ['contents'];
   }
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
-  }
-
   /*
    * Methods
    */
 
+  init():void{
+    this.node.classList.add('page-header-wrapper')
+    this.shadowRoot?.appendChild(this.node)
+  }
   attachEvents(): void {
     console.log('dd');
 
@@ -55,6 +53,9 @@ export class PageHeader extends HTMLElement {
    */
 
   connectedCallback() {
+    this.node.insertAdjacentHTML('afterbegin',`
+    <img class='logo-img' alt="로고 이미지"/>
+    `)
     // this.logo.style.background = "url: 'static/image/logo.png'";
     this.attachEvents();
   }

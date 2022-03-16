@@ -1,6 +1,5 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin',`
-<style>
+template.innerHTML = `<style>
 .modal-container-wrapper{
   display : flex;
   position:fixed; 
@@ -16,9 +15,7 @@ template.insertAdjacentHTML('afterbegin',`
 .closed{
   display : none;
 }
-</style>
-`
-)
+</style>`
 
 export class ModalContainer extends HTMLElement {
   private doc = document

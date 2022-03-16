@@ -1,5 +1,5 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
 .point-wrapper{
   display : block;
@@ -15,7 +15,7 @@ template.insertAdjacentHTML('afterbegin', `
     font-size: 5em;
   }
 </style>
-`)
+`
 export class PointContainer extends HTMLElement {
   private doc = document
   private node  = this.doc.createElement('article')
@@ -95,12 +95,12 @@ export class PointContainer extends HTMLElement {
 
   attributeChangedCallback(name: any, oldValue: any, newValue: any) {
     //// called when one of attributes listed above is modified
-    if(oldValue.title !== newValue.title){
-      this.contents.title = newValue.title
-    }
-    if(oldValue.account !== newValue.account){
-      this.contents.account = newValue.account
-    }
+    // if(oldValue.title !== newValue.title){
+    //   this.contents.title = newValue.title
+    // }
+    // if(oldValue.account !== newValue.account){
+    //   this.contents.account = newValue.account
+    // }
   }
   adoptedCallback() {
     // called when the element is moved to a new document

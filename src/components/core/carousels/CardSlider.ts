@@ -1,36 +1,40 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
-    .slide-wrapper{
-      display : block;
-      position: relative; 
-      margin : 0 auto;
-      width: 800px;
-      overflow-x: hidden;
-    }
-    .slide-list{
-      display: inline-flex;
-      justify-content: space-around;
-      margin: auto; 
-      pointer-events: none;
-      width: 100%; 
-    }
-    .slide-item{
-      border-radius : 2.7em;
-      width:  800px;
-      height: 800px;
-    }
-    </style>
-    <article class="slide-wrapper">
-      <div class="slide-list">
-      </div>
-    </article>`
-    )
+.slide-wrapper{
+  // display : block;
+  // position: relative; 
+  // margin : 0 auto;
+  // width: 800px;
+  // overflow-x: hidden;
+}
+.slide-list{
+  scroll-snap-type: x proximity;
+  overflow-x: scroll;
+  display: flex;
+  pointer-events: none;
+  // display: inline-flex;
+  // justify-content: space-around;
+  // margin: auto; 
+  // pointer-events: none;
+  // width: 100%; 
+}
+.slide-item{
+  display: inline-block;
+  scroll-snap-align: center;
+  margin-right: 3rem;
+  width : 40vh;
+  height: 20vh;
+  // border-radius : 2.7em;
+  // width:  800px;
+  // height: 800px;
+}
+</style>
+`
 
 export class CardSlider extends HTMLElement {
-  private pressed = false;
-  private slide = '';
-  private slideItem = '';
+  private doc = document
+  private node = this.doc.createElement('article')
   private slideWidth = 960;
   /*
    * constructor
@@ -39,31 +43,23 @@ export class CardSlider extends HTMLElement {
     super(); // 초기화
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML('.slide-list', 'afterbegin', this.renderCard());
-    this.slide = this.shadowRoot?.querySelector('.slide-list') as HTMLElement;
-    this.slideItem = this.shadowRoot?.querySelectorAll('.slide-item') as NodeList;
+
+    this.init()
   }
   /*
    * variables
    */
-  // // 외부 스타일을 shadow dom에 적용하기
-  // const linkElem = document.createElement('link');
-  // linkElem.setAttribute('rel', 'stylesheet');
-  // linkElem.setAttribute('href', 'style.css');
-
-  // // 생성된 요소를 shadow dom에 부착하기
-  // shadow.appendChild(linkElem);
 
   static get observedAttributes() {
     return ['contents'];
   }
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
-  }
   /*
    * Methods
    */
+  init():void {
+    this.node.classList.add('slide-wrapper')
+    this.shadowRoot?.appendChild(this.node)
+  }
 
   renderCard(): string {
     let cards = ``;
@@ -83,40 +79,41 @@ export class CardSlider extends HTMLElement {
     }
     return cards;
   }
-
-  opratePosition(): void {
-    //
-  }
+  
 
   attachEvents(): void {
-    this.slide.addEventListener('mousedown', (e: Event) => {
-      this.pressed = true;
-      // startx = e.offsetX - innerSlider.offsetLeft;
-      this.slide.style.cursor = 'grabbing';
-    });
-    this.slide.addEventListener('mouseenter', (e: Event) => {
-      this.slide.style.cursor = 'grab';
-    });
-
-    this.slide.addEventListener('mouseup', (e: Event) => {
-      this.slide.style.cursor = 'grab';
-    });
-    this.slide.addEventListener('mousemove', (e: Event) => {
-      if (!pressed) {
-        return;
-      }
-      e.preventDefault();
-    });
+   //
   }
 
   /*
    * life cycle
    */
 
+  randomHsl() : string{
+    return `hsla(${Math.random() * 360}, 100%, 50%, 1)`
+  } 
+  operateSlideWidth():void{
+    const subNode= this.node.querySelector('.slide-list') as HTMLElement;
+    subNode.style.width = this.contents.length * this.slideWidth + 'px';
+
+  }
+  paintCard() : void{
+    const element = this.node.querySelectorAll('.slide-item') as NodeList;
+    element.forEach((el) => {
+      el.style.backgroundColor = this.randomHsl()
+    })
+  }
   connectedCallback() {
+    this.node.insertAdjacentHTML('afterbegin',`
+    <div class="slide-list">
+      ${this.renderCard()}
+    </div>
+    `)
     //mount
-    this.slide!.style.width = this.contents.length * this.slideWidth + 'px';
-    // this.paintCard();
+
+    
+    this.operateSlideWidth()
+    this.paintCard();
     this.attachEvents();
   }
 

@@ -1,5 +1,5 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin',  `
+template.innerHTML =`
 <style>
 .capital-wrapper{
     display : block;
@@ -8,7 +8,7 @@ template.insertAdjacentHTML('afterbegin',  `
     width: 1000px;
 }
 </style>
-`)
+`
 
 export class CapitalContainer extends HTMLElement {
   private doc = document

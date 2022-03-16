@@ -1,6 +1,6 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
-<style>
+template.innerHTML = 
+`<style>
 .menu-wrap{
   border : 1px solid black;
   width: 980px;
@@ -9,7 +9,6 @@ template.insertAdjacentHTML('afterbegin', `
 }
 </style>
 `
-)
 
 export class MenuContainer extends HTMLElement {
   private doc = document
@@ -69,21 +68,14 @@ export class MenuContainer extends HTMLElement {
    * life cycle
    */
 
-  getTitleProps(): void {
-    const titleData = this.title;
-    const menuTitle = this.shadowRoot?.querySelector('.menu-title') as HTMLElement;
-
-    menuTitle.innerText = titleData;
-  }
 
   connectedCallback() {
     this.node.insertAdjacentHTML('afterbegin', `
-      <span class="menu-title"></span>
+      <span class="menu-title">${this.title}</span>
       <div class="menu-btn-wrapper">
         ${this.renderMenuButton()}
       </div>
-    )`)
-    this.getTitleProps();
+    `)
     this.attachEvents();
   }
 

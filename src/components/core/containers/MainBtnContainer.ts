@@ -1,5 +1,5 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
 .main-btn-tab{
   display : block;
@@ -14,7 +14,7 @@ template.insertAdjacentHTML('afterbegin', `
 }
 </style>
 `
-)
+
 export class MainBtnContainer extends HTMLElement {
   private doc = document
   private node  = this.doc.createElement('article')

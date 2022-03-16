@@ -1,17 +1,17 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin',`
-    <style>
+template.innerHTML=`
+<style>
       .quick-menu-page-wrapper{
         width: 1080px;
         display : block;
       }
     }
     </style>
-    <section class="quick-menu-page-wrapper">
-    </section>
-`);
+`
 
 export class QuickMenuPage extends HTMLElement {
+  private doc = document;
+  private node= this.doc.createElement('section')
   private contents = [];
   /*
    * constructor
@@ -126,7 +126,8 @@ export class QuickMenuPage extends HTMLElement {
     ];
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML('section', 'afterbegin', this.renderMenu());
+    
+    this.init()
   }
   /*
    * variables
@@ -139,16 +140,11 @@ export class QuickMenuPage extends HTMLElement {
    * Methods
    */
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
+  init():void{
+    this.node.classList.add('quick-menu-page-wrapper')
+    this.shadowRoot?.appendChild(this.node)
   }
-  // set contents(newValue: any) {
-  //   this.setAttribute('contents', newValue);
-  // }
-  // get contents() {
-  //   return JSON.parse(this.getAttribute('contents'));
-  // }
+  
   attachEvents(): void {
     console.log('dd');
     //이벤트 리스터 등록
@@ -174,6 +170,7 @@ export class QuickMenuPage extends HTMLElement {
    * life cycle
    */
   connectedCallback() {
+    this.node.insertAdjacentHTML('afterbegin', this.renderMenu())
     this.attachEvents();
   }
   disconnectedCallback() {

@@ -1,5 +1,5 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
+template.innerHTML =`
 <style>
     .slide-wrapper{
       cursor : grab;
@@ -19,15 +19,12 @@ template.insertAdjacentHTML('afterbegin', `
       width:  10em;
       height: 10em;
     }
-    </style>
-    <article class="slide-wrapper">
-      <div class="slide-list">
-      </div>
-    </article>`
-    )
+    </style>`
 
 export class BannerSlider extends HTMLElement {
-  slideWidth = 400;
+  private doc = document
+  private node = this.doc.createElement('article');
+  private slideWidth = 400;
   /*
    * constructor
    */
@@ -36,7 +33,8 @@ export class BannerSlider extends HTMLElement {
 
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML('.slide-list', 'afterbegin', this.renderCard());
+
+    this.init()
   }
   /*
    * variables
@@ -45,14 +43,14 @@ export class BannerSlider extends HTMLElement {
   static get observedAttributes() {
     return ['contents'];
   }
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
-  }
+  
   /*
    * Methods
    */
-
+  init(): void{
+    this.node.classList.add(`slide-wrapper`)
+    this.shadowRoot?.appendChild(this.node)
+  }
   attachEvents(): void {
     console.log('ee');
     //이벤트 리스터 등록
@@ -77,6 +75,11 @@ export class BannerSlider extends HTMLElement {
    */
 
   connectedCallback() {
+    this.node.insertAdjacentHTML('afterbegin',`
+      <div class="slide-list">
+        ${this.renderCard()}
+      </div>
+    `)
     //mount
     const slide = this.shadowRoot?.querySelector('.slide-list') as HTMLElement;
     slide.style.width = this.contents.length * this.slideWidth + 'px';

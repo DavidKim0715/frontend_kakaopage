@@ -1,10 +1,10 @@
 const template = document.createElement('template');
-template.insertAdjacentHTML('afterbegin', `
-<footer class='page-footer'>
-    </footer>
-`)
-
+template.innerHTML =`
+<style></style>
+`
 export class PageFooter extends HTMLElement {
+  private doc = document;
+  private node= this.doc.createElement('footer')
   private items = [];
   /*
    * constructor
@@ -19,8 +19,8 @@ export class PageFooter extends HTMLElement {
     ];
     this.attachShadow({ mode: 'open' }); // DOM scope 생성
     this.shadowRoot?.appendChild(template.content.cloneNode(true));
-    this.renderHTML('.page-footer', 'afterbegin', this.renderFooterLink());
-    this.renderHTML('.footer-link', 'afterend', this.renderFooterTable());
+    
+    this.init()
   }
   /*
    * variables
@@ -37,11 +37,10 @@ export class PageFooter extends HTMLElement {
     return ['contents'];
   }
 
-  renderHTML(tag: string, position: string, element: string): void {
-    const data = this.shadowRoot?.querySelector(tag);
-    data?.insertAdjacentHTML(position as InsertPosition, element);
+  init(): void{
+    this.node.classList.add('page-footer')
+    this.shadowRoot?.appendChild(this.node)
   }
-
   renderFooterLink(): string {
     return `
       <footer-link 
@@ -72,6 +71,10 @@ export class PageFooter extends HTMLElement {
   // }
 
   connectedCallback() {
+    this.node.insertAdjacentHTML('afterbegin',`
+      ${this.renderFooterLink()}
+      ${this.renderFooterTable()}
+    `)
     this.attachEvents();
   }
   disconnectedCallback() {
